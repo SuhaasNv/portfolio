@@ -135,7 +135,7 @@ To run this portfolio locally:
 
 1. Clone the repository:
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/SuhaasNv/portfolio.git
    cd portfolio
    ```
 
