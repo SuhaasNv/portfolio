@@ -63,6 +63,20 @@ body{
 }
 .container{
     padding: 10px 10%;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+@media only screen and (max-width: 1024px){
+    .container{
+        padding: 10px 8%;
+    }
+}
+
+@media only screen and (max-width: 768px){
+    .container{
+        padding: 10px 6%;
+    }
 }
 
 @media only screen and (max-width: 600px){
@@ -147,19 +161,9 @@ nav ul li a:hover::after{
 }
 .row{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-wrap: wrap;
-}
-
-.about-col-1{
-    flex-basis: 35%;
-}
-.about-col-1 img{
-    width: 100%;
-    border-radius: 15px;
-}
-.about-col-2{
-    flex-basis: 60%;
 }
 
 .sub-title{
@@ -171,7 +175,7 @@ nav ul li a:hover::after{
 
 /* About intro with constrained width */
 .about-intro{
-    max-width: 800px;
+    max-width: 100%;
     margin-bottom: 32px;
 }
 
@@ -291,7 +295,7 @@ nav ul li a:hover::after{
 
 /* Tab content wrapper with max-width */
 .tab-content-wrapper{
-    max-width: 720px;
+    max-width: 100%;
 }
 
 .tab-content-wrapper p{
@@ -636,6 +640,7 @@ nav ul li a:hover::after{
 
 .contact-left{
     flex-basis: 35%;
+    margin-right: 5%;
 }
 .contact-right{
     flex-basis: 60%;
@@ -806,21 +811,6 @@ nav .fas{
         margin-bottom: 24px;
         text-align: left;
     }
-    .about-col-1, .about-col-2{
-        flex-basis: 100%;
-    }
-    .about-col-1{
-        margin-bottom: 30px;
-    }
-    .about-col-1 img{
-        width: 100%;
-        display: block;
-        margin: 0 auto;
-    }
-    .about-col-2{
-        font-size: 14px;
-        text-align: left;
-    }
     .about-intro{
         max-width: 100%;
         margin-bottom: 24px;
@@ -966,6 +956,7 @@ nav .fas{
     }
     .contact-left, .contact-right{
         flex-basis: 100%;
+        margin-right: 0;
         margin-bottom: 30px;
     }
     .contact-left{

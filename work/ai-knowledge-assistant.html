@@ -82,6 +82,108 @@
             display: block;
             border-radius: 10px;
         }
+        .hero-image-clickable {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        .hero-image-clickable:hover {
+            opacity: 0.85;
+        }
+        .hero-image-clickable:focus {
+            outline: 2px solid #ff004f;
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+        /* Image Lightbox */
+        .image-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+        .image-lightbox:not([hidden]) {
+            display: flex;
+            opacity: 1;
+            pointer-events: all;
+        }
+        .lightbox-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            cursor: pointer;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            font-size: 36px;
+            font-weight: 300;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding: 0;
+            transition: background 0.2s ease;
+            font-family: Arial, sans-serif;
+        }
+        .lightbox-close:hover,
+        .lightbox-close:focus {
+            background: rgba(255, 255, 255, 0.25);
+            outline: 2px solid #ff004f;
+            outline-offset: 2px;
+        }
+        .lightbox-image {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            z-index: 10001;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .image-lightbox {
+                transition: none;
+            }
+            .hero-image-clickable {
+                transition: none;
+            }
+            .lightbox-close {
+                transition: none;
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            .lightbox-close {
+                top: 15px;
+                right: 20px;
+                width: 44px;
+                height: 44px;
+                font-size: 32px;
+            }
+            .lightbox-image {
+                max-width: 95%;
+                max-height: 85vh;
+            }
+        }
         .case-study-tldr-box {
             background: rgba(255, 255, 255, 0.03);
             border-left: 3px solid #ff004f;
@@ -160,7 +262,14 @@
         </div>
 
         <div class="case-study-hero-image">
-            <img src="../images/work-5.png" alt="AI Knowledge Assistant RAG System">
+            <img src="../images/work-5.png" alt="AI Knowledge Assistant RAG System" class="hero-image-clickable" id="heroImage" tabindex="0" role="button" aria-label="Click to view full-size image">
+        </div>
+        
+        <!-- Image Lightbox Modal -->
+        <div id="imageLightbox" class="image-lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxImage" hidden>
+            <div class="lightbox-backdrop"></div>
+            <button class="lightbox-close" aria-label="Close image viewer" tabindex="0">&times;</button>
+            <img id="lightboxImage" class="lightbox-image" src="" alt="" tabindex="0">
         </div>
 
         <div class="case-study-tldr-box">
@@ -271,6 +380,108 @@
             <a href="../index.html#portfolio" class="back-link">← Back to Work</a>
         </div>
     </div>
+    
+    <script>
+        (function() {
+            'use strict';
+            
+            var heroImage = document.getElementById('heroImage');
+            var lightbox = document.getElementById('imageLightbox');
+            var lightboxImage = document.getElementById('lightboxImage');
+            var closeButton = lightbox.querySelector('.lightbox-close');
+            var backdrop = lightbox.querySelector('.lightbox-backdrop');
+            var scrollPosition = 0;
+            var isOpen = false;
+            
+            // Preload image for better performance
+            var preloadImg = new Image();
+            preloadImg.src = heroImage.src;
+            
+            function openLightbox(e) {
+                if (e) e.preventDefault();
+                if (isOpen) return;
+                
+                scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                lightboxImage.src = heroImage.src;
+                lightboxImage.alt = heroImage.alt;
+                lightbox.removeAttribute('hidden');
+                document.body.style.overflow = 'hidden';
+                document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth + 'px';
+                isOpen = true;
+                
+                // Focus management
+                requestAnimationFrame(function() {
+                    closeButton.focus();
+                });
+            }
+            
+            function closeLightbox(e) {
+                if (e && e.target !== backdrop && e.target !== closeButton && e.target !== lightboxImage) {
+                    return;
+                }
+                if (!isOpen) return;
+                
+                lightbox.setAttribute('hidden', '');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+                isOpen = false;
+                
+                // Restore scroll and focus
+                window.scrollTo({
+                    top: scrollPosition,
+                    behavior: 'auto'
+                });
+                
+                requestAnimationFrame(function() {
+                    if (heroImage) heroImage.focus();
+                });
+            }
+            
+            // Open handlers
+            heroImage.addEventListener('click', openLightbox);
+            heroImage.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    openLightbox(e);
+                }
+            });
+            
+            // Close handlers
+            closeButton.addEventListener('click', closeLightbox);
+            backdrop.addEventListener('click', closeLightbox);
+            
+            // Escape key handler (single listener on document)
+            function handleEscape(e) {
+                if (e.key === 'Escape' && isOpen) {
+                    closeLightbox();
+                }
+            }
+            document.addEventListener('keydown', handleEscape);
+            
+            // Focus trap
+            lightbox.addEventListener('keydown', function(e) {
+                if (e.key !== 'Tab') return;
+                
+                var focusableElements = lightbox.querySelectorAll('button, [tabindex]:not([tabindex="-1"])');
+                if (focusableElements.length === 0) return;
+                
+                var firstElement = focusableElements[0];
+                var lastElement = focusableElements[focusableElements.length - 1];
+                var activeElement = document.activeElement;
+                
+                if (e.shiftKey) {
+                    if (activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    }
+                } else {
+                    if (activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
 
