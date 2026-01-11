@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Suhaas Nadukooru | Systems Engineer with Product Intent</title>
-    <meta name="description" content="Systems engineer with product intent, learning to connect architecture, AI systems, and user needs. M.Tech at NUS. Focused on systems design, product reasoning, and architectural decision-making.">
+    <meta name="description" content="Systems engineer with product intent, connecting architecture, AI systems, and user needs. M.Tech at NUS. Focused on systems design, product reasoning, and architectural decision-making.">
     <link rel="icon" type="image/png" href="images/Suhaas Nv.png">
     <link rel="shortcut icon" type="image/png" href="images/Suhaas Nv.png">
     <link rel="apple-touch-icon" href="images/Suhaas Nv.png">
@@ -22,13 +22,13 @@
                 <li><a href="#portfolio">Work</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <i class="fas fa-times" onclick="closemenu()"></i>
+                <i class="fas fa-times" id="close-menu-btn"></i>
             </ul>
-            <i class="fas fa-bars" onclick="openmenu()"></i>
+            <i class="fas fa-bars" id="open-menu-btn"></i>
         </nav>
         <div class="header-text">
             <h1>I design systems that connect architecture to user needs.</h1>
-            <p class="header-subheadline">I work at the intersection of systems engineering, AI systems, and product thinking—learning to make technical decisions that serve real problems.</p>
+            <p class="header-subheadline">I work at the intersection of systems engineering, AI systems, and product thinking—making technical decisions that serve real problems.</p>
             <p class="header-context">M.Tech (Software Engineering) at the National University of Singapore. Focused on systems architecture, data pipelines, and product reasoning.</p>
             <div class="header-cta">
                 <a href="#portfolio" class="btn btn2">View Work</a>
@@ -50,13 +50,13 @@
                     <span>Product reasoning & user needs</span>
                     <span>AI systems & RAG pipelines</span>
                     <span>Architectural decision-making</span>
-                    <span>Learning-focused engineering</span>
+                    <span>Engineering decisions grounded in trade-offs</span>
                 </div>
                 
                 <div class="tab-titles">
-                    <p class="tab-links active-link" onclick="opentab('focus')">Focus & Strengths</p>
-                    <p class="tab-links" onclick="opentab('projects')">Projects & Exposure</p>
-                    <p class="tab-links" onclick="opentab('education')">Education & Foundations</p>
+                    <p class="tab-links active-link" data-tab="focus">Focus & Strengths</p>
+                    <p class="tab-links" data-tab="projects">Projects & Exposure</p>
+                    <p class="tab-links" data-tab="education">Education & Foundations</p>
                 </div>
                 <div class="tab-contents active-tab" id="focus">
                     <h3 class="tab-section-header">How I think about systems</h3>
@@ -64,7 +64,7 @@
                         <p>I focus on <strong>systems thinking and architectural reasoning</strong>. My strength lies in understanding how technical decisions impact user outcomes and system behavior over time. I evaluate trade-offs, scalability, and maintainability as first-class concerns, not afterthoughts.</p>
                         <p>I bring product reasoning to technical work. Rather than building in isolation, I consider user needs, constraints, and long-term implications.</p>
                         <p>My exposure to product management and design has shaped how I think about <strong>why we build what we build, not just how</strong>.</p>
-                        <p>I have foundations in <strong>AI systems and RAG architecture</strong>. I understand how retrieval pipelines, vector search, and language models integrate into larger systems. I'm learning to design systems where AI components are replaceable and well-architected, not just functional.</p>
+                        <p>I have foundations in <strong>AI systems and RAG architecture</strong>. I understand how retrieval pipelines, vector search, and language models integrate into larger systems. I design systems where AI components are replaceable and well-architected, not just functional.</p>
                     </div>
                 </div>
                 <div class="tab-contents" id="projects">
@@ -72,16 +72,16 @@
                     <div class="tab-content-wrapper">
                         <div class="project-item">
                             <h4 class="project-title">SpaceFlow — Smart Workplace Platform</h4>
-                            <p>A system design exploration where I learned how <strong>product needs shape architectural decisions</strong>. I designed a modular, service-oriented platform for space booking, occupancy tracking, and analytics.</p>
-                            <p>The project focused on service boundaries, API-first design, and understanding how different concerns (booking, analytics, AI insights) can work together without tight coupling.</p>
+                            <p>A system design exploration demonstrating how <strong>product needs shape architectural decisions</strong>. I designed a modular, service-oriented platform for space booking, occupancy tracking, and analytics.</p>
+                            <p>The project focused on service boundaries, API-first design, and how different concerns (booking, analytics, AI insights) work together without tight coupling.</p>
                         </div>
                         <div class="project-divider"></div>
                         <div class="project-item">
                             <h4 class="project-title">AI Knowledge Assistant</h4>
-                            <p>A RAG (Retrieval-Augmented Generation) system that taught me how AI components fit into real systems. I built a complete pipeline from document processing to vector search to answer generation.</p>
+                            <p>A RAG (Retrieval-Augmented Generation) system demonstrating how AI components integrate into real systems. I built a complete pipeline from document processing to vector search to answer generation.</p>
                             <p>The project emphasized retrieval architecture, latency considerations, and designing systems where <strong>AI capabilities are replaceable components, not magic</strong>.</p>
                         </div>
-                        <p class="projects-note">Both projects are learning experiments in decision-making. I focused on understanding trade-offs, system boundaries, and architectural reasoning—not just implementing features.</p>
+                        <p class="projects-note">Both projects demonstrate decision-making in system design. I focused on trade-offs, system boundaries, and architectural reasoning—not just implementing features.</p>
                         <div class="projects-cta">
                             <a href="#portfolio" class="projects-cta-button">View Full Case Studies →</a>
                         </div>
@@ -117,7 +117,7 @@
                                     <p class="education-institution">Vellore Institute of Technology, Vellore, Tamil Nadu | CGPA: 8.21/10</p>
                                 </div>
                             </div>
-                            <p>My undergraduate studies provided a strong foundation in computer science fundamentals, software development, and information systems. I learned core programming concepts, database design, web technologies, and software engineering principles that form the basis of my technical approach.</p>
+                            <p>My undergraduate studies provided a strong foundation in computer science fundamentals, software development, and information systems. Core programming concepts, database design, web technologies, and software engineering principles form the basis of my technical approach.</p>
                         </div>
                     </div>
                 </div>
@@ -131,25 +131,25 @@
             <div>
                 <i class="fa-brands fa-aws"></i>
                 <h2>AWS Cloud Practitioner</h2>
-                <p>AWS. Learned core cloud services, security fundamentals, and how to reason about cloud architecture and cost optimization.</p>
+                <p>AWS. Core cloud services, security fundamentals, and reasoning about cloud architecture and cost optimization.</p>
                 <a href="https://drive.google.com/file/d/1A4BQvIcBuUNnUEqQEXMDDeX5eh4-rXd-/view" target="_blank" class="btn btn2">View</a>
             </div>
             <div>
                 <i class="fa-brands fa-microsoft"></i>
                 <h2>Microsoft Azure AZ-104</h2>
-                <p>Microsoft. Learned Azure administration, resource management, and how to design and deploy cloud infrastructure.</p>
+                <p>Microsoft. Azure administration, resource management, and designing and deploying cloud infrastructure.</p>
                 <a href="https://drive.google.com/file/d/1dxGvHAhE0OlPnkVbrQfG2gu0RQewBuC1/view" target="_blank" class="btn btn2">View</a>
             </div>
             <div>
                 <i class="fa-solid fa-brain"></i>
                 <h2>Generative AI</h2>
-                <p>IBM. Learned how generative AI models work, prompt engineering, and how to integrate AI capabilities into applications.</p>
+                <p>IBM. Generative AI models, prompt engineering, and integrating AI capabilities into applications.</p>
                 <a href="https://drive.google.com/file/d/1kC4kOpEFw5RSo61ovb3k7aAeLsOr8fgZ/view" target="_blank" class="btn btn2">View</a>
             </div>
             <div>
                 <i class="fa-solid fa-tasks"></i>
                 <h2>Agile with Atlassian Jira</h2>
-                <p>Atlassian. Learned agile methodologies, sprint planning, and how to use Jira for project management and team collaboration.</p>
+                <p>Atlassian. Agile methodologies, sprint planning, and using Jira for project management and team collaboration.</p>
                 <a href="https://drive.google.com/file/d/1kpOLXGjzQm60hnQk3_J047zHSc_6Ebct/view" target="_blank" class="btn btn2">View</a>
             </div>
             <div>
@@ -222,60 +222,69 @@
 
 
 <script>
-
+(function() {
+    'use strict';
+    
+    // Tab navigation
     var tablinks = document.getElementsByClassName("tab-links");
     var tabcontents = document.getElementsByClassName("tab-contents");
-
-    function opentab(tabname){
-        // Check for reduced motion preference
-        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        
-        for(tablink of tablinks){
-            tablink.classList.remove("active-link");
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    function openTab(tabname, clickedElement) {
+        for (var i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active-link");
         }
-        for(tabcontent of tabcontents){
-            tabcontent.classList.remove("active-tab");
-            tabcontent.classList.remove("fading-in");
+        for (var i = 0; i < tabcontents.length; i++) {
+            tabcontents[i].classList.remove("active-tab", "fading-in");
         }
-        event.currentTarget.classList.add("active-link");
+        clickedElement.classList.add("active-link");
         
         var targetTab = document.getElementById(tabname);
+        if (!targetTab) return;
         
         if (!prefersReducedMotion) {
-            // Fade animation: set display first, then fade in
             targetTab.classList.add("active-tab", "fading-in");
-            // Force reflow to ensure display:block is applied
             targetTab.offsetHeight;
-            // Remove fading-in class to trigger transition
             setTimeout(function() {
                 targetTab.classList.remove("fading-in");
             }, 10);
         } else {
-            // Instant switch for reduced motion
             targetTab.classList.add("active-tab");
         }
     }
-
-</script>
-
-<script>
-
-    var sidemeu = document.getElementById("sidemenu");
-
-    function openmenu(){
-        sidemeu.style.right = "0";
+    
+    for (var i = 0; i < tablinks.length; i++) {
+        tablinks[i].addEventListener('click', function(e) {
+            var tabname = this.getAttribute('data-tab');
+            if (tabname) {
+                openTab(tabname, this);
+            }
+        });
     }
-    function closemenu(){
-        sidemeu.style.right = "-200px";
+    
+    // Mobile menu
+    var sidemenu = document.getElementById("sidemenu");
+    var openMenuBtn = document.getElementById("open-menu-btn");
+    var closeMenuBtn = document.getElementById("close-menu-btn");
+    
+    if (openMenuBtn) {
+        openMenuBtn.addEventListener('click', function() {
+            sidemenu.style.right = "0";
+        });
     }
-
+    
+    if (closeMenuBtn) {
+        closeMenuBtn.addEventListener('click', function() {
+            sidemenu.style.right = "-200px";
+        });
+    }
+    
+    // EmailJS initialization
+    // Note: This is a public key, safe to expose per EmailJS documentation
+    emailjs.init("lbnNbbkzsdc0sYbVz");
+})();
 </script>
 <script>
-    // Initialize EmailJS
-    // Replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
-    (function(){
-        emailjs.init("lbnNbbkzsdc0sYbVz");
-    })();
 
     // Contact form submission
     const contactForm = document.getElementById('contact-form');
@@ -347,9 +356,6 @@
         const email = emailInput.value.trim();
         const message = messageInput.value.trim();
         
-        // Debug: Log values before sending
-        console.log('Form values:', { name, email, message });
-        
         // Validation: Check all fields are filled
         if (!name || !email || !message) {
             msg.textContent = "Please fill in all fields";
@@ -373,20 +379,12 @@
         const serviceID = "service_57kbu2r";
         const templateID = "template_a217gdl";
         
-        // Prepare email parameters - EXACT variable names: name, email, message
-        // EmailJS template MUST use: {{name}}, {{email}}, {{message}}
+        // Prepare email parameters
         const templateParams = {
             name: String(name),
             email: String(email),
             message: String(message)
         };
-        
-        // Debug: Log exact parameters being sent to EmailJS
-        console.log('=== EmailJS Template Parameters ===');
-        console.log('name:', templateParams.name);
-        console.log('email:', templateParams.email);
-        console.log('message:', templateParams.message);
-        console.log('Full object:', templateParams);
         
         // Send email
         emailjs.send(serviceID, templateID, templateParams)
@@ -414,8 +412,6 @@
                 msg.style.color = "#ff004f";
                 submitBtn.disabled = false;
                 submitBtn.textContent = "Submit";
-                
-                console.error('EmailJS Error:', error);
             });
     });
 </script>
