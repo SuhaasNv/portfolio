@@ -123,7 +123,7 @@ Animations are subtle and purposeful. Section reveals use IntersectionObserver f
 **LinkedIn:** [linkedin.com/in/suhaas-nv-a33684230](https://www.linkedin.com/in/suhaas-nv-a33684230)  
 **GitHub:** [github.com/SuhaasNv](https://github.com/SuhaasNv)
 
-**Live Site:** [Add your live portfolio URL here]
+**Live Site:** [suhaasnv.github.io/portfolio](https://suhaasnv.github.io/portfolio/)
 
 Feedback, questions, or discussions about systems design, architectural reasoning, or AI systems architecture are welcome. This portfolio is a work in progress and will evolve as I learn.
 
