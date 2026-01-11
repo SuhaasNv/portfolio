@@ -4,201 +4,222 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Portfolio Website - Suhaas Nv</title>
+    <title>Suhaas Nadukooru | Systems Engineer with Product Intent</title>
+    <meta name="description" content="Systems engineer with product intent, learning to connect architecture, AI systems, and user needs. M.Tech at NUS. Focused on systems design, product reasoning, and architectural decision-making.">
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/c8ea7cd38e.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 <div id="header">
     <div class="container">
         <nav>
-            <img src="images/Suhaas Nv.png" class="logo">
+            <a href="#header"><img src="images/Suhaas Nv.png" alt="Suhaas Nadukooru" class="logo"></a>
             <ul id="sidemenu">
-                <li><a href="#header">Home</a></li>
+                <li><a href="#portfolio">Work</a></li>
                 <li><a href="#about">About</a></li>
-                <li><a href="#services">My Certifications</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <i class="fas fa-times" onclick="closemenu()"></i>
             </ul>
             <i class="fas fa-bars" onclick="openmenu()"></i>
         </nav>
         <div class="header-text">
-            <p>Student at Vellore Institute of Technology, Vellore</p>
-            <h1>Hi, I'm <span>Vijaya Suhaas Nadukooru</span><br>From India / United Arab <br>Emirates</h1>
+            <h1>I design systems that connect architecture to user needs.</h1>
+            <p class="header-subheadline">I work at the intersection of systems engineering, AI systems, and product thinking—learning to make technical decisions that serve real problems.</p>
+            <p class="header-context">M.Tech (Software Engineering) at the National University of Singapore. Focused on systems architecture, data pipelines, and product reasoning.</p>
+            <div class="header-cta">
+                <a href="#portfolio" class="btn btn2">View Work</a>
+                <a href="#about" class="btn">About My Approach</a>
+            </div>
         </div>
     </div>
 </div>
 <!-- -----------about---------- -->
-<div id="about">
+<div id="about" class="reveal">
     <div class="container">
         <div class="row">
             <div class="about-col-1">
                 <img src="images/user.png">
             </div>
             <div class="about-col-2">
-                <h1 class="sub-title">About Me</h1>
-                <p>🚀 On a mission to automate everything.
-                    <br>
-                    <br>Hello! I'm a student at VIT Vellore, India, pursuing my engineering degree in Information Technology. I'm a tech enthusiast with a passion for coding, automation, and innovative technologies. Always eager to learn and explore new advancements in the tech world, I aim to leverage my skills to create efficient and impactful solutions.</p>
-                    
+                <h2 class="sub-title">About</h2>
+                <div class="about-intro">
+                    <p>I approach problems through systems architecture and product reasoning. I focus on how technical decisions affect user outcomes, not just whether something can be built. My M.Tech coursework at the National University of Singapore emphasizes architectural reasoning—evaluating trade-offs, scalability, and maintainability—while my exposure to product management and design has shaped how I think about user needs and constraints.</p>
+                </div>
+                
+                <div class="about-highlights">
+                    <span>Systems architecture & trade-offs</span>
+                    <span>Product reasoning & user needs</span>
+                    <span>AI systems & RAG pipelines</span>
+                    <span>Architectural decision-making</span>
+                    <span>Learning-focused engineering</span>
+                </div>
+                
                 <div class="tab-titles">
-                    <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
-                    <p class="tab-links" onclick="opentab('experience')">Experience</p>
-                    <p class="tab-links" onclick="opentab('education')">Education</p>
+                    <p class="tab-links active-link" onclick="opentab('focus')">Focus & Strengths</p>
+                    <p class="tab-links" onclick="opentab('projects')">Projects & Exposure</p>
+                    <p class="tab-links" onclick="opentab('education')">Education & Foundations</p>
                 </div>
-                <div class="tab-contents active-tab" id="skills">
-                    <ul>
-                        <li><span>Programming Languages</span><br>Python<br>Java<br>C/C++<br>SQL</li>
-                        <li><span>Cloud Services</span><br>AWS (Amazon Web Services)<br>Microsoft Azure</li>
-                        <li><span>Database Management</span><br>MySQL</li>
-                        <li><span>Languages</span><br>English | Telugu | Hindi</li>
-                        <li><span>Softskills</span><br>Problem-Solving
-                            | Team Collaboration
-                            | Communication
-                            | Project Management
-                        <li><span>Creative Skills</span><br>Photography | Adobe Lightroom | Snapseed | Filmora | Final Cut Pro | Drumming  
-                    </ul>
+                <div class="tab-contents active-tab" id="focus">
+                    <h3 class="tab-section-header">How I think about systems</h3>
+                    <div class="tab-content-wrapper">
+                        <p>I focus on <strong>systems thinking and architectural reasoning</strong>. My strength lies in understanding how technical decisions impact user outcomes and system behavior over time. I evaluate trade-offs, scalability, and maintainability as first-class concerns, not afterthoughts.</p>
+                        <p>I bring product reasoning to technical work. Rather than building in isolation, I consider user needs, constraints, and long-term implications.</p>
+                        <p>My exposure to product management and design has shaped how I think about <strong>why we build what we build, not just how</strong>.</p>
+                        <p>I have foundations in <strong>AI systems and RAG architecture</strong>. I understand how retrieval pipelines, vector search, and language models integrate into larger systems. I'm learning to design systems where AI components are replaceable and well-architected, not just functional.</p>
+                    </div>
                 </div>
-                <div class="tab-contents" id="experience">
-                    <ul>
-                        <li><span>2024 - Present</span><br>Freelancer Expert in Advanced Maths at <a href="https://chegg.com" style="color: white; text-decoration: none;" target="_blank">Chegg.com</a></li>
-
-
-                        <li><span>2023</span><br>Internship in App Development at <a href="https://oromcorp.com" style="color: white; text-decoration: none;" target="_blank">OROM CORP.</a></li>
-
-                    </ul>
+                <div class="tab-contents" id="projects">
+                    <h3 class="tab-section-header">Where I applied this thinking</h3>
+                    <div class="tab-content-wrapper">
+                        <div class="project-item">
+                            <h4 class="project-title">SpaceFlow — Smart Workplace Platform</h4>
+                            <p>A system design exploration where I learned how <strong>product needs shape architectural decisions</strong>. I designed a modular, service-oriented platform for space booking, occupancy tracking, and analytics.</p>
+                            <p>The project focused on service boundaries, API-first design, and understanding how different concerns (booking, analytics, AI insights) can work together without tight coupling.</p>
+                        </div>
+                        <div class="project-divider"></div>
+                        <div class="project-item">
+                            <h4 class="project-title">AI Knowledge Assistant</h4>
+                            <p>A RAG (Retrieval-Augmented Generation) system that taught me how AI components fit into real systems. I built a complete pipeline from document processing to vector search to answer generation.</p>
+                            <p>The project emphasized retrieval architecture, latency considerations, and designing systems where <strong>AI capabilities are replaceable components, not magic</strong>.</p>
+                        </div>
+                        <p class="projects-note">Both projects are learning experiments in decision-making. I focused on understanding trade-offs, system boundaries, and architectural reasoning—not just implementing features.</p>
+                        <div class="projects-cta">
+                            <a href="#portfolio" class="projects-cta-button">View Full Case Studies →</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-contents" id="education">
-                    <ul>
-                        <li><span>2021-Present</span><br>B.Tech 3rd Year - 8 CGPA - VIT, Vellore</li>
-                        <li><span>2021</span><br>Intermediate Education - 92% MPC - Tirumula Institute, Katheru, Rajahmundry</li>
-                        <li><span>2019</span><br>SSC - 86% - Our Own English High School, Sharjah, UAE</li>
-                    </ul>
+                    <h3 class="tab-section-header">My technical foundations</h3>
+                    <div class="tab-content-wrapper">
+                        <div class="education-credential">
+                            <div class="education-header-with-logo">
+                                <img src="images/nus-logo.png" alt="NUS Logo" class="education-logo">
+                                <div class="education-header-text">
+                                    <h4 class="education-title">M.Tech (Software Engineering)</h4>
+                                    <p class="education-institution">National University of Singapore | GPA: 4/5</p>
+                                </div>
+                            </div>
+                            <p>My coursework emphasizes <strong>architectural reasoning, systems design, and evaluating technical trade-offs</strong>. I've studied how to design scalable systems, reason about service boundaries, and make decisions that balance technical depth with practical constraints.</p>
+                            <p>I have exposure to product management and product design through coursework and projects. This has shaped how I think about connecting technical decisions to user needs and business outcomes.</p>
+                            <div class="education-key-areas">
+                                <span>Systems architecture</span>
+                                <span>AI systems</span>
+                                <span>Data pipelines</span>
+                                <span>Product reasoning</span>
+                                <span>Architectural decision-making</span>
+                            </div>
+                        </div>
+                        <div class="education-divider"></div>
+                        <div class="education-credential">
+                            <div class="education-header-with-logo">
+                                <img src="images/vit-logo.png" alt="VIT Logo" class="education-logo">
+                                <div class="education-header-text">
+                                    <h4 class="education-title">B.Tech (Information Technology)</h4>
+                                    <p class="education-institution">Vellore Institute of Technology, Vellore, Tamil Nadu | CGPA: 8.21/10</p>
+                                </div>
+                            </div>
+                            <p>My undergraduate studies provided a strong foundation in computer science fundamentals, software development, and information systems. I learned core programming concepts, database design, web technologies, and software engineering principles that form the basis of my technical approach.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- ---------services---------------- -->
-<div id="services">
+<div id="services" class="reveal">
     <div class="container">
-        <h1 class="sub-title">My Certifications</h1>
+        <h2 class="sub-title">My Certifications</h2>
         <div class="services-list">
             <div>
                 <i class="fa-brands fa-aws"></i>
-                <h2>Amazon AWS Cloud Practiitioner</h2>
-                <p>The AWS Certified Cloud Practitioner certification validates basic knowledge of AWS services and cloud concepts. It's ideal for beginners, covering core services, security, compliance, and pricing, and serves as a foundation for advanced AWS certifications.</p>
-                <a href="#">Learn more</a>
-                <a href="images/AWS Certified Cloud Practitioner certificate.pdf" download class="btn btn2">Download</a>
+                <h2>AWS Cloud Practitioner</h2>
+                <p>AWS. Learned core cloud services, security fundamentals, and how to reason about cloud architecture and cost optimization.</p>
+                <a href="https://drive.google.com/file/d/1A4BQvIcBuUNnUEqQEXMDDeX5eh4-rXd-/view" target="_blank" class="btn btn2">View</a>
             </div>
             <div>
                 <i class="fa-brands fa-microsoft"></i>
                 <h2>Microsoft Azure AZ-104</h2>
-                <p>Microsoft Azure is a cloud platform offering services like computing, storage, and networking, supporting various languages and tools. It ensures high availability, scalability, and security for applications.</p>
-                <a href="#">Learn more</a>
-                <a href="images/Microsoft Azure.pdf" download class="btn btn2">Download</a>
+                <p>Microsoft. Learned Azure administration, resource management, and how to design and deploy cloud infrastructure.</p>
+                <a href="https://drive.google.com/file/d/1dxGvHAhE0OlPnkVbrQfG2gu0RQewBuC1/view" target="_blank" class="btn btn2">View</a>
             </div>
             <div>
-                <i class="fa-solid fa-lightbulb"></i>
-                <h2>NPTEL <br>ENTR and <br>IP Strategy</h2>
-                <p>Entrepreneurship involves creating and managing a new business venture to generate profit and drive innovation. An effective IP strategy protects the venture’s intellectual property, ensuring competitive advantage and fostering growth.</p>
-                <a href="#">Learn more</a>
-                <a href="images/Entrepreneurship And Ip Strategy.pdf" download class="btn btn2">Download</a>
+                <i class="fa-solid fa-brain"></i>
+                <h2>Generative AI</h2>
+                <p>IBM. Learned how generative AI models work, prompt engineering, and how to integrate AI capabilities into applications.</p>
+                <a href="https://drive.google.com/file/d/1kC4kOpEFw5RSo61ovb3k7aAeLsOr8fgZ/view" target="_blank" class="btn btn2">View</a>
             </div>
             <div>
-                <i class="fa-solid fa-tree"></i>
-                <h2>NPTEL <br>Forest and Wildlife Ecology</h2>
-                <p>Forest and Wildlife Ecology studies natural habitats, focusing on conservation and biodiversity to sustain ecosystems and wildlife.</p>
-                <a href="#">Learn more</a>
-                <a href="images/Forests and their Management.pdf" download class="btn btn2">Download</a>
+                <i class="fa-solid fa-tasks"></i>
+                <h2>Agile with Atlassian Jira</h2>
+                <p>Atlassian. Learned agile methodologies, sprint planning, and how to use Jira for project management and team collaboration.</p>
+                <a href="https://drive.google.com/file/d/1kpOLXGjzQm60hnQk3_J047zHSc_6Ebct/view" target="_blank" class="btn btn2">View</a>
+            </div>
+            <div>
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h2>NUS ISS Learning Festival 2025</h2>
+                <p>NUS Institute of Systems Science. Explored AI systems, cloud architecture, and digital transformation strategies in enterprise contexts.</p>
+                <a href="https://www.iss.nus.edu.sg/learning-festival/2025" target="_blank" class="btn btn2">View</a>
             </div>
         </div>
     </div>
 </div>
 <!-- ----------portfolio------------ -->
-<div id="portfolio">
+<div id="portfolio" class="reveal">
     <div class="container">
-        <h1 class="sub-title">My Work</h1>
+        <h2 class="sub-title">Selected Projects</h2>
         <div class="work-list">
             <div class="work">
-                <img src="images/work-1.png">
+                <img src="images/work-1.png" alt="SpaceFlow project">
                 <div class="layer">
-                    <h3>Personal Portfolio Website</h3>
-                    <p>I created a portfolio website using HTML and CSS to showcase my skills, projects, and experiences. It includes sections for my resume, certifications, and contact information, highlighting my web development expertise.</p>
-                    <a href="#"><i class="fas fa-external-link-alt"></i></a>
+                    <h3>SpaceFlow — Smart Workplace Platform</h3>
+                    <p>A system design exploration of space booking, occupancy analytics, and AI-assisted insights.</p>
+                    <a href="work/spaceflow.html" class="btn btn2">View Case Study</a>
                 </div>
             </div>
             <div class="work">
-                <img src="images/work-5.png">
+                <img src="images/work-5.png" alt="AI Knowledge Assistant project">
                 <div class="layer">
-                    <h3>React-Js Weather App</h3>
-                    <p>The Weather App is a responsive web application that provides real-time weather updates for any city, showcasing temperature, humidity, wind speed, and weather conditions with intuitive visual icons.</p>
-                    <a href="https://github.com/SuhaasNv/weather-app"><i class="fas fa-external-link-alt"></i></a>
+                    <h3>AI Knowledge Assistant</h3>
+                    <p>A RAG (Retrieval-Augmented Generation) system that transforms PDF documents into queryable knowledge bases.</p>
+                    <a href="work/ai-knowledge-assistant.html" class="btn btn2">View Case Study</a>
                 </div>
             </div>
-            <div class="work">
-                <img src="images/work-2.png">
-                <div class="layer">
-                    <h3>To-Do Chrome Extension</h3>
-                    <p>A ToDo Chrome extension enhances productivity by managing tasks directly within the browser interface, offering intuitive task management features and seamless integration with web browsing activities.</p>
-                    <a href="https://github.com/SuhaasNv/Todo-Extension"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-            </div>
-            <div class="work">
-                <img src="images/work-3.png">
-                <div class="layer">
-                    <h3>Youtube Ad - Blocker</h3>
-                    <p>A YouTube ad blocker extension enhances user experience by eliminating interruptions from advertisements on YouTube videos, ensuring uninterrupted viewing pleasure without distractions.</p>
-                    <a href="https://github.com/SuhaasNv/Youtube-Ad-Blocker"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-            </div>
-            <div class="work">
-                <img src="images/work-4.png">
-                <div class="layer">
-                    <h3>Line Following Robot</h3>
-                    <p>A line-following robot is a simple autonomous robot designed to follow a line marked on the floor. It uses infrared sensors to detect the line and a microcontroller to control the motors, adjusting the robot's direction to stay on track.</p>
-                    <a href="https://robu.in/how-to-make-a-line-follower-robot-using-arduino-connection-code/"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-            </div>
-            
         </div>
-        <a href="#" class="btn">See more</a>
     </div>
 </div>
 
 <!-- ----------contact------------- -->
-<div id="contact">
+<div id="contact" class="reveal">
     <div class="container">
         <div class="row">
             <div class="contact-left">
-                <h1 class="sub-title">Contact Me</h1>
-                <p><a href="mailto:suhaasnvs@gmail.com"><i class="fas fa-envelope"></i></a> suhaasnvs@gmail.com</p>
-                <p><a href="tel:+919014848043"><i class="fas fa-phone"></i></a> +91 9014848043</p>
+                <h2 class="sub-title">Contact Me</h2>
+                <p><a href="mailto:nvijayasuhaas@gmail.com"><i class="fas fa-envelope"></i></a> nvijayasuhaas@gmail.com</p>
+                <p><a href="tel:+919014848043"><i class="fas fa-phone"></i></a> +91 9014848043 (India)</p>
+                <p><a href="tel:+6586424324"><i class="fas fa-phone"></i></a> +65 86424324 (Singapore)</p>
 
                 <div class="social-icons">
-                    
-                    
-                    
-                    <a href="https://github.com/SuhaasNv"><i class="fa-brands fa-square-github"></i></a>
-                    <a href="https://www.linkedin.com/in/suhaas-nv-a33684230/"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://www.instagram.com/btw_suhaas/"><i class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/SuhaasNv" aria-label="GitHub"><i class="fa-brands fa-square-github"></i></a>
+                    <a href="https://www.linkedin.com/in/suhaas-nv-a33684230/" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 </div>
                 <a href="images/Vijaya Suhaas Resume.pdf" download class="btn btn2">Download CV</a>
             </div>
             <div class="contact-right">
-                <form name="submit-to-google-sheet">
-                    <input type="text" name="Name" placeholder="Your Name" required>
-                    <input type="email" name="Email" placeholder="Your Email" required>
-                    <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
-                    <button type="submit" class="btn btn2">Submit</button>
+                <form id="contact-form">
+                    <input type="text" name="name" id="name" placeholder="Your Name" required aria-required="true" aria-invalid="false">
+                    <input type="email" name="email" id="email" placeholder="Your Email" required aria-required="true" aria-invalid="false" aria-describedby="email-error">
+                    <span id="email-error" class="field-error" role="alert" aria-live="polite"></span>
+                    <textarea name="message" id="message" rows="6" placeholder="Your Message" required aria-required="true" aria-invalid="false"></textarea>
+                    <button type="submit" class="btn btn2" id="submit-btn">Submit</button>
                 </form>
-                <span id="msg"></span>
+                <span id="msg" class="success-message" role="status" aria-live="polite"></span>
             </div>
         </div>
     </div>
     <div class="copyright">
-        <p>Copyright © Suhaas Nv. <br>Made with  <i class="fa-solid fa-wand-magic-sparkles"></i> </p>
+        <p>Copyright © Suhaas Nv. <br>Built by Suhaas Nadukooru</p>
     </div>
 </div>
 
@@ -210,14 +231,33 @@
     var tabcontents = document.getElementsByClassName("tab-contents");
 
     function opentab(tabname){
+        // Check for reduced motion preference
+        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
         for(tablink of tablinks){
             tablink.classList.remove("active-link");
         }
         for(tabcontent of tabcontents){
             tabcontent.classList.remove("active-tab");
+            tabcontent.classList.remove("fading-in");
         }
         event.currentTarget.classList.add("active-link");
-        document.getElementById(tabname).classList.add("active-tab");
+        
+        var targetTab = document.getElementById(tabname);
+        
+        if (!prefersReducedMotion) {
+            // Fade animation: set display first, then fade in
+            targetTab.classList.add("active-tab", "fading-in");
+            // Force reflow to ensure display:block is applied
+            targetTab.offsetHeight;
+            // Remove fading-in class to trigger transition
+            setTimeout(function() {
+                targetTab.classList.remove("fading-in");
+            }, 10);
+        } else {
+            // Instant switch for reduced motion
+            targetTab.classList.add("active-tab");
+        }
     }
 
 </script>
@@ -235,22 +275,210 @@
 
 </script>
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxUPohMq8dOkY6KYquTkjvKMEUzfM_c3lGDmXWBBr0HJ0dSAEEEfBDX88AcVJhmVBsz4w/exec'
-    const form = document.forms['submit-to-google-sheet']
-    const msg = document.getElementById("msg")
-  
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
-            msg.innerHTML = "Message sent successfully"
-            setTimeout(function(){
-                msg.innerHTML = ""
-            },5000)
-            form.reset()
-        })
-        .catch(error => console.error('Error!', error.message))
-    })
-  </script>
+    // Initialize EmailJS
+    // Replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
+    (function(){
+        emailjs.init("lbnNbbkzsdc0sYbVz");
+    })();
+
+    // Contact form submission
+    const contactForm = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const msg = document.getElementById('msg');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('message');
+    const emailError = document.getElementById('email-error');
+
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Function to validate email format
+    function validateEmail(email) {
+        return emailRegex.test(email);
+    }
+
+    // Function to clear error states
+    function clearErrors() {
+        emailInput.classList.remove('error', 'shake');
+        emailInput.setAttribute('aria-invalid', 'false');
+        emailError.textContent = '';
+        msg.textContent = '';
+    }
+
+    // Function to show email error
+    function showEmailError(message) {
+        emailInput.classList.add('error');
+        emailInput.setAttribute('aria-invalid', 'true');
+        emailError.textContent = message;
+        
+        // Add shake animation (respects prefers-reduced-motion)
+        emailInput.classList.add('shake');
+        setTimeout(function() {
+            emailInput.classList.remove('shake');
+        }, 200);
+    }
+
+    // Real-time email validation on blur
+    emailInput.addEventListener('blur', function() {
+        const email = emailInput.value.trim();
+        if (email && !validateEmail(email)) {
+            showEmailError('Please enter a valid email address');
+        } else {
+            emailInput.classList.remove('error');
+            emailInput.setAttribute('aria-invalid', 'false');
+            emailError.textContent = '';
+        }
+    });
+
+    // Clear errors when user starts typing
+    emailInput.addEventListener('input', function() {
+        if (emailInput.classList.contains('error')) {
+            emailInput.classList.remove('error', 'shake');
+            emailInput.setAttribute('aria-invalid', 'false');
+            emailError.textContent = '';
+        }
+    });
+
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Clear previous errors
+        clearErrors();
+        
+        // Get and trim values
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const message = messageInput.value.trim();
+        
+        // Debug: Log values before sending
+        console.log('Form values:', { name, email, message });
+        
+        // Validation: Check all fields are filled
+        if (!name || !email || !message) {
+            msg.textContent = "Please fill in all fields";
+            msg.style.color = "#ff004f";
+            return;
+        }
+        
+        // Validation: Check email format
+        if (!validateEmail(email)) {
+            showEmailError('Please enter a valid email address');
+            emailInput.focus();
+            return;
+        }
+        
+        // Disable submit button
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending...";
+        msg.textContent = "";
+        
+        // EmailJS service parameters
+        const serviceID = "service_57kbu2r";
+        const templateID = "template_a217gdl";
+        
+        // Prepare email parameters - EXACT variable names: name, email, message
+        // EmailJS template MUST use: {{name}}, {{email}}, {{message}}
+        const templateParams = {
+            name: String(name),
+            email: String(email),
+            message: String(message)
+        };
+        
+        // Debug: Log exact parameters being sent to EmailJS
+        console.log('=== EmailJS Template Parameters ===');
+        console.log('name:', templateParams.name);
+        console.log('email:', templateParams.email);
+        console.log('message:', templateParams.message);
+        console.log('Full object:', templateParams);
+        
+        // Send email
+        emailjs.send(serviceID, templateID, templateParams)
+            .then(function(response) {
+                // Success feedback
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Sent ✓";
+                msg.textContent = "Message sent successfully! I'll get back to you soon.";
+                msg.style.color = "#61b752";
+                
+                // Reset form fields and clear errors
+                contactForm.reset();
+                clearErrors();
+                
+                // Reset button after 3 seconds
+                setTimeout(function() {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Submit";
+                    msg.textContent = "";
+                }, 3000);
+            })
+            .catch(function(error) {
+                // Error feedback
+                msg.textContent = "Failed to send message. Please try again or email me directly.";
+                msg.style.color = "#ff004f";
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit";
+                
+                console.error('EmailJS Error:', error);
+            });
+    });
+</script>
+<script>
+    // Section reveal animation with IntersectionObserver
+    (function() {
+        // Check for reduced motion preference
+        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (prefersReducedMotion) {
+            // If reduced motion, make all sections visible immediately
+            var reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(function(section) {
+                section.classList.add('visible');
+            });
+            return;
+        }
+        
+        // IntersectionObserver for reveal animations
+        var observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // If this is the about section, also reveal the highlight strip
+                    if (entry.target.id === 'about') {
+                        var highlightStrip = entry.target.querySelector('.about-highlights');
+                        if (highlightStrip) {
+                            setTimeout(function() {
+                                highlightStrip.classList.add('visible');
+                            }, 200);
+                        }
+                    }
+                    
+                    // Unobserve after animation to prevent re-triggering
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all reveal sections
+        var reveals = document.querySelectorAll('.reveal');
+        reveals.forEach(function(section) {
+            observer.observe(section);
+        });
+        
+        // Handle reduced motion for highlight strip
+        if (prefersReducedMotion) {
+            var highlightStrips = document.querySelectorAll('.about-highlights');
+            highlightStrips.forEach(function(strip) {
+                strip.classList.add('visible');
+            });
+        }
+    })();
+</script>
 </body>
 </html>

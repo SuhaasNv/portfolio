@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Knowledge Assistant Case Study | RAG Systems Architecture</title>
+    <meta name="description" content="A RAG system that transforms PDFs into queryable knowledge bases. Learn how retrieval pipelines, vector search, and AI components integrate into system architecture.">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://kit.fontawesome.com/c8ea7cd38e.js" crossorigin="anonymous"></script>
+    <style>
+        .case-study-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: #ababab;
+        }
+        .case-study-header {
+            margin-bottom: 40px;
+        }
+        .case-study-title {
+            font-size: 48px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        .case-study-subtitle {
+            font-size: 20px;
+            color: #ababab;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .back-link {
+            display: inline-block;
+            color: #ff004f;
+            text-decoration: none;
+            font-size: 16px;
+            margin-bottom: 30px;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #fff;
+        }
+        .case-study-section {
+            margin-bottom: 50px;
+        }
+        .case-study-section h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .case-study-section p {
+            line-height: 1.8;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+        .case-study-section strong {
+            color: #fff;
+            font-weight: 600;
+        }
+        .tldr {
+            font-size: 17px;
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #262626;
+        }
+        .case-study-hero-image {
+            width: 100%;
+            margin: 40px 0 50px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .case-study-hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+        .case-study-tldr-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #ff004f;
+            padding: 24px;
+            margin: 40px 0 50px;
+            border-radius: 6px;
+        }
+        .case-study-tldr-box h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            margin-top: 0;
+        }
+        .case-study-tldr-box ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style: none;
+        }
+        .case-study-tldr-box ul li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 20px;
+        }
+        .case-study-tldr-box ul li::before {
+            content: '▸';
+            color: #ff004f;
+            position: absolute;
+            left: 0;
+        }
+        .case-study-tldr-box ul li:last-child {
+            margin-bottom: 0;
+        }
+        @media only screen and (max-width: 600px) {
+            .case-study-container {
+                padding: 20px 15px;
+            }
+            .case-study-title {
+                font-size: 32px;
+            }
+            .case-study-subtitle {
+                font-size: 18px;
+            }
+            .case-study-section h2 {
+                font-size: 24px;
+            }
+            .case-study-section p {
+                font-size: 14px;
+            }
+            .case-study-hero-image {
+                margin: 30px 0 40px;
+            }
+            .case-study-tldr-box {
+                padding: 20px;
+                margin: 30px 0 40px;
+            }
+            .case-study-tldr-box h3 {
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+            .case-study-tldr-box ul li {
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="case-study-container">
+        <a href="../index.html#portfolio" class="back-link">← Back to Work</a>
+        
+        <div class="case-study-header">
+            <h1 class="case-study-title">AI Knowledge Assistant</h1>
+            <p class="case-study-subtitle">A RAG (Retrieval-Augmented Generation) system that transforms PDF documents into queryable knowledge bases</p>
+        </div>
+
+        <div class="case-study-hero-image">
+            <img src="../images/work-5.png" alt="AI Knowledge Assistant RAG System">
+        </div>
+
+        <div class="case-study-tldr-box">
+            <h3>TL;DR</h3>
+            <ul>
+                <li>Complete RAG pipeline: PDF processing → vector embeddings → semantic search → answer generation</li>
+                <li>Asynchronous document processing with WebSocket updates; synchronous query API optimized for latency</li>
+                <li>PostgreSQL with pgvector for vector storage; replaceable AI components (Gemini, embeddings)</li>
+                <li>Key insight: RAG is a system design problem—retrieval quality matters more than LLM choice</li>
+            </ul>
+        </div>
+
+        <section class="case-study-section">
+            <h2>Overview</h2>
+            <p class="tldr">AI Knowledge Assistant is a RAG system that transforms PDFs into queryable knowledge bases. I built it to understand how AI components fit into real systems, focusing on RAG architecture and system design.</p>
+            <p>AI Knowledge Assistant is a <strong>RAG (Retrieval-Augmented Generation) system</strong> that transforms PDF documents into queryable knowledge bases. Users upload PDFs, which are processed into vector embeddings and stored in PostgreSQL. When users ask questions, the system retrieves relevant document chunks and generates contextually-grounded answers using an LLM.</p>
+            <p>I built this to understand how AI components fit into real systems. It's not a research project about model performance—it's about designing a system where document processing, vector search, and language models work together reliably. The goal was to learn <strong>RAG architecture</strong>: how retrieval pipelines work, how to design for latency, and how AI capabilities integrate with traditional backend systems.</p>
+            <p>This is a learning project focused on system design, not a production application. I intentionally kept the scope limited: PDF-only support, single-document queries, no authentication. This let me focus on the architectural questions: how do you design a system where document processing is asynchronous but queries need to be fast? How do you balance <strong>retrieval quality with latency</strong>? How do you make AI components replaceable?</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>User Needs & Product Intent</h2>
+            <p class="tldr">I prioritized three capabilities: asynchronous document processing, fast semantic search, and contextually-grounded answers. Product-first thinking shaped how I separated processing from queries and chose infrastructure.</p>
+            <p>The system serves users who need to query documents quickly. They upload a PDF, wait for it to process, then ask questions and get answers grounded in the document content. The core need is <strong>speed and accuracy</strong>—users want answers fast, and they want those answers to be based on the actual document, not hallucinated.</p>
+            <p>I prioritized three capabilities: <strong>asynchronous document processing, fast semantic search, and contextually-grounded answers</strong>. Document processing happens in the background because PDF parsing and embedding generation can take time—users shouldn't have to wait.</p>
+            <p>Semantic search uses vector similarity to find relevant chunks, not keyword matching. Answers are generated with retrieved context, so the LLM can cite specific parts of the document.</p>
+            <p>I explicitly chose not to build multi-document queries, chat history persistence, or streaming responses. These are valuable features, but they would have distracted from the core architectural challenge: designing a <strong>RAG pipeline that's fast and reliable</strong>. Instead, I focused on getting the retrieval and generation pipeline right—the foundation that other features would build on.</p>
+            <p>This product-first thinking shaped technical decisions. For example, I separated document processing from query handling because they have different latency requirements: processing can be slow and asynchronous, but queries need to be fast and synchronous.</p>
+            <p>I used WebSockets for processing updates because users need to know when their document is ready, but the query API is REST because answers should be immediate. The vector database is PostgreSQL with pgvector, not a specialized vector DB, because I wanted to understand how vector search works in a familiar database context.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>System Architecture</h2>
+            <p class="tldr">Three main components: Next.js frontend, NestJS backend, and supporting infrastructure. The architecture separates concerns—asynchronous processing, vector storage, and synchronous queries operate independently.</p>
+            <p>The system has three main components: a Next.js frontend, a NestJS backend API, and supporting infrastructure (PostgreSQL with pgvector, Redis with BullMQ). The frontend handles document uploads and question interfaces. The backend orchestrates the <strong>RAG pipeline</strong>: document processing, vector storage, retrieval, and answer generation.</p>
+            <p>Document processing is asynchronous. When a user uploads a PDF, the backend creates a database record, queues a processing job in BullMQ, and returns immediately. A worker process extracts text, chunks it into overlapping segments (1000 characters with 200-character overlap), generates embeddings using Google's text-embedding-004 model, and stores vectors in PostgreSQL using pgvector.</p>
+            <p>WebSocket events notify the frontend of processing progress in real time.</p>
+            <p>Query handling is synchronous and optimized for latency. When a user asks a question, the system embeds the question, performs <strong>vector similarity search</strong> using cosine distance to find the top 5 most relevant chunks, formats those chunks as context, and sends them to Google Gemini 1.5 Flash along with the question.</p>
+            <p>The LLM generates an answer grounded in the retrieved context, and the response is returned to the user.</p>
+            <p>The architecture separates concerns: document processing is isolated in background jobs, vector storage is in PostgreSQL, job queuing is in Redis, and the query pipeline is in the API service. This separation means <strong>processing failures don't block queries</strong>, and query performance isn't impacted by document ingestion.</p>
+            <p>The LLM and embedding models are external API calls, making them replaceable without changing the core system.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>Key Decisions & Trade-offs</h2>
+            <p class="tldr">Six architectural decisions with clear trade-offs: PostgreSQL over specialized vector DB, asynchronous processing, fixed chunking, top-5 retrieval, single LLM call, and WebSocket updates.</p>
+            <p><strong>Vector Search in PostgreSQL Over Specialized Vector Database</strong></p>
+            <p>I chose PostgreSQL with pgvector instead of a dedicated vector database like Pinecone or Weaviate. This means I'm using a general-purpose database for vector operations, which might not be as optimized as specialized systems.</p>
+            <p>But it also means I understand how vector search works in a familiar context, and I don't need to manage another service. The trade-off is potentially slower queries at scale, but for learning, understanding pgvector was more valuable than learning a specialized tool.</p>
+            <p><strong>Asynchronous Processing Over Synchronous Upload</strong></p>
+            <p>I made document processing asynchronous using BullMQ job queues. Users upload a PDF and get an immediate response, then processing happens in the background with WebSocket progress updates. The alternative would be synchronous processing—users wait for the entire document to be processed before getting a response.</p>
+            <p>The trade-off is more complexity (job queues, workers, WebSocket connections), but better user experience. Users don't want to wait 30 seconds for a large PDF to process.</p>
+            <p><strong>Fixed Chunking Strategy Over Adaptive Chunking</strong></p>
+            <p>I use fixed-size chunks (1000 characters with 200-character overlap) rather than semantic chunking or adaptive sizing. This is simpler to implement and reason about, but it might split important concepts across chunks or include irrelevant content.</p>
+            <p>The trade-off is that some queries might miss context that spans chunk boundaries, but <strong>fixed chunking is predictable and easier to debug</strong>. In production, I'd explore semantic chunking, but for learning, fixed chunks helped me understand the retrieval pipeline first.</p>
+            <p><strong>Top-5 Retrieval Over Dynamic K</strong></p>
+            <p>I retrieve exactly 5 chunks for every query, regardless of query complexity or document size. This means simple queries might include irrelevant chunks, and complex queries might miss important context. The alternative would be dynamic retrieval—more chunks for complex queries, fewer for simple ones.</p>
+            <p>The trade-off is that fixed K is simpler and more predictable, but dynamic K might improve answer quality. For learning, fixed K helped me understand how <strong>retrieval quality affects answer quality</strong>.</p>
+            <p><strong>Single LLM Call Over Multi-Step Reasoning</strong></p>
+            <p>I use a single LLM call with retrieved context, not multi-step reasoning or iterative refinement. This means the system can't break down complex questions or refine answers based on initial results.</p>
+            <p>The trade-off is <strong>lower latency and simpler architecture</strong>, but potentially lower answer quality for complex queries. For learning, single-step generation helped me understand the core RAG pattern before adding complexity.</p>
+            <p><strong>WebSocket Updates Over Polling</strong></p>
+            <p>I use WebSockets for real-time processing updates instead of polling. This means the frontend maintains a persistent connection and receives push updates, not constant HTTP requests.</p>
+            <p>The trade-off is more complexity (connection management, reconnection logic), but better user experience and lower server load. Users see progress immediately, not after polling intervals.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>Technical Implementation Highlights</h2>
+            <p class="tldr">NestJS/TypeScript backend, Next.js frontend, PostgreSQL with pgvector, and Redis with BullMQ. The biggest challenge was understanding vector similarity search and balancing chunk size for optimal retrieval.</p>
+            <p>I built the backend in <strong>NestJS with TypeScript</strong>, using Prisma for database access and BullMQ for job processing. The frontend is Next.js with React 19, using Zustand for state management and Socket.IO client for WebSocket connections. PostgreSQL stores document metadata and vector embeddings via pgvector. Redis handles job queuing and BullMQ workers process documents asynchronously.</p>
+            <p>The document processing pipeline extracts text from PDFs using a PDF parsing library, chunks text using LangChain's RecursiveCharacterTextSplitter, generates embeddings via Google's text-embedding-004 API, and stores vectors in PostgreSQL.</p>
+            <p>The query pipeline embeds user questions, performs <strong>cosine similarity search</strong> using pgvector's `<=>` operator, retrieves top-5 chunks, formats context with LangChain, and generates answers using Gemini 1.5 Flash.</p>
+            <p>I implemented WebSocket events for real-time updates: document creation, processing progress, completion, and deletion. The frontend connects to the backend WebSocket gateway and updates the UI as processing progresses. This required handling connection lifecycle, reconnection logic, and state synchronization between WebSocket events and REST API calls.</p>
+            <p>The biggest technical challenge was understanding <strong>vector similarity search</strong>. I had to learn how embeddings work, how cosine distance measures similarity, and how pgvector indexes vectors for fast queries.</p>
+            <p>I also had to balance chunk size—too small and you lose context, too large and retrieval is less precise. The 1000-character chunks with 200-character overlap came from experimentation, not theory.</p>
+            <p>What's implemented: complete RAG pipeline with PDF processing, vector storage, semantic search, and answer generation; asynchronous job processing with progress tracking; WebSocket real-time updates; basic frontend for uploads and queries. What's conceptual: multi-document queries, chat history, streaming responses, adaptive chunking, and production-grade error handling. The goal was to understand RAG architecture, not build a complete product.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>Learnings & Reflections</h2>
+            <p class="tldr">RAG is a system design problem, not just retrieval plus generation. The retrieval pipeline affects answer quality more than the LLM choice. Latency trade-offs are critical, and AI components should be replaceable.</p>
+            <p>This project taught me that <strong>RAG is more than "retrieval plus generation"—it's a system design problem</strong>. The retrieval pipeline affects answer quality more than the LLM choice. If you retrieve irrelevant chunks, even the best LLM will generate poor answers. If you retrieve the right chunks, a simpler LLM can generate good answers.</p>
+            <p>This means <strong>chunking strategy, embedding quality, and similarity search are as important as the language model</strong>.</p>
+            <p>I learned that latency matters in AI systems. Users expect fast answers, but RAG requires multiple steps: embedding the question, searching vectors, retrieving chunks, formatting context, and calling the LLM. Each step adds latency.</p>
+            <p>I had to think about which operations can be parallelized, which can be cached, and which are bottlenecks. The embedding step and LLM call are external API calls, so network latency is a factor. Vector search in PostgreSQL is fast, but it still takes time.</p>
+            <p>The trade-off between retrieval quality and latency became clear. Retrieving more chunks might improve answer quality, but it also increases latency and token costs. Using a more sophisticated chunking strategy might improve retrieval, but it adds processing time.</p>
+            <p>I had to balance these concerns, and I learned that <strong>"good enough" retrieval with fast queries is often better than perfect retrieval with slow queries</strong>.</p>
+            <p>I realized that <strong>AI components should be replaceable</strong>. The system uses Google Gemini, but it could use OpenAI, Anthropic, or open-source models. The embedding model could be swapped. The vector database could be replaced.</p>
+            <p>This replaceability requires careful API design—the system shouldn't depend on model-specific features. This is similar to the SpaceFlow principle of replaceable services, applied to AI components.</p>
+            <p>If I started over, I'd add more observability. Right now, I can't easily see why a query retrieved certain chunks or how retrieval quality varies across documents. I'd add logging for retrieval results, answer quality metrics, and latency breakdowns.</p>
+            <p>I'd also experiment more with chunking strategies—maybe semantic chunking or hybrid search combining vector and keyword matching.</p>
+            <p>This project shaped how I think about AI systems. I see now that <strong>AI capabilities are system components, not magic</strong>. They have latency, they have failure modes, they have trade-offs. Designing AI systems requires the same architectural thinking as traditional systems: separation of concerns, error handling, performance optimization. The AI part is just another service in the architecture.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>What's Next</h2>
+            <p class="tldr">Future exploration: hybrid search strategies, semantic chunking, streaming responses, multi-document queries, production concerns, and understanding how RAG principles apply to other AI system patterns.</p>
+            <p>If I continued this project, I'd explore <strong>hybrid search strategies</strong>. Right now, retrieval is purely semantic (vector similarity), but combining vector search with keyword matching might improve results. Some queries are better served by keyword search, others by semantic search. A hybrid approach could use both and merge results.</p>
+            <p>I'd also experiment with different chunking strategies. Fixed-size chunks are simple, but semantic chunking (splitting on sentence boundaries, preserving paragraphs) might improve retrieval quality. I'd want to measure how chunking affects answer quality across different document types and query types.</p>
+            <p>On the system side, I'd add streaming responses. Right now, users wait for the complete answer, but streaming would provide immediate feedback. This requires changes to both the API (streaming responses) and the frontend (incremental rendering). I'd also add chat history persistence, so users can reference previous questions and answers.</p>
+            <p>I'd explore multi-document queries. Right now, each query is scoped to a single document, but users might want to ask questions across multiple documents. This requires changes to retrieval (searching across document boundaries) and context formatting (indicating which document each chunk comes from).</p>
+            <p>Finally, I'd add more production concerns: authentication and authorization, rate limiting, comprehensive error handling, monitoring and observability. These aren't as interesting architecturally, but they're essential for real systems.</p>
+            <p>I'd also want to understand how this system scales—what happens with thousands of documents, millions of vectors, high query volume?</p>
+            <p>The core learning from this project was understanding <strong>RAG as a system architecture problem, not just an AI technique</strong>. I'd want to apply this thinking to other AI system patterns—maybe agentic workflows, or multi-modal RAG with images, or RAG with structured data. The principles of retrieval, latency, and replaceability would apply across these variations.</p>
+        </section>
+
+        <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid #262626;">
+            <a href="../index.html#portfolio" class="back-link">← Back to Work</a>
+        </div>
+    </div>
+</body>
+</html>
+
