@@ -6,15 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Suhaas Nadukooru | Systems Engineer with Product Intent</title>
     <meta name="description" content="Systems engineer with product intent, connecting architecture, AI systems, and user needs. M.Tech at NUS. Focused on systems design, product reasoning, and architectural decision-making.">
+    <meta name="keywords" content="systems engineer, product management, software architecture, AI systems, NUS, portfolio">
+    <meta name="author" content="Suhaas Nadukooru">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://suhaasnv.github.io/portfolio/">
+    <meta property="og:title" content="Suhaas Nadukooru | Systems Engineer with Product Intent">
+    <meta property="og:description" content="Systems engineer with product intent, connecting architecture, AI systems, and user needs. M.Tech at NUS.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://suhaasnv.github.io/portfolio/">
+    <meta property="twitter:title" content="Suhaas Nadukooru | Systems Engineer with Product Intent">
+    <meta property="twitter:description" content="Systems engineer with product intent, connecting architecture, AI systems, and user needs. M.Tech at NUS.">
+    
     <link rel="icon" type="image/png" href="images/Suhaas Nv.png">
     <link rel="shortcut icon" type="image/png" href="images/Suhaas Nv.png">
     <link rel="apple-touch-icon" href="images/Suhaas Nv.png">
+    <link rel="preconnect" href="https://kit.fontawesome.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/c8ea7cd38e.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://kit.fontawesome.com/c8ea7cd38e.js" crossorigin="anonymous" defer></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Suhaas Nadukooru",
+        "url": "https://suhaasnv.github.io/portfolio",
+        "email": "nvijayasuhaas@gmail.com",
+        "jobTitle": "Systems Engineer",
+        "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "National University of Singapore"
+        },
+        "sameAs": [
+            "https://www.linkedin.com/in/suhaas-nv-a33684230/",
+            "https://github.com/SuhaasNv"
+        ]
+    }
+    </script>
 </head>
 <body>
-<div id="header">
+<a href="#main-content" class="skip-to-content">Skip to main content</a>
+<header id="header">
     <div class="container">
         <nav>
             <a href="#header"><img src="images/Suhaas Nv.png" alt="Suhaas Nadukooru" class="logo"></a>
@@ -22,9 +60,9 @@
                 <li><a href="#portfolio">Work</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <i class="fas fa-times" id="close-menu-btn"></i>
+                <li><button type="button" class="icon-button" id="close-menu-btn" aria-label="Close menu"><i class="fas fa-times" aria-hidden="true"></i></button></li>
             </ul>
-            <i class="fas fa-bars" id="open-menu-btn"></i>
+            <button type="button" class="icon-button" id="open-menu-btn" aria-label="Open menu"><i class="fas fa-bars" aria-hidden="true"></i></button>
         </nav>
         <div class="header-text">
             <h1>I design systems that connect architecture to user needs.</h1>
@@ -36,9 +74,10 @@
             </div>
         </div>
     </div>
-</div>
+</header>
+<main id="main-content">
 <!-- -----------about---------- -->
-<div id="about" class="reveal">
+<section id="about" class="reveal">
     <div class="container">
         <h2 class="sub-title">About</h2>
                 <div class="about-intro">
@@ -92,7 +131,7 @@
                     <div class="tab-content-wrapper">
                         <div class="education-credential">
                             <div class="education-header-with-logo">
-                                <img src="images/nus-logo.png" alt="NUS Logo" class="education-logo">
+                                <img src="images/nus-logo.png" alt="NUS Logo" class="education-logo" loading="lazy">
                                 <div class="education-header-text">
                                     <h4 class="education-title">M.Tech (Software Engineering)</h4>
                                     <p class="education-institution">National University of Singapore | GPA: 4/5</p>
@@ -111,7 +150,7 @@
                         <div class="education-divider"></div>
                         <div class="education-credential">
                             <div class="education-header-with-logo">
-                                <img src="images/vit-logo.png" alt="VIT Logo" class="education-logo">
+                                <img src="images/vit-logo.png" alt="VIT Logo" class="education-logo" loading="lazy">
                                 <div class="education-header-text">
                                     <h4 class="education-title">B.Tech (Information Technology)</h4>
                                     <p class="education-institution">Vellore Institute of Technology, Vellore, Tamil Nadu | CGPA: 8.21/10</p>
@@ -122,9 +161,9 @@
                     </div>
                 </div>
     </div>
-</div>
+</section>
 <!-- ---------services---------------- -->
-<div id="services" class="reveal">
+<section id="services" class="reveal">
     <div class="container">
         <h2 class="sub-title">My Certifications</h2>
         <div class="services-list">
@@ -132,54 +171,62 @@
                 <i class="fa-solid fa-diagram-project"></i>
                 <h2>Designing Modern Software Systems</h2>
                 <p>NUS-ISS. Graduate Certificate covering system design principles, modern software architecture, and evaluating trade-offs, scalability, and maintainability.</p>
-                <a href="https://drive.google.com/file/d/1KbRLjimR1xaHMQAlF2atB6YGXCKKzYoy/view?usp=drive_link" target="_blank" class="btn btn2">View</a>
+                <a href="https://drive.google.com/file/d/1KbRLjimR1xaHMQAlF2atB6YGXCKKzYoy/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn btn2">View</a>
             </div>
             <div>
                 <i class="fa-solid fa-sitemap"></i>
                 <h2>Architecting Scalable Systems</h2>
                 <p>NUS-ISS. Graduate Certificate covering scalable distributed systems, architectural patterns, and reliability and performance considerations.</p>
-                <a href="https://drive.google.com/file/d/1TUz9SJ307z0qzBYfbrI1btYdFv_TAxal/view?usp=drive_link" target="_blank" class="btn btn2">View</a>
+                <a href="https://drive.google.com/file/d/1TUz9SJ307z0qzBYfbrI1btYdFv_TAxal/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn btn2">View</a>
             </div>
             <div>
                 <i class="fa-brands fa-aws"></i>
                 <h2>AWS Cloud Practitioner</h2>
                 <p>AWS. Core cloud services, security fundamentals, and reasoning about cloud architecture and cost optimization.</p>
-                <a href="https://drive.google.com/file/d/1A4BQvIcBuUNnUEqQEXMDDeX5eh4-rXd-/view" target="_blank" class="btn btn2">View</a>
+                <a href="https://drive.google.com/file/d/1A4BQvIcBuUNnUEqQEXMDDeX5eh4-rXd-/view" target="_blank" rel="noopener noreferrer" class="btn btn2">View</a>
             </div>
             <div>
                 <i class="fa-brands fa-microsoft"></i>
                 <h2>Microsoft Azure AZ-104</h2>
                 <p>Microsoft. Azure administration, resource management, and designing and deploying cloud infrastructure.</p>
-                <a href="https://drive.google.com/file/d/1dxGvHAhE0OlPnkVbrQfG2gu0RQewBuC1/view" target="_blank" class="btn btn2">View</a>
+                <a href="https://drive.google.com/file/d/1dxGvHAhE0OlPnkVbrQfG2gu0RQewBuC1/view" target="_blank" rel="noopener noreferrer" class="btn btn2">View</a>
             </div>
             <div>
                 <i class="fa-solid fa-brain"></i>
                 <h2>Generative AI</h2>
                 <p>IBM. Generative AI models, prompt engineering, and integrating AI capabilities into applications.</p>
-                <a href="https://drive.google.com/file/d/1kC4kOpEFw5RSo61ovb3k7aAeLsOr8fgZ/view" target="_blank" class="btn btn2">View</a>
+                <a href="https://drive.google.com/file/d/1kC4kOpEFw5RSo61ovb3k7aAeLsOr8fgZ/view" target="_blank" rel="noopener noreferrer" class="btn btn2">View</a>
             </div>
             <div>
                 <i class="fa-solid fa-tasks"></i>
                 <h2>Agile with Atlassian Jira</h2>
                 <p>Atlassian. Agile methodologies, sprint planning, and using Jira for project management and team collaboration.</p>
-                <a href="https://drive.google.com/file/d/1kpOLXGjzQm60hnQk3_J047zHSc_6Ebct/view" target="_blank" class="btn btn2">View</a>
+                <a href="https://drive.google.com/file/d/1kpOLXGjzQm60hnQk3_J047zHSc_6Ebct/view" target="_blank" rel="noopener noreferrer" class="btn btn2">View</a>
             </div>
             <div>
                 <i class="fa-solid fa-graduation-cap"></i>
                 <h2>NUS ISS Learning Festival 2025</h2>
                 <p>NUS Institute of Systems Science. Explored AI systems, cloud architecture, and digital transformation strategies in enterprise contexts.</p>
-                <a href="https://www.iss.nus.edu.sg/learning-festival/2025" target="_blank" class="btn btn2">View</a>
+                <a href="https://www.iss.nus.edu.sg/learning-festival/2025" target="_blank" rel="noopener noreferrer" class="btn btn2">View</a>
             </div>
         </div>
     </div>
-</div>
+</section>
 <!-- ----------portfolio------------ -->
-<div id="portfolio" class="reveal">
+<section id="portfolio" class="reveal">
     <div class="container">
         <h2 class="sub-title">Selected Projects</h2>
         <div class="work-list">
             <div class="work">
-                <img src="images/work-1.png" alt="SpaceFlow project">
+                <img src="images/EasyMeals - Case study/Story board - 1.jpg" alt="EasyMeals project" loading="lazy">
+                <div class="layer">
+                    <h3>EasyMeals</h3>
+                    <p>A concept case study exploring subscription-based healthy meal delivery for busy professionals. Product strategy and design thinking.</p>
+                    <a href="work/easymeals.html" class="btn btn2">View Case Study</a>
+                </div>
+            </div>
+            <div class="work">
+                <img src="images/work-1.png" alt="SpaceFlow project" loading="lazy">
                 <div class="layer">
                     <h3>SpaceFlow — Smart Workplace Platform</h3>
                     <p>A system design exploration of space booking, occupancy analytics, and AI-assisted insights.</p>
@@ -187,7 +234,7 @@
                 </div>
             </div>
             <div class="work">
-                <img src="images/work-5.png" alt="AI Knowledge Assistant project">
+                <img src="images/work-5.png" alt="AI Knowledge Assistant project" loading="lazy">
                 <div class="layer">
                     <h3>AI Knowledge Assistant</h3>
                     <p>A RAG (Retrieval-Augmented Generation) system that transforms PDF documents into queryable knowledge bases.</p>
@@ -196,17 +243,17 @@
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <!-- ----------contact------------- -->
-<div id="contact" class="reveal">
+<section id="contact" class="reveal">
     <div class="container">
         <div class="row">
             <div class="contact-left">
                 <h2 class="sub-title">Contact Me</h2>
-                <p><a href="mailto:nvijayasuhaas@gmail.com"><i class="fas fa-envelope"></i></a> nvijayasuhaas@gmail.com</p>
-                <p><a href="tel:+919014848043"><i class="fas fa-phone"></i></a> +91 9014848043 (India)</p>
-                <p><a href="tel:+6586424324"><i class="fas fa-phone"></i></a> +65 86424324 (Singapore)</p>
+                <p><a href="mailto:nvijayasuhaas@gmail.com"><i class="fas fa-envelope" aria-hidden="true"></i></a> nvijayasuhaas@gmail.com</p>
+                <p><a href="tel:+919014848043"><i class="fas fa-phone" aria-hidden="true"></i></a> +91 9014848043 (India)</p>
+                <p><a href="tel:+6586424324"><i class="fas fa-phone" aria-hidden="true"></i></a> +65 86424324 (Singapore)</p>
 
                 <div class="social-icons">
                     <a href="https://github.com/SuhaasNv" aria-label="GitHub"><i class="fa-brands fa-square-github"></i></a>
@@ -226,10 +273,13 @@
             </div>
         </div>
     </div>
+</section>
+</main>
+<footer>
     <div class="copyright">
         <p>Copyright © Suhaas Nv. <br>Built by Suhaas Nadukooru</p>
     </div>
-</div>
+</footer>
 
 
 
@@ -279,21 +329,27 @@
     var openMenuBtn = document.getElementById("open-menu-btn");
     var closeMenuBtn = document.getElementById("close-menu-btn");
     
-    if (openMenuBtn) {
+    if (openMenuBtn && sidemenu) {
         openMenuBtn.addEventListener('click', function() {
             sidemenu.style.right = "0";
+            openMenuBtn.setAttribute('aria-expanded', 'true');
+            closeMenuBtn.setAttribute('aria-expanded', 'true');
         });
     }
     
-    if (closeMenuBtn) {
+    if (closeMenuBtn && sidemenu) {
         closeMenuBtn.addEventListener('click', function() {
             sidemenu.style.right = "-200px";
+            openMenuBtn.setAttribute('aria-expanded', 'false');
+            closeMenuBtn.setAttribute('aria-expanded', 'false');
         });
     }
     
     // EmailJS initialization
     // Note: This is a public key, safe to expose per EmailJS documentation
-    emailjs.init("lbnNbbkzsdc0sYbVz");
+    if (typeof emailjs !== 'undefined') {
+        emailjs.init("lbnNbbkzsdc0sYbVz");
+    }
 })();
 </script>
 <script>
@@ -399,6 +455,14 @@
         };
         
         // Send email
+        if (typeof emailjs === 'undefined') {
+            msg.textContent = "Email service not available. Please email me directly.";
+            msg.style.color = "#ff004f";
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit";
+            return;
+        }
+        
         emailjs.send(serviceID, templateID, templateParams)
             .then(function(response) {
                 // Success feedback
@@ -463,11 +527,18 @@
                         }
                     }
                     
-                    // Unobserve after animation to prevent re-triggering
+                    // Unobserve after animation to prevent re-triggering and improve performance
                     observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
+        
+        // Cleanup observer on page unload
+        window.addEventListener('beforeunload', function() {
+            if (observer) {
+                observer.disconnect();
+            }
+        });
         
         // Observe all reveal sections
         var reveals = document.querySelectorAll('.reveal');

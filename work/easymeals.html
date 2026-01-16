@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyMeals Case Study | Product Strategy & Design Thinking</title>
+    <meta name="description" content="A concept case study exploring subscription-based healthy meal delivery for busy professionals. Product strategy, user research, and decision-making from Designing and Managing Products and Platforms course at NUS.">
+    <link rel="icon" type="image/png" href="../images/Suhaas Nv.png">
+    <link rel="shortcut icon" type="image/png" href="../images/Suhaas Nv.png">
+    <link rel="apple-touch-icon" href="../images/Suhaas Nv.png">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://kit.fontawesome.com/c8ea7cd38e.js" crossorigin="anonymous"></script>
+    <style>
+        .case-study-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: #ababab;
+        }
+        .case-study-header {
+            margin-bottom: 40px;
+        }
+        .case-study-title {
+            font-size: 48px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        .case-study-subtitle {
+            font-size: 20px;
+            color: #ababab;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .case-study-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-top: 1px solid #262626;
+            border-bottom: 1px solid #262626;
+        }
+        .case-study-meta-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        .case-study-meta-item strong {
+            display: block;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .case-study-meta-item span {
+            color: #ababab;
+            font-size: 15px;
+        }
+        .case-study-badge {
+            display: inline-block;
+            background: rgba(255, 0, 79, 0.1);
+            color: #ff004f;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            color: #ff004f;
+            text-decoration: none;
+            font-size: 16px;
+            margin-bottom: 30px;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #fff;
+        }
+        .case-study-section {
+            margin-bottom: 50px;
+        }
+        .case-study-section h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 20px;
+            margin-top: 0;
+        }
+        .case-study-section h3 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            margin-top: 32px;
+        }
+        .case-study-section p {
+            line-height: 1.8;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+        .case-study-section ul, .case-study-section ol {
+            margin-bottom: 20px;
+            padding-left: 24px;
+        }
+        .case-study-section li {
+            line-height: 1.8;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        .case-study-section strong {
+            color: #fff;
+            font-weight: 600;
+        }
+        .case-study-image {
+            width: 100%;
+            border-radius: 10px;
+            margin: 30px 0;
+            display: block;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            object-fit: cover;
+            max-height: 600px;
+        }
+        .case-study-image.class-setup {
+            max-height: 500px;
+            object-fit: cover;
+            object-position: center;
+        }
+        .storyboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .storyboard-grid .case-study-image {
+            margin: 0;
+        }
+        @media only screen and (max-width: 600px) {
+            .storyboard-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        .case-study-image:hover {
+            opacity: 0.85;
+        }
+        .case-study-image:focus {
+            outline: 2px solid #ff004f;
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+        /* Image Lightbox */
+        .image-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+        .image-lightbox:not([hidden]) {
+            display: flex;
+            opacity: 1;
+            pointer-events: all;
+        }
+        .lightbox-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            cursor: pointer;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            font-size: 36px;
+            font-weight: 300;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding: 0;
+            transition: background 0.2s ease;
+            font-family: Arial, sans-serif;
+        }
+        .lightbox-close:hover,
+        .lightbox-close:focus {
+            background: rgba(255, 255, 255, 0.25);
+            outline: 2px solid #ff004f;
+            outline-offset: 2px;
+        }
+        .lightbox-image {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            z-index: 10001;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .image-lightbox {
+                transition: none;
+            }
+            .case-study-image {
+                transition: none;
+            }
+            .lightbox-close {
+                transition: none;
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            .lightbox-close {
+                top: 15px;
+                right: 20px;
+                width: 44px;
+                height: 44px;
+                font-size: 32px;
+            }
+            .lightbox-image {
+                max-width: 95%;
+                max-height: 85vh;
+            }
+        }
+        .image-placeholder {
+            width: 100%;
+            background: #262626;
+            border: 2px dashed #4a4a4a;
+            border-radius: 10px;
+            padding: 60px 20px;
+            margin: 30px 0;
+            text-align: center;
+            color: #6b6b6b;
+            font-size: 14px;
+        }
+        .image-placeholder strong {
+            display: block;
+            color: #ababab;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        .highlight-box {
+            background: rgba(255, 0, 79, 0.05);
+            border-left: 3px solid #ff004f;
+            padding: 20px;
+            margin: 24px 0;
+            border-radius: 4px;
+        }
+        .highlight-box p {
+            margin-bottom: 0;
+        }
+        .case-study-tldr-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #ff004f;
+            padding: 24px;
+            margin: 40px 0 50px;
+            border-radius: 6px;
+        }
+        .case-study-tldr-box h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            margin-top: 0;
+        }
+        .case-study-tldr-box ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style: none;
+        }
+        .case-study-tldr-box ul li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 20px;
+        }
+        .case-study-tldr-box ul li::before {
+            content: '▸';
+            color: #ff004f;
+            position: absolute;
+            left: 0;
+        }
+        .case-study-tldr-box ul li:last-child {
+            margin-bottom: 0;
+        }
+        @media only screen and (max-width: 600px) {
+            .case-study-title {
+                font-size: 32px;
+            }
+            .case-study-subtitle {
+                font-size: 18px;
+            }
+            .case-study-section h2 {
+                font-size: 26px;
+            }
+            .case-study-meta {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="case-study-container">
+        <a href="../index.html#portfolio" class="back-link">← Back to Portfolio</a>
+        
+        <div class="case-study-header">
+            <span class="case-study-badge">Concept Case Study</span>
+            <h1 class="case-study-title">EasyMeals</h1>
+            <p class="case-study-subtitle">A subscription-based healthy meal delivery service that helps busy professionals maintain nutrition without the time investment of meal planning and cooking.</p>
+            
+            <div class="case-study-meta">
+                <div class="case-study-meta-item">
+                    <strong>My Role</strong>
+                    <span>Product Strategy & Research</span>
+                </div>
+                <div class="case-study-meta-item">
+                    <strong>Context</strong>
+                    <span>Designing and Managing Products and Platforms, NUS</span>
+                </div>
+                <div class="case-study-meta-item">
+                    <strong>Duration</strong>
+                    <span>Short academic design sprint</span>
+                </div>
+                <div class="case-study-meta-item">
+                    <strong>Team</strong>
+                    <span>Group-based</span>
+                </div>
+                <div class="case-study-meta-item">
+                    <strong>Methods</strong>
+                    <span>Design Thinking, User Research, Impact-Feasibility Analysis</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="case-study-tldr-box">
+            <h3>TL;DR</h3>
+            <ul>
+                <li>Concept case study exploring subscription-based healthy meal delivery for busy professionals</li>
+                <li>Applied design thinking methodology: user research, problem reframing (HMW), ideation, and impact-feasibility analysis</li>
+                <li>Selected ready-to-eat meal delivery as core solution to address time constraint while maintaining nutritional quality</li>
+                <li>Key insight: The barrier isn't cost or preference—it's cognitive load. Professionals need a system that removes mental overhead</li>
+                <li>Developed as part of Designing and Managing Products and Platforms course at NUS</li>
+            </ul>
+        </div>
+
+        <!-- Context & Problem -->
+        <div class="case-study-section">
+            <h2>Context & Problem</h2>
+            
+            <p>This case study was developed as part of the <strong>Designing and Managing Products and Platforms</strong> course at NUS on January 15, 2026, led by faculty member <strong>Scott Si</strong>. The course focused on applying design thinking methodologies to real-world product challenges. This exercise emphasized structured problem-solving, user-centered design, and business reasoning—core skills for product management.</p>
+            
+            <img src="../images/EasyMeals - Case study/Class Setup.JPG" alt="Class setup showing the learning environment and design thinking session for Designing and Managing Products and Platforms course led by faculty Scott Si" class="case-study-image class-setup">
+            
+            <h3>Problem Statement</h3>
+            <p>Busy working professionals struggle to maintain healthy eating habits due to time constraints. The gap between wanting to eat well and having the time to plan, shop, and prepare nutritious meals creates a persistent pain point that affects both physical health and daily productivity.</p>
+            
+            <h3>Why This Problem Matters</h3>
+            <p>Poor nutrition among working professionals has measurable impacts: decreased energy levels, reduced productivity, and long-term health risks. Existing solutions (meal prep services, restaurant delivery, grocery delivery) either require significant time investment or compromise on nutritional quality. There's a clear opportunity for a solution that removes the time barrier while maintaining nutritional standards.</p>
+            
+            <img src="../images/EasyMeals - Case study/Insight capturing.jpg" alt="Class environment showing team collaboration and design thinking process" class="case-study-image">
+        </div>
+
+        <!-- User Research & Insights -->
+        <div class="case-study-section">
+            <h2>User Research & Insights</h2>
+            
+            <h3>Research Planning</h3>
+            <p>Before conducting research, we developed a structured research plan to ensure we gathered meaningful insights. The plan outlined our research objectives, target user segments, interview questions, and methods for synthesizing findings. This upfront planning helped us stay focused on understanding the core problem rather than getting lost in surface-level symptoms.</p>
+            
+            <img src="../images/EasyMeals - Case study/User Research plan.jpg" alt="User research plan showing research objectives, target segments, interview questions, and synthesis methods" class="case-study-image">
+            
+            <h3>How Insights Were Gathered</h3>
+            <p>Through structured interviews and empathy mapping exercises, we engaged with working professionals across different industries. The research focused on understanding daily routines, pain points around meal planning, and existing coping strategies.</p>
+            
+            <h3>Key Pain Points</h3>
+            <ul>
+                <li><strong>Time scarcity:</strong> Planning meals, grocery shopping, and cooking compete with work demands and personal time</li>
+                <li><strong>Decision fatigue:</strong> Constant choices about what to eat drain mental energy</li>
+                <li><strong>Nutritional knowledge gap:</strong> Uncertainty about what constitutes a balanced meal for their lifestyle</li>
+                <li><strong>Inconsistent habits:</strong> Good intentions don't translate to consistent behavior due to lack of structure</li>
+            </ul>
+            
+            <h3>Core Insight</h3>
+            <div class="highlight-box">
+                <p><strong>The real barrier isn't cost or preference—it's cognitive load.</strong> Professionals want healthy meals but need a system that removes the mental overhead of planning and decision-making. They're willing to pay for convenience if it delivers consistent, high-quality nutrition without requiring their time or attention.</p>
+            </div>
+            
+            <img src="../images/EasyMeals - Case study/Insight capturing.jpg" alt="Affinity mapping and sticky notes board showing user pain points and insights organized by theme" class="case-study-image">
+        </div>
+
+        <!-- Problem Reframing -->
+        <div class="case-study-section">
+            <h2>Problem Reframing (HMW)</h2>
+            
+            <h3>Framing the Problem</h3>
+            <p>Before developing solutions, we spent time reframing the problem from multiple angles. This process involved examining the problem from different perspectives: the user's perspective, the business perspective, and the system perspective. By framing the problem correctly, we ensured that our solutions would address root causes rather than symptoms.</p>
+            
+            <img src="../images/EasyMeals - Case study/Frame the Problem.jpg" alt="Problem framing canvas showing the problem analyzed from multiple perspectives including user, business, and system viewpoints" class="case-study-image">
+            
+            <h3>Final How Might We Statement</h3>
+            <div class="highlight-box">
+                <p><strong>How might we help busy professionals maintain consistent, healthy eating habits without requiring time for meal planning or cooking?</strong></p>
+            </div>
+            
+            <h3>Why This Framing Was Chosen</h3>
+            <p>This HMW statement focuses on the core constraint (time) while leaving room for multiple solution approaches. It emphasizes outcomes (consistent, healthy eating) rather than prescribing a specific solution type. The framing also acknowledges that the target users are willing to invest resources (money) but not time—a critical distinction for business model design.</p>
+            
+            <img src="../images/EasyMeals - Case study/HWM.jpg" alt="HMW worksheet showing the evolution from initial problem statements to the final framing" class="case-study-image">
+        </div>
+
+        <!-- Ideation & Exploration -->
+        <div class="case-study-section">
+            <h2>Ideation & Exploration</h2>
+            
+            <p>We generated multiple solution concepts through structured brainstorming sessions, exploring different approaches to addressing the core problem:</p>
+            
+            <ul>
+                <li><strong>Meal kit delivery:</strong> Pre-portioned ingredients with recipes (deprioritized due to still requiring cooking time)</li>
+                <li><strong>AI meal planner:</strong> Personalized meal plans with automated grocery lists (deprioritized due to complexity and still requiring shopping/cooking)</li>
+                <li><strong>Restaurant partnership platform:</strong> Curated healthy options from local restaurants (deprioritized due to quality control challenges and higher costs)</li>
+                <li><strong>Ready-to-eat meal delivery:</strong> Fully prepared, nutritionally balanced meals delivered on schedule (selected as primary solution)</li>
+                <li><strong>In-app fitness integration:</strong> Connect meal recommendations with fitness goals (selected as supporting feature)</li>
+            </ul>
+            
+            <h3>Why Some Ideas Were Deprioritized</h3>
+            <p>Ideas that still required user time (cooking, shopping) were eliminated because they didn't address the core constraint. Solutions with high operational complexity or quality control challenges were deprioritized due to feasibility concerns. The focus remained on solutions that could deliver consistent value with minimal user effort.</p>
+            
+            <img src="../images/EasyMeals - Case study/Ideation.jpg" alt="Early concept sketches showing different solution approaches and their trade-offs" class="case-study-image">
+        </div>
+
+        <!-- Prioritization & Decision-Making -->
+        <div class="case-study-section">
+            <h2>Prioritization & Decision-Making</h2>
+            
+            <h3>Impact vs Feasibility Analysis</h3>
+            <p>We evaluated each solution concept using an impact-feasibility matrix:</p>
+            
+            <ul>
+                <li><strong>High impact, high feasibility:</strong> Ready-to-eat meal delivery (addresses core problem directly, proven business model, clear operational path)</li>
+                <li><strong>High impact, medium feasibility:</strong> Fitness integration feature (adds value but requires additional development and partnerships)</li>
+                <li><strong>Medium impact, high feasibility:</strong> Meal kit delivery (easier to execute but doesn't solve time constraint)</li>
+                <li><strong>Low impact, low feasibility:</strong> Complex AI planning systems (high development cost, uncertain user adoption)</li>
+            </ul>
+            
+            <img src="../images/EasyMeals - Case study/Feasability.jpg" alt="Impact vs Difficulty matrix showing solution concepts plotted by their potential impact and implementation difficulty" class="case-study-image">
+            
+            <h3>Action Planning</h3>
+            <p>After selecting the solution, we developed an action plan canvas to outline the implementation strategy. This plan identified key stakeholders, required resources, potential risks, success metrics, and the phased approach to bringing EasyMeals to market. The action plan helped us think through not just what to build, but how to build it systematically.</p>
+            
+            <img src="../images/EasyMeals - Case study/Action Plan Canvas.jpg" alt="Action plan canvas showing implementation strategy, stakeholders, resources, risks, and success metrics for EasyMeals" class="case-study-image">
+            
+            <h3>Final Solution Selection</h3>
+            <p>We selected ready-to-eat meal delivery as the core solution because it directly addresses the time constraint while maintaining nutritional quality. The subscription model provides predictable revenue and user commitment. The "Gym Buddy" feature was included as a supporting feature to differentiate the offering and create a more holistic health solution.</p>
+        </div>
+
+        <!-- Final Solution -->
+        <div class="case-study-section">
+            <h2>Final Solution: EasyMeals</h2>
+            
+            <h3>Solution Overview</h3>
+            <p>EasyMeals is a subscription-based healthy meal delivery service that delivers ready-to-eat, nutritionally balanced meals to busy working professionals. The service removes the need for meal planning, grocery shopping, and cooking while ensuring consistent nutritional quality.</p>
+            
+            <h3>Subscription Business Model</h3>
+            <ul>
+                <li><strong>Weekly plans:</strong> 5, 7, or 10 meals per week</li>
+                <li><strong>Monthly plans:</strong> Discounted rates for longer commitments</li>
+                <li><strong>Flexible pausing:</strong> Users can pause subscriptions for travel or schedule changes</li>
+                <li><strong>Nutritional customization:</strong> Options for dietary restrictions and calorie targets</li>
+            </ul>
+            
+            <h3>Key Features</h3>
+            
+            <p><strong>Core Feature: Healthy Meal Delivery</strong></p>
+            <ul>
+                <li>Pre-prepared, nutritionally balanced meals</li>
+                <li>Delivered on a set schedule (weekly or bi-weekly)</li>
+                <li>Meals are ready to eat with minimal heating required</li>
+                <li>Nutritional information and ingredient transparency</li>
+            </ul>
+            
+            <p><strong>Supporting Feature: "Gym Buddy"</strong></p>
+            <ul>
+                <li>In-app feature connecting fitness goals with meal recommendations</li>
+                <li>Meal suggestions aligned with workout schedules and fitness objectives</li>
+                <li>Progress tracking and motivation through integrated health metrics</li>
+                <li>Creates a more holistic health solution beyond just meal delivery</li>
+            </ul>
+            
+            <img src="../images/EasyMeals - Case study/The Big Idea.jpg" alt="Final solution / Big Idea canvas showing the complete EasyMeals concept with business model and key features" class="case-study-image">
+            
+            <h3>Storyboard: Visualizing the User Experience</h3>
+            <p>To better understand and communicate the user experience, we created storyboards that visualize key moments in the user's journey with EasyMeals. These storyboards help illustrate the emotional journey, pain points, and moments of value delivery throughout the experience.</p>
+            
+            <div class="storyboard-grid">
+                <img src="../images/EasyMeals - Case study/Story board - 1.jpg" alt="Storyboard panel 1: Initial problem scenario showing the user's struggle with meal planning and time constraints" class="case-study-image">
+                <img src="../images/EasyMeals - Case study/Story board - 3.jpg" alt="Storyboard panel 2: Product delivery showing drone delivery of EasyMeals meals to the user" class="case-study-image">
+                <img src="../images/EasyMeals - Case study/Story board - 2.jpg" alt="Storyboard panel 3: Daily experience showing the user's routine with EasyMeals delivery and meal consumption" class="case-study-image">
+                <img src="../images/EasyMeals - Case study/Story board - 4.jpg" alt="Storyboard panel 4: Outcomes and benefits showing improved health, time savings, and lifestyle improvements" class="case-study-image">
+            </div>
+        </div>
+
+        <!-- User Journey -->
+        <div class="case-study-section">
+            <h2>User Journey</h2>
+            
+            <h3>Before EasyMeals</h3>
+            <ul>
+                <li>Sunday: Spend 2-3 hours meal planning and grocery shopping</li>
+                <li>Weekdays: 30-45 minutes daily for cooking and cleanup</li>
+                <li>Decision fatigue: Constant choices about what to eat</li>
+                <li>Inconsistent nutrition: Falling back to convenience foods when time is short</li>
+            </ul>
+            
+            <h3>During EasyMeals Experience</h3>
+            <ul>
+                <li>Initial setup: One-time subscription selection and dietary preferences</li>
+                <li>Weekly delivery: Meals arrive on schedule, no decision-making required</li>
+                <li>Daily routine: Grab a meal from the fridge, heat if needed, eat within minutes</li>
+                <li>Gym Buddy integration: Meal recommendations align with workout schedule</li>
+            </ul>
+            
+            <h3>After EasyMeals</h3>
+            <ul>
+                <li>Time savings: 5-7 hours per week reclaimed from meal planning and cooking</li>
+                <li>Consistent nutrition: Reliable access to balanced meals</li>
+                <li>Reduced stress: No daily decisions about meals</li>
+                <li>Better health outcomes: Improved energy levels and fitness progress</li>
+            </ul>
+            
+            <img src="../images/EasyMeals - Case study/User Journey Map.jpg" alt="User journey flow showing the before/during/after experience with EasyMeals" class="case-study-image">
+        </div>
+
+        <!-- Feasibility & Viability -->
+        <div class="case-study-section">
+            <h2>Feasibility & Viability</h2>
+            
+            <h3>Technical and Operational Feasibility</h3>
+            <ul>
+                <li><strong>Meal preparation:</strong> Central kitchen model with quality control processes (proven in existing meal delivery services)</li>
+                <li><strong>Delivery logistics:</strong> Established delivery networks can be leveraged or built incrementally</li>
+                <li><strong>Technology platform:</strong> Subscription management and app development are well-understood technical challenges</li>
+                <li><strong>Scaling considerations:</strong> Kitchen capacity and delivery coverage need to scale with user base</li>
+            </ul>
+            
+            <h3>Business Viability and Scalability</h3>
+            <ul>
+                <li><strong>Market validation:</strong> Existing meal delivery services demonstrate market demand and willingness to pay</li>
+                <li><strong>Revenue model:</strong> Subscription model provides predictable recurring revenue</li>
+                <li><strong>Unit economics:</strong> Bulk preparation and delivery optimization can achieve sustainable margins</li>
+                <li><strong>Competitive differentiation:</strong> Focus on nutritional quality and fitness integration differentiates from generic food delivery</li>
+                <li><strong>Scalability path:</strong> Start with single-city operations, expand to multiple cities as operations mature</li>
+            </ul>
+            
+            <p><strong>Key risks:</strong> Operational complexity (food safety, quality control), high customer acquisition costs, and need for consistent quality at scale. These are manageable with proper operational planning and gradual scaling.</p>
+        </div>
+
+        <!-- My Contribution -->
+        <div class="case-study-section">
+            <h2>My Contribution</h2>
+            
+            <ul>
+                <li>Led user research interviews and synthesized insights into actionable pain points</li>
+                <li>Facilitated problem reframing sessions to develop the final HMW statement</li>
+                <li>Conducted impact-feasibility analysis to evaluate solution concepts</li>
+                <li>Designed the subscription business model and pricing structure</li>
+                <li>Mapped the user journey to identify key touchpoints and value delivery moments</li>
+                <li>Analyzed competitive landscape and market viability</li>
+                <li>Documented decision rationale and trade-offs for stakeholder communication</li>
+            </ul>
+        </div>
+
+        <!-- Key Learnings -->
+        <div class="case-study-section">
+            <h2>Key Learnings</h2>
+            
+            <h3>PM-Relevant Learnings</h3>
+            <ul>
+                <li><strong>Problem framing matters:</strong> The HMW statement shaped the entire solution space. Taking time to reframe the problem correctly prevented us from building the wrong solution.</li>
+                <li><strong>Constraints drive innovation:</strong> The time constraint forced us to eliminate solutions that seemed attractive but didn't address the core problem.</li>
+                <li><strong>Business model is part of the product:</strong> The subscription model wasn't just a monetization strategy—it created user commitment and predictable behavior, which are product features.</li>
+                <li><strong>Supporting features need clear rationale:</strong> "Gym Buddy" was included because it differentiated the offering, but it needed to be clearly secondary to the core value proposition.</li>
+                <li><strong>Feasibility analysis prevents over-engineering:</strong> Evaluating solutions early prevented us from pursuing technically interesting but operationally complex ideas.</li>
+            </ul>
+            
+            <h3>What I Would Improve Next</h3>
+            <ul>
+                <li><strong>Quantitative validation:</strong> Conduct surveys to validate willingness to pay and price sensitivity before finalizing the business model</li>
+                <li><strong>Operational deep-dive:</strong> Develop a more detailed operational plan including kitchen capacity, delivery logistics, and quality control processes</li>
+                <li><strong>Competitive analysis:</strong> More thorough analysis of existing meal delivery services to identify specific differentiation opportunities</li>
+                <li><strong>User testing:</strong> Create low-fidelity prototypes or service blueprints to test the user experience before full implementation</li>
+                <li><strong>Financial modeling:</strong> Build a more detailed financial model including unit economics, customer acquisition costs, and break-even analysis</li>
+            </ul>
+        </div>
+
+        <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #262626;">
+            <a href="../index.html#portfolio" class="back-link">← Back to Portfolio</a>
+        </div>
+    </div>
+
+    <!-- Image Lightbox Modal -->
+    <div id="imageLightbox" class="image-lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxImage" hidden>
+        <div class="lightbox-backdrop"></div>
+        <button class="lightbox-close" aria-label="Close image viewer" tabindex="0">&times;</button>
+        <img id="lightboxImage" class="lightbox-image" src="" alt="" tabindex="0">
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+            
+            var lightbox = document.getElementById('imageLightbox');
+            var lightboxImage = document.getElementById('lightboxImage');
+            var closeButton = lightbox.querySelector('.lightbox-close');
+            var backdrop = lightbox.querySelector('.lightbox-backdrop');
+            var caseStudyImages = document.querySelectorAll('.case-study-image');
+            var scrollPosition = 0;
+            var isOpen = false;
+            
+            function openLightbox(imageSrc, imageAlt) {
+                if (isOpen) return;
+                
+                scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                lightboxImage.src = imageSrc;
+                lightboxImage.alt = imageAlt;
+                lightbox.removeAttribute('hidden');
+                document.body.style.overflow = 'hidden';
+                document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth + 'px';
+                isOpen = true;
+                
+                // Focus management
+                requestAnimationFrame(function() {
+                    closeButton.focus();
+                });
+            }
+            
+            function closeLightbox(e) {
+                if (e && e.target !== backdrop && e.target !== closeButton && e.target !== lightboxImage) {
+                    return;
+                }
+                if (!isOpen) return;
+                
+                lightbox.setAttribute('hidden', '');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+                isOpen = false;
+            }
+            
+            // Add click handlers to all case study images
+            caseStudyImages.forEach(function(img) {
+                img.setAttribute('tabindex', '0');
+                img.setAttribute('role', 'button');
+                img.setAttribute('aria-label', 'Click to view full-size image');
+                
+                img.addEventListener('click', function() {
+                    openLightbox(img.src, img.alt);
+                });
+                
+                img.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openLightbox(img.src, img.alt);
+                    }
+                });
+            });
+            
+            // Close handlers
+            closeButton.addEventListener('click', closeLightbox);
+            backdrop.addEventListener('click', closeLightbox);
+            
+            // Escape key handler
+            function handleEscape(e) {
+                if (e.key === 'Escape' && isOpen) {
+                    closeLightbox();
+                }
+            }
+            document.addEventListener('keydown', handleEscape);
+            
+            // Focus trap
+            lightbox.addEventListener('keydown', function(e) {
+                if (e.key !== 'Tab') return;
+                
+                var focusableElements = lightbox.querySelectorAll('button, [tabindex]:not([tabindex="-1"])');
+                if (focusableElements.length === 0) return;
+                
+                var firstElement = focusableElements[0];
+                var lastElement = focusableElements[focusableElements.length - 1];
+                var activeElement = document.activeElement;
+                
+                if (e.shiftKey) {
+                    if (activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    }
+                } else {
+                    if (activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
