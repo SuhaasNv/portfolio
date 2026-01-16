@@ -525,8 +525,8 @@ nav ul li a:hover::after{
 }
 .services-list{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-gap: 30px;
     margin-top: 50px;
 }
 .services-list div{
@@ -570,8 +570,8 @@ nav ul li a:hover::after{
 }
 .work-list{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 30px;
     margin-top: 30px;
 }
 .work{
@@ -680,9 +680,11 @@ nav ul li a:hover::after{
 .contact-left{
     flex-basis: 35%;
     margin-right: 5%;
+    min-width: 0;
 }
 .contact-right{
     flex-basis: 60%;
+    min-width: 0;
 }
 .contact-left p{
     margin-top: 30px;
@@ -793,6 +795,39 @@ nav .fas{
         padding: 16px 60px;
         font-size: 18px;
     }
+    .sub-title{
+        font-size: 64px;
+    }
+    #about{
+        padding: 80px 0;
+    }
+    #services{
+        padding: 80px 0;
+    }
+    #portfolio{
+        padding: 80px 0;
+    }
+    #contact{
+        padding: 80px 0;
+    }
+    .services-list{
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 35px;
+    }
+    .work-list{
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 35px;
+    }
+    .logo{
+        width: 170px;
+    }
+    .contact-left{
+        flex-basis: 35%;
+        margin-right: 5%;
+    }
+    .contact-right{
+        flex-basis: 60%;
+    }
 }
 
 @media only screen and (max-width: 1920px) and (min-width: 1441px){
@@ -805,6 +840,36 @@ nav .fas{
     .header-context{
         font-size: 17px;
     }
+    .sub-title{
+        font-size: 56px;
+    }
+    #about{
+        padding: 70px 0;
+    }
+    #services{
+        padding: 70px 0;
+    }
+    #portfolio{
+        padding: 70px 0;
+    }
+    #contact{
+        padding: 70px 0;
+    }
+    .services-list{
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 30px;
+    }
+    .work-list{
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 30px;
+    }
+    .contact-left{
+        flex-basis: 35%;
+        margin-right: 5%;
+    }
+    .contact-right{
+        flex-basis: 60%;
+    }
 }
 
 @media only screen and (max-width: 1440px) and (min-width: 1281px){
@@ -816,6 +881,39 @@ nav .fas{
     }
     .header-context{
         font-size: 16px;
+    }
+    .sub-title{
+        font-size: 52px;
+    }
+    #about{
+        padding: 70px 0;
+    }
+    #services{
+        padding: 70px 0;
+    }
+    #portfolio{
+        padding: 70px 0;
+    }
+    #contact{
+        padding: 70px 0;
+    }
+    .services-list{
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 28px;
+    }
+    .work-list{
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 28px;
+    }
+    .logo{
+        width: 150px;
+    }
+    .contact-left{
+        flex-basis: 35%;
+        margin-right: 5%;
+    }
+    .contact-right{
+        flex-basis: 60%;
     }
 }
 
@@ -836,6 +934,42 @@ nav .fas{
         padding: 12px 40px;
         font-size: 15px;
     }
+    .sub-title{
+        font-size: 48px;
+    }
+    #about{
+        padding: 60px 0;
+    }
+    #services{
+        padding: 60px 0;
+    }
+    #portfolio{
+        padding: 60px 0;
+    }
+    #contact{
+        padding: 60px 0;
+    }
+    .services-list{
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 26px;
+    }
+    .work-list{
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 26px;
+    }
+    .logo{
+        width: 140px;
+    }
+    nav ul li{
+        margin: 10px 15px;
+    }
+    .contact-left{
+        flex-basis: 35%;
+        margin-right: 5%;
+    }
+    .contact-right{
+        flex-basis: 60%;
+    }
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 769px){
@@ -854,6 +988,57 @@ nav .fas{
     .header-cta .btn{
         padding: 12px 36px;
         font-size: 14px;
+    }
+    .sub-title{
+        font-size: 42px;
+    }
+    #about{
+        padding: 50px 0;
+    }
+    #services{
+        padding: 50px 0;
+    }
+    #portfolio{
+        padding: 50px 0;
+    }
+    #contact{
+        padding: 50px 0;
+    }
+    .services-list{
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 24px;
+    }
+    .work-list{
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 24px;
+    }
+    .logo{
+        width: 130px;
+    }
+    nav ul li{
+        margin: 10px 12px;
+    }
+    nav ul li a{
+        font-size: 16px;
+    }
+    .contact-left{
+        flex-basis: 40%;
+        margin-right: 4%;
+    }
+    .contact-right{
+        flex-basis: 56%;
+    }
+    .services-list div{
+        padding: 32px;
+    }
+    .services-list div h2{
+        font-size: 26px;
+    }
+    .tab-titles{
+        gap: 24px;
+    }
+    .tab-links{
+        font-size: 17px;
     }
 }
 
@@ -876,6 +1061,61 @@ nav .fas{
     .header-cta .btn{
         padding: 12px 32px;
         font-size: 14px;
+    }
+    .sub-title{
+        font-size: 36px;
+    }
+    #about{
+        padding: 40px 0;
+    }
+    #services{
+        padding: 40px 0;
+    }
+    #portfolio{
+        padding: 40px 0;
+    }
+    #contact{
+        padding: 40px 0;
+    }
+    .services-list{
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+    }
+    .work-list{
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+    }
+    .logo{
+        width: 120px;
+    }
+    nav ul li{
+        margin: 10px 10px;
+    }
+    nav ul li a{
+        font-size: 15px;
+    }
+    .contact-left{
+        flex-basis: 100%;
+        margin-right: 0;
+        margin-bottom: 30px;
+    }
+    .contact-right{
+        flex-basis: 100%;
+    }
+    .services-list div{
+        padding: 28px;
+    }
+    .services-list div h2{
+        font-size: 24px;
+    }
+    .services-list div i{
+        font-size: 45px;
+    }
+    .tab-titles{
+        gap: 20px;
+    }
+    .tab-links{
+        font-size: 16px;
     }
 }
 
@@ -921,7 +1161,6 @@ nav .fas{
         margin: 0;
         box-sizing: border-box;
     }
-}
     nav .fas{
         display: block;
         font-size: 25px;
@@ -934,7 +1173,7 @@ nav .fas{
         width: 200px;
         height: 100vh;
         padding-top: 50px;
-        z-index: 2;
+        z-index: 100;
         transition: right 0.5s;
     }
     nav ul li{
@@ -948,9 +1187,18 @@ nav .fas{
         cursor: pointer;
     }
     .sub-title{
-        font-size: 36px;
+        font-size: 32px;
         margin-bottom: 24px;
         text-align: left;
+    }
+    .logo{
+        width: 120px;
+    }
+    nav ul li{
+        margin: 10px 8px;
+    }
+    nav ul li a{
+        font-size: 14px;
     }
     .about-intro{
         max-width: 100%;
@@ -973,6 +1221,18 @@ nav .fas{
         flex-wrap: wrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+    }
+    #about{
+        padding: 40px 0;
+    }
+    #services{
+        padding: 40px 0;
+    }
+    #portfolio{
+        padding: 40px 0;
+    }
+    #contact{
+        padding: 40px 0;
     }
     .tab-section-header{
         font-size: 18px;
@@ -1053,6 +1313,11 @@ nav .fas{
         grid-gap: 24px;
         margin-top: 30px;
     }
+    
+    .work-list{
+        grid-template-columns: 1fr;
+        grid-gap: 20px;
+    }
     .services-list div{
         padding: 24px;
         text-align: left;
@@ -1068,11 +1333,6 @@ nav .fas{
     }
     #portfolio{
         padding: 20px 0;
-    }
-    .work-list{
-        grid-template-columns: 1fr;
-        grid-gap: 20px;
-        margin-top: 20px;
     }
     .work{
         max-height: 300px;
@@ -1119,34 +1379,6 @@ nav .fas{
         font-size: 14px;
         text-align: center;
         padding: 20px 5%;
-    }
-    #portfolio{
-        padding: 20px 0;
-    }
-    .work-list{
-        grid-gap: 20px;
-        margin-top: 20px;
-    }
-    .work{
-        max-height: 300px;
-    }
-    .work img{
-        aspect-ratio: 16 / 9;
-    }
-    .layer{
-        padding: 0 16px;
-        font-size: 12px;
-    }
-    .layer h3{
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-    .layer p{
-        margin-bottom: 12px;
-    }
-    .layer a{
-        font-size: 12px;
-        padding: 8px 20px;
     }
 }
 #msg{
