@@ -60,11 +60,28 @@ body{
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    position: relative;
+    z-index: 1;
+}
+#header .container{
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .container{
     padding: 10px 10%;
     box-sizing: border-box;
     width: 100%;
+}
+
+@media only screen and (max-width: 1440px){
+    .container{
+        padding: 10px 8%;
+    }
 }
 
 @media only screen and (max-width: 1024px){
@@ -91,6 +108,8 @@ nav{
     justify-content: space-between;
     flex-wrap: wrap;
     padding: 10px 0;
+    position: relative;
+    z-index: 10;
 }
 
 .logo{
@@ -108,6 +127,8 @@ nav ul li a{
     text-decoration: none;
     font-size: 18px;
     position: relative;
+    z-index: 10;
+    pointer-events: auto;
 }
 nav ul li a::after{
     content: '';
@@ -123,8 +144,16 @@ nav ul li a:hover::after{
     width: 100%;
 }
 .header-text{
-    margin-top: 20%;
+    margin-top: auto;
+    margin-bottom: 5%;
     font-size: 30px;
+    position: relative;
+    z-index: 5;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 100%;
 }
 .header-text h1{
     font-size: 60px;
@@ -148,11 +177,17 @@ nav ul li a:hover::after{
     gap: 16px;
     align-items: center;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 10;
 }
 .header-cta .btn{
     display: inline-block;
     margin: 0;
     width: auto;
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    pointer-events: auto;
 }
 /* -----------about--------------- */
 #about{
@@ -612,6 +647,10 @@ nav ul li a:hover::after{
     text-decoration: none;
     color: #fff;
     transition: background 0.5s;
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    pointer-events: auto;
 }
 .btn:hover{
     background: #ff004f;
@@ -739,6 +778,107 @@ nav .fas{
     display: none;
 }
 
+/* Responsive breakpoints for different screen sizes */
+@media only screen and (min-width: 1921px){
+    .header-text h1{
+        font-size: 64px;
+    }
+    .header-text{
+        font-size: 32px;
+    }
+    .header-context{
+        font-size: 19px;
+    }
+    .header-cta .btn{
+        padding: 16px 60px;
+        font-size: 18px;
+    }
+}
+
+@media only screen and (max-width: 1920px) and (min-width: 1441px){
+    .header-text h1{
+        font-size: 56px;
+    }
+    .header-text{
+        font-size: 28px;
+    }
+    .header-context{
+        font-size: 17px;
+    }
+}
+
+@media only screen and (max-width: 1440px) and (min-width: 1281px){
+    .header-text h1{
+        font-size: 52px;
+    }
+    .header-text{
+        font-size: 26px;
+    }
+    .header-context{
+        font-size: 16px;
+    }
+}
+
+@media only screen and (max-width: 1280px) and (min-width: 1025px){
+    .header-text h1{
+        font-size: 48px;
+    }
+    .header-text{
+        font-size: 24px;
+    }
+    .header-subheadline{
+        font-size: 16px;
+    }
+    .header-context{
+        font-size: 15px;
+    }
+    .header-cta .btn{
+        padding: 12px 40px;
+        font-size: 15px;
+    }
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 769px){
+    .header-text h1{
+        font-size: 42px;
+    }
+    .header-text{
+        font-size: 22px;
+    }
+    .header-subheadline{
+        font-size: 15px;
+    }
+    .header-context{
+        font-size: 14px;
+    }
+    .header-cta .btn{
+        padding: 12px 36px;
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 768px) and (min-width: 601px){
+    .header-text h1{
+        font-size: 36px;
+    }
+    .header-text{
+        font-size: 18px;
+    }
+    .header-subheadline{
+        font-size: 14px;
+    }
+    .header-context{
+        font-size: 13px;
+    }
+    .header-cta{
+        gap: 12px;
+    }
+    .header-cta .btn{
+        padding: 12px 32px;
+        font-size: 14px;
+    }
+}
+
 @media only screen and (max-width: 600px){
     #header{
         background-image: url(images/phone-background.png);
@@ -781,6 +921,7 @@ nav .fas{
         margin: 0;
         box-sizing: border-box;
     }
+}
     nav .fas{
         display: block;
         font-size: 25px;
