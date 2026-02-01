@@ -116,11 +116,17 @@
                         </div>
                         <div class="project-divider"></div>
                         <div class="project-item">
-                            <h4 class="project-title">AI Knowledge Assistant</h4>
-                            <p>A RAG (Retrieval-Augmented Generation) system demonstrating how AI components integrate into real systems. I built a complete pipeline from document processing to vector search to answer generation.</p>
-                            <p>The project emphasized retrieval architecture, latency considerations, and designing systems where <strong>AI capabilities are replaceable components, not magic</strong>.</p>
+                            <h4 class="project-title">DocuMind (Insight Garden)</h4>
+                            <p>A full-stack document RAG SaaS: users upload PDFs, the system chunks and embeds them into a vector database, and users chat with their documents via streaming AI—with source attribution and configurable LLM/embedding providers.</p>
+                            <p>The project emphasized end-to-end product design: auth, async processing with progress, hybrid retrieval (pgvector + lexical), SSE streaming, and deployment (Vercel, Railway, Supabase, Upstash)—with <strong>AI capabilities as replaceable components</strong>.</p>
                         </div>
-                        <p class="projects-note">Both projects demonstrate decision-making in system design. I focused on trade-offs, system boundaries, and architectural reasoning—not just implementing features.</p>
+                        <div class="project-divider"></div>
+                        <div class="project-item">
+                            <h4 class="project-title">Plant Disease Recognition System</h4>
+                            <p>An end-to-end ML system that classifies plant leaf images into 38 disease/healthy classes using a CNN. Single-source config and data pipeline keep training and inference aligned; experiment logging and a Streamlit web app round out the project.</p>
+                            <p>I designed the full pipeline: centralized <code>config.py</code> and <code>data_pipeline.py</code>, TensorFlow/Keras training with EarlyStopping and experiment logs, and a thin Streamlit app with correct preprocessing and model caching—plus CI (GitHub Actions) and deployment docs for Streamlit Community Cloud.</p>
+                        </div>
+                        <p class="projects-note">These projects demonstrate decision-making in system design. I focused on trade-offs, system boundaries, and architectural reasoning—not just implementing features.</p>
                         <div class="projects-cta">
                             <a href="#portfolio" class="projects-cta-button">View Full Case Studies →</a>
                         </div>
@@ -218,6 +224,24 @@
         <h2 class="sub-title">Selected Projects</h2>
         <div class="work-list">
             <div class="work">
+                <img src="images/work-5.png" alt="DocuMind (Insight Garden) project" loading="lazy">
+                <div class="layer">
+                    <h3>DocuMind (Insight Garden)</h3>
+                    <p>Full-stack document RAG SaaS: upload PDFs, analyse them with AI, and chat with your documents via streaming answers—with source attribution. React, NestJS, pgvector, BullMQ. Deployed on Vercel, Railway, Supabase, Upstash.</p>
+                    <a href="https://docu-mind-delta.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn2">View live app</a>
+                    <a href="work/ai-knowledge-assistant.html" class="btn btn2">View Case Study</a>
+                </div>
+            </div>
+            <div class="work">
+                <img src="images/plant-disease-1.png" alt="Plant Disease Recognition System — Streamlit app: home page, mission, and disease detection" loading="lazy">
+                <div class="layer">
+                    <h3>Plant Disease Recognition System</h3>
+                    <p>End-to-end ML pipeline: CNN classifies plant leaf images into 38 disease/healthy classes (~95% accuracy). TensorFlow, Keras, single config & data pipeline, Streamlit app, CI/CD.</p>
+                    <a href="https://github.com/SuhaasNv/Plant-leaf-disease-detection" target="_blank" rel="noopener noreferrer" class="btn btn2">View on GitHub</a>
+                    <a href="work/plant-disease-recognition.html" class="btn btn2">View Case Study</a>
+                </div>
+            </div>
+            <div class="work">
                 <img src="images/EasyMeals - Case study/Story board - 1.jpg" alt="EasyMeals project" loading="lazy">
                 <div class="layer">
                     <h3>EasyMeals</h3>
@@ -231,14 +255,6 @@
                     <h3>SpaceFlow — Smart Workplace Platform</h3>
                     <p>A system design exploration of space booking, occupancy analytics, and AI-assisted insights.</p>
                     <a href="work/spaceflow.html" class="btn btn2">View Case Study</a>
-                </div>
-            </div>
-            <div class="work">
-                <img src="images/work-5.png" alt="AI Knowledge Assistant project" loading="lazy">
-                <div class="layer">
-                    <h3>AI Knowledge Assistant</h3>
-                    <p>A RAG (Retrieval-Augmented Generation) system that transforms PDF documents into queryable knowledge bases.</p>
-                    <a href="work/ai-knowledge-assistant.html" class="btn btn2">View Case Study</a>
                 </div>
             </div>
         </div>

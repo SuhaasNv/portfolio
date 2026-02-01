@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Recognition System | Case Study</title>
+    <meta name="description" content="End-to-end ML pipeline that classifies plant leaf images into 38 disease/healthy classes using a CNN. TensorFlow, Keras, Streamlit, single config and data pipeline, CI/CD.">
+    <link rel="icon" type="image/png" href="../images/Suhaas Nv.png">
+    <link rel="shortcut icon" type="image/png" href="../images/Suhaas Nv.png">
+    <link rel="apple-touch-icon" href="../images/Suhaas Nv.png">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://kit.fontawesome.com/c8ea7cd38e.js" crossorigin="anonymous"></script>
+    <style>
+        .case-study-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: #ababab;
+        }
+        .case-study-header {
+            margin-bottom: 40px;
+        }
+        .case-study-title {
+            font-size: 48px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        .case-study-subtitle {
+            font-size: 20px;
+            color: #ababab;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .back-link {
+            display: inline-block;
+            color: #ff004f;
+            text-decoration: none;
+            font-size: 16px;
+            margin-bottom: 30px;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #fff;
+        }
+        .case-study-live-link-wrap {
+            margin: 0 0 30px;
+        }
+        .case-study-link-sep {
+            color: #666;
+            margin: 0 8px;
+        }
+        .case-study-live-link {
+            display: inline-block;
+            color: #ff004f;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .case-study-live-link:hover {
+            color: #fff;
+        }
+        .case-study-section {
+            margin-bottom: 50px;
+        }
+        .case-study-section h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .case-study-section p {
+            line-height: 1.8;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+        .case-study-section strong {
+            color: #fff;
+            font-weight: 600;
+        }
+        .tldr {
+            font-size: 17px;
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #262626;
+        }
+        .case-study-hero-image {
+            width: 100%;
+            margin: 40px 0 50px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .case-study-hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+        .hero-image-clickable {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        .hero-image-clickable:hover {
+            opacity: 0.85;
+        }
+        .hero-image-clickable:focus {
+            outline: 2px solid #ff004f;
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+        .image-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+        .image-lightbox:not([hidden]) {
+            display: flex;
+            opacity: 1;
+            pointer-events: all;
+        }
+        .lightbox-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            cursor: pointer;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            font-size: 36px;
+            font-weight: 300;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding: 0;
+            transition: background 0.2s ease;
+            font-family: Arial, sans-serif;
+        }
+        .lightbox-close:hover,
+        .lightbox-close:focus {
+            background: rgba(255, 255, 255, 0.25);
+            outline: 2px solid #ff004f;
+            outline-offset: 2px;
+        }
+        .lightbox-image {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            z-index: 10001;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .image-lightbox { transition: none; }
+            .hero-image-clickable { transition: none; }
+            .lightbox-close { transition: none; }
+        }
+        .case-study-tldr-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #ff004f;
+            padding: 24px;
+            margin: 40px 0 50px;
+            border-radius: 6px;
+        }
+        .case-study-tldr-box h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            margin-top: 0;
+        }
+        .case-study-tldr-box ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style: none;
+        }
+        .case-study-tldr-box ul li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 20px;
+        }
+        .case-study-tldr-box ul li::before {
+            content: '▸';
+            color: #ff004f;
+            position: absolute;
+            left: 0;
+        }
+        .case-study-tldr-box ul li:last-child {
+            margin-bottom: 0;
+        }
+        .flow-diagram {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 30px 0 40px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #ccc;
+        }
+        .flow-diagram strong {
+            color: #ff004f;
+        }
+        .case-study-image-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 30px 0 40px;
+        }
+        .case-study-image-row-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        .case-study-image-fig {
+            margin: 0;
+        }
+        .case-study-image-fig img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+        .case-study-image-fig .hero-image-clickable {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        .case-study-image-fig .hero-image-clickable:hover {
+            opacity: 0.9;
+        }
+        .case-study-image-fig figcaption {
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #888;
+        }
+        @media only screen and (max-width: 600px) {
+            .case-study-image-row,
+            .case-study-image-row-3 {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin: 20px 0 30px;
+            }
+            .case-study-image-fig figcaption {
+                font-size: 13px;
+            }
+            .case-study-container { padding: 20px 15px; }
+            .case-study-title { font-size: 32px; }
+            .case-study-subtitle { font-size: 18px; }
+            .case-study-section h2 { font-size: 24px; }
+            .case-study-section p { font-size: 14px; }
+            .case-study-hero-image { margin: 30px 0 40px; }
+            .case-study-tldr-box { padding: 20px; margin: 30px 0 40px; }
+            .case-study-tldr-box h3 { font-size: 18px; margin-bottom: 12px; }
+            .case-study-tldr-box ul li { font-size: 14px; margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="case-study-container">
+        <a href="../index.html#portfolio" class="back-link">← Back to Work</a>
+
+        <div class="case-study-header">
+            <h1 class="case-study-title">Plant Disease Recognition System</h1>
+            <p class="case-study-subtitle">End-to-end ML pipeline for leaf disease classification: a CNN that classifies plant leaf images into 38 disease/healthy classes, with a single config, shared data pipeline, and a Streamlit web app—built for reproducibility and train/serve consistency.</p>
+            <p class="case-study-live-link-wrap">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="case-study-live-link" id="live-demo-link">Live demo</a>
+                <span class="case-study-link-sep">·</span>
+                <a href="https://github.com/SuhaasNv/Plant-leaf-disease-detection" target="_blank" rel="noopener noreferrer" class="case-study-live-link">Source code (GitHub)</a>
+            </p>
+        </div>
+
+        <div class="case-study-hero-image">
+            <img src="../images/plant-disease-1.png" alt="Plant Disease Recognition System — Home page: welcome, mission, how it works, and diseases we can detect" class="hero-image-clickable" id="heroImage" tabindex="0" role="button" aria-label="Click to view full-size image">
+        </div>
+
+        <div id="imageLightbox" class="image-lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxImage" hidden>
+            <div class="lightbox-backdrop"></div>
+            <button class="lightbox-close" aria-label="Close image viewer" tabindex="0">&times;</button>
+            <img id="lightboxImage" class="lightbox-image" src="" alt="" tabindex="0">
+        </div>
+
+        <div class="case-study-tldr-box">
+            <h3>In a nutshell</h3>
+            <ul>
+                <li><strong>38-way classification</strong> across 14 crops (e.g. Apple, Corn, Tomato, Potato, Grape)—healthy and disease states—trained on ~87k images (70% train / 15% val / 15% test).</li>
+                <li><strong>Single source of truth:</strong> <code>config.py</code> holds paths, hyperparameters, seed, and the 38 class names in fixed order; <code>data_pipeline.py</code> defines preprocessing and augmentation so training and the app never drift.</li>
+                <li><strong>Thin Streamlit app:</strong> user uploads a leaf image → resize to 128×128, normalize the same way as training → model predicts → label via <code>config.CLASS_NAMES</code>. Model is cached; app detects Rescaling layer and feeds [0,1] or [0,255] so inference matches the trained model.</li>
+                <li><strong>Reproducibility:</strong> seed control, experiment logs (history + metrics + config snapshot) under <code>experiments/</code>; CI with Ruff lint and smoke tests on GitHub Actions; deployment documented for Streamlit Community Cloud.</li>
+            </ul>
+        </div>
+
+        <section class="case-study-section case-study-screens">
+            <h2>In the app</h2>
+            <p class="tldr">Home and About introduce the system; Disease Recognition is where you upload a leaf image and get a classification.</p>
+            <div class="case-study-image-row">
+                <figure class="case-study-image-fig">
+                    <img src="../images/plant-disease-2.png" alt="Plant Disease Recognition System — Home page with hero image of plant leaves" class="hero-image-clickable" tabindex="0" role="button" aria-label="Open image in lightbox">
+                    <figcaption>Home — Welcome, mission, and how it works (upload → analysis → results).</figcaption>
+                </figure>
+                <figure class="case-study-image-fig">
+                    <img src="../images/plant-disease-3.png" alt="Plant Disease Recognition System — About page: dataset, team, and features" class="hero-image-clickable" tabindex="0" role="button" aria-label="Open image in lightbox">
+                    <figcaption>About — Dataset (~87k images, 70/15/15 split), project team, and why choose us.</figcaption>
+                </figure>
+            </div>
+            <div class="case-study-image-row case-study-image-row-3">
+                <figure class="case-study-image-fig">
+                    <img src="../images/plant-disease-4.png" alt="Plant Disease Recognition System — Disease Recognition page: upload image, model path shown" class="hero-image-clickable" tabindex="0" role="button" aria-label="Open image in lightbox">
+                    <figcaption>Disease Recognition — Upload area (drag-and-drop or browse); UI shows which model file is loaded.</figcaption>
+                </figure>
+                <figure class="case-study-image-fig">
+                    <img src="../images/plant-disease-5.png" alt="Plant Disease Recognition System — Selecting a leaf image from the dataset" class="hero-image-clickable" tabindex="0" role="button" aria-label="Open image in lightbox">
+                    <figcaption>Select image — Choose a leaf image (e.g. from test set or your own) to run prediction.</figcaption>
+                </figure>
+                <figure class="case-study-image-fig">
+                    <img src="../images/plant-disease-6.png" alt="Plant Disease Recognition System — Model prediction: Blueberry healthy, class index 4" class="hero-image-clickable" tabindex="0" role="button" aria-label="Open image in lightbox">
+                    <figcaption>Model prediction — Predict button runs the CNN; result shown with label (e.g. Blueberry healthy) and class index.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section class="case-study-section">
+            <h2>What it is</h2>
+            <p class="tldr">A deep learning project that detects plant diseases from leaf images—38 classes, ~95% accuracy—with a centralized config and data pipeline, and a Streamlit app that stays in sync with training.</p>
+            <p>The <strong>Plant Disease Recognition System</strong> is an end-to-end ML system: you point it at a leaf image and it tells you whether the plant is healthy or which disease it has. Under the hood, a CNN (TensorFlow/Keras) classifies into 38 labels—covering 14 crops and their healthy/disease variants—trained on a directory-based image dataset split into train, validation, and test.</p>
+            <p>What I cared about from the start was <strong>not duplicating logic</strong>. It’s easy to have one preprocessing path in a Jupyter notebook and another in the app, or to change class order and break predictions. So I built a single <code>config.py</code> (paths, image size, batch size, learning rate, epochs, seed, augmentation settings, and the 38 class names in a fixed order) and a single <code>data_pipeline.py</code> that both the training notebook and the Streamlit app rely on. Training and serving see the same preprocessing and the same labels—no train/serve mismatch, no “always predicts one class” surprises.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>How it works</h2>
+            <p class="tldr">Data lives in folders per class; config and pipeline drive everything; one training path produces the model; the app loads it once, preprocesses the same way, and shows the label.</p>
+            <p>Leaf images sit in <code>data/train</code>, <code>data/valid</code>, and <code>data/test</code>—one folder per class. Paths and split logic come from <code>config.py</code>. The <strong>data pipeline</strong> handles resize (e.g. 128×128), normalization to [0,1], and augmentation (flips, rotation, zoom, brightness) only for training. It builds train/val/test datasets and an inference preprocessing path so that whatever the model saw during training is exactly what the app feeds at prediction time.</p>
+            <p>In the <strong>training notebook</strong> I set the seed, build datasets from the pipeline, define a CNN (Conv blocks, dropout, dense head, 38-way softmax), train with EarlyStopping and ReduceLROnPlateau, evaluate on train/val/test, and save history and metrics to <code>experiments/</code> plus the model (e.g. <code>.h5</code>) in the project root or a <code>Prev Models/</code> folder. The saved Keras model is then loaded once in the Streamlit app (cached). The app checks whether the model has a Rescaling layer and normalizes input to [0,1] or [0,255] accordingly—so inference always matches how the model was trained.</p>
+            <div class="flow-diagram">
+                <strong>Flow:</strong> Data → config + data_pipeline → Training notebook → Saved model → Streamlit app → User. Config and data_pipeline are the shared core; the app stays thin (upload, resize/normalize, predict, display).
+            </div>
+        </section>
+
+        <section class="case-study-section">
+            <h2>What it does for users</h2>
+            <p class="tldr">Upload a leaf image in the Streamlit app; get an instant classification (healthy or disease) with the correct label from the same 38 classes the model was trained on.</p>
+            <p>The <strong>Streamlit app</strong> is deliberately thin: the user uploads an image, the app resizes it to the configured size (128×128), normalizes it the same way as in the pipeline, runs <code>model.predict</code>, and maps the predicted index to <code>config.CLASS_NAMES</code>. The UI can show which model file is loaded (e.g. from project root or <code>Prev Models/</code>), so it’s clear what’s in use. No extra features—just upload, predict, and show the label. All ML assumptions (size, normalization, class order) come from config and the pipeline, so the app never “drifts” from training.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>Tech stack</h2>
+            <p class="tldr">Python 3.9+, TensorFlow 2.x/Keras for the CNN and data pipeline; NumPy, PIL, tf.data; Streamlit for the UI; single config and pipeline; Jupyter for training; GitHub Actions for CI; Streamlit Community Cloud for deployment.</p>
+            <p><strong>Language &amp; ML:</strong> Python 3.9+, TensorFlow 2.x, Keras—CNN, image preprocessing, data augmentation. <strong>Data:</strong> NumPy, PIL/Pillow, tf.data pipelines, directory-based image datasets. <strong>App:</strong> Streamlit (web UI, file upload, model caching). <strong>Config &amp; pipeline:</strong> <code>config.py</code> (paths, hyperparameters, seed, class names), <code>data_pipeline.py</code> (preprocessing, augmentation, train/val/test and inference helpers). <strong>Notebooks:</strong> Jupyter for training, evaluation, and saving model and experiment artifacts. <strong>CI/CD:</strong> GitHub Actions (Ruff lint, smoke tests); deployment documented for Streamlit Community Cloud. <strong>Version control:</strong> Git, .gitignore for data, models, experiments, venv.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>Standout technical choices</h2>
+            <p class="tldr">One config and one data pipeline for training and inference; app adapts to model (Rescaling or not); experiment logging and seed for reproducibility; CI and deployment docs.</p>
+            <p><strong>Train/serve alignment.</strong> The biggest risk in a small ML project is training with one preprocessing path and serving with another—or changing class order and getting wrong labels. By having a single <code>config.py</code> and <code>data_pipeline.py</code> imported by both the notebook and the app, preprocessing and class order stay consistent. The app also inspects the loaded model: if it has a Rescaling layer, we feed [0,255]; otherwise we normalize to [0,1] before calling predict. That way different saved models (with or without built-in rescaling) still get the right input range.</p>
+            <p><strong>Fixing “always one class” and wrong predictions.</strong> In practice I ran into wrong or stuck predictions. The fixes were: (1) using the correct model file (e.g. from <code>Prev Models/</code>), (2) fixing file stream handling (e.g. <code>seek(0)</code> on uploads so the image is read correctly), and (3) matching input range to the model—raw [0,255] vs [0,1] depending on whether the model has Rescaling. Documenting this in the repo helps anyone reusing the app.</p>
+            <p><strong>Reproducibility.</strong> Seed is set in config and used in the notebook; each run can dump a config snapshot and metrics into <code>experiments/</code>. That makes it easy to compare runs and to know exactly what hyperparameters and class order a given checkpoint used.</p>
+            <p><strong>CI and deployment.</strong> GitHub Actions runs Ruff on the core Python files and a simple import/smoke test so the pipeline and app stay runnable. Deployment is documented for Streamlit Community Cloud (connect repo, set <code>main.py</code> as entrypoint, handle model via repo or external URL and secrets).</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>Results</h2>
+            <p class="tldr">38 classes, ~87k images, 70/15/15 split; CNN with Conv blocks, dropout, dense head; ~95% accuracy on test; Streamlit app with CI and deployment docs.</p>
+            <p><strong>Classes:</strong> 38 (e.g. Apple, Corn, Tomato, Potato, Grape—healthy and disease states). <strong>Dataset:</strong> ~87k images, 70% train / 15% val / 15% test. <strong>Model:</strong> CNN (Conv2D blocks, dropout, dense head, 38-way softmax). <strong>Accuracy:</strong> ~95% on the test set (you can replace this with your exact number in the repo). <strong>Deployment:</strong> Streamlit app; CI on GitHub Actions; deployment steps documented for Streamlit Cloud.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>What I implemented</h2>
+            <p class="tldr">Full pipeline: centralized config and data pipeline, TensorFlow/Keras training notebook with experiment logging, Streamlit app with correct preprocessing and model caching, CI (GitHub Actions), and deployment documentation.</p>
+            <p>I designed and implemented the full pipeline: <strong>config</strong> (<code>config.py</code> with paths, image size, batch sizes, learning rate, epochs, seed, augmentation settings, and the 38 class names in fixed order). <strong>Data pipeline</strong> (<code>data_pipeline.py</code> with preprocessing, augmentation, dataset builders for train/val/test, and inference preprocessing). <strong>Training</strong> (Jupyter notebook: seed, dataset build, CNN definition, EarlyStopping, ReduceLROnPlateau, evaluation, saving history/metrics to <code>experiments/</code>, saving the model). <strong>App</strong> (Streamlit: load model once with caching, detect Rescaling layer, resize and normalize uploads, predict, display label via <code>config.CLASS_NAMES</code>). <strong>CI</strong> (GitHub Actions: install deps, Ruff lint, smoke test). <strong>Docs</strong> (deployment for Streamlit Community Cloud, optional script like <code>split_valid_to_test.py</code> for splitting validation into test). The goal throughout was a single source of truth for paths, hyperparameters, and class labels so that training and inference stay aligned and reproducible.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>What I learned</h2>
+            <p class="tldr">Train/serve mismatch bites; one config and one pipeline fix it. Input range and file handling matter as much as model architecture. Reproducibility pays off when iterating.</p>
+            <p>Keeping training and serving in sync is non-negotiable. As soon as you have two places that preprocess or two copies of class names, something will drift—wrong labels or a model that seems to “always predict one class.” One config and one data pipeline, both imported by the notebook and the app, removed that class of bugs. I also learned to always check <strong>input range</strong>: models with a Rescaling layer expect [0,255]; those without expect [0,1]. The app has to match, or predictions are off. File handling matters too—e.g. <code>seek(0)</code> on uploaded streams so the image bytes are read correctly.</p>
+            <p>Reproducibility—seed, experiment logs, and a config snapshot per run—made it easy to compare checkpoints and to remember what each saved model assumed. For a portfolio project, that’s a good habit: it shows you care about the full loop, not just the accuracy number.</p>
+        </section>
+
+        <section class="case-study-section">
+            <h2>Portfolio one-liner</h2>
+            <p><strong>Plant Disease Recognition System</strong> — End-to-end ML system that classifies plant leaf images into 38 disease/healthy classes using a CNN. Built with TensorFlow/Keras, a single-source config and data pipeline, and a Streamlit web app with correct preprocessing and model caching. Experiment logging and seed control for reproducibility; CI (GitHub Actions) and deployment documented for Streamlit Community Cloud. ~95% accuracy on test; 38 classes across 14 crops.</p>
+        </section>
+
+        <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid #262626;">
+            <a href="../index.html#portfolio" class="back-link">← Back to Work</a>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            var lightbox = document.getElementById('imageLightbox');
+            var lightboxImage = document.getElementById('lightboxImage');
+            var closeButton = lightbox.querySelector('.lightbox-close');
+            var backdrop = lightbox.querySelector('.lightbox-backdrop');
+            var scrollPosition = 0;
+            var isOpen = false;
+            var lastClickedImage = null;
+
+            function openLightboxWithImage(imgEl, e) {
+                if (e) e.preventDefault();
+                if (isOpen) return;
+                lastClickedImage = imgEl;
+                scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                lightboxImage.src = imgEl.src;
+                lightboxImage.alt = imgEl.alt;
+                lightbox.removeAttribute('hidden');
+                document.body.style.overflow = 'hidden';
+                document.body.style.paddingRight = (window.innerWidth - document.documentElement.clientWidth) + 'px';
+                isOpen = true;
+                requestAnimationFrame(function() { closeButton.focus(); });
+            }
+
+            function closeLightbox(e) {
+                if (e && e.target !== backdrop && e.target !== closeButton && e.target !== lightboxImage) return;
+                if (!isOpen) return;
+                lightbox.setAttribute('hidden', '');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+                isOpen = false;
+                window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+                requestAnimationFrame(function() { if (lastClickedImage) lastClickedImage.focus(); });
+            }
+
+            var clickableImages = document.querySelectorAll('.hero-image-clickable');
+            clickableImages.forEach(function(img) {
+                img.addEventListener('click', function(e) { openLightboxWithImage(this, e); });
+                img.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') openLightboxWithImage(this, e);
+                });
+            });
+            closeButton.addEventListener('click', closeLightbox);
+            backdrop.addEventListener('click', closeLightbox);
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && isOpen) closeLightbox();
+            });
+        })();
+    </script>
+</body>
+</html>
