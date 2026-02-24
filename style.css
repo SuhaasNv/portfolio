@@ -1578,6 +1578,26 @@ nav .fas{
     background: #0d0d0d;
 }
 
+.chatbot-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chatbot-mini-btn {
+    border: 1px solid #2f2f2f;
+    background: #151515;
+    color: #d4d4d8;
+    border-radius: 8px;
+    font-size: 12px;
+    padding: 7px 10px;
+    cursor: pointer;
+}
+
+.chatbot-mini-btn:hover {
+    border-color: #4b4b4b;
+}
+
 .chatbot-resize-handle {
     position: absolute;
     top: 10px;
@@ -1782,6 +1802,20 @@ nav .fas{
     border-color: #4f4f4f;
 }
 
+.chatbot-action-btn.pinned {
+    border-color: #8b5cf6;
+    color: #ddd6fe;
+}
+
+.chatbot-message.user .chatbot-message-actions {
+    justify-content: flex-end;
+}
+
+.chatbot-message.pinned {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.3) inset;
+}
+
 .chatbot-starters {
     padding: 10px 16px 0;
     display: flex;
@@ -1808,6 +1842,24 @@ nav .fas{
     grid-template-columns: 1fr auto;
     gap: 10px;
     padding: 12px 16px 8px;
+}
+
+.chatbot-controls {
+    padding: 0 16px 8px;
+}
+
+.chatbot-stop-btn {
+    border: 1px solid #6b2a2a;
+    background: #2a1313;
+    color: #fca5a5;
+    border-radius: 8px;
+    font-size: 12px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.chatbot-stop-btn:hover {
+    border-color: #8b2f2f;
 }
 
 .chatbot-input-row textarea {

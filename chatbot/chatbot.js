@@ -22,6 +22,8 @@
   var form = document.getElementById("chatbot-form");
   var input = document.getElementById("chatbot-input");
   var sendButton = document.getElementById("chatbot-send");
+  var stopButton = document.getElementById("chatbot-stop");
+  var newChatButton = document.getElementById("chatbot-new-chat");
   var strictModeToggle = document.getElementById("chatbot-strict-mode");
 
   if (!toggleButton || !panel || !messages || !form || !input || !sendButton) {
@@ -42,6 +44,8 @@
   var typingRequestId = null;
   var MIN_THINKING_MS = 900;
   var TYPE_DELAY_MS = 24;
+  var activeAbortController = null;
+  var activeAssistantNode = null;
 
   function setNudgeVisible(visible) {
     if (!nudge) return;
@@ -136,6 +140,9 @@
 
     if (role === "assistant" && Array.isArray(citations) && citations.length > 0) {
       renderCitations(wrapper, citations);
+    }
+    if (role === "user") {
+      renderUserActions(wrapper, text);
     }
 
     return wrapper;
@@ -243,8 +250,47 @@
       sendMessage(sourcePrompt, { regenerate: true });
     });
 
+    var pinBtn = document.createElement("button");
+    pinBtn.type = "button";
+    pinBtn.className = "chatbot-action-btn";
+    pinBtn.textContent = "Pin";
+    pinBtn.addEventListener("click", function () {
+      var nowPinned = !messageNode.classList.contains("pinned");
+      messageNode.classList.toggle("pinned", nowPinned);
+      pinBtn.classList.toggle("pinned", nowPinned);
+      pinBtn.textContent = nowPinned ? "Pinned" : "Pin";
+    });
+
     actions.appendChild(copyBtn);
     actions.appendChild(regenBtn);
+    actions.appendChild(pinBtn);
+    messageNode.appendChild(actions);
+  }
+
+  function renderUserActions(messageNode, messageText) {
+    var actions = document.createElement("div");
+    actions.className = "chatbot-message-actions";
+
+    var editBtn = document.createElement("button");
+    editBtn.type = "button";
+    editBtn.className = "chatbot-action-btn";
+    editBtn.textContent = "Edit";
+    editBtn.addEventListener("click", function () {
+      input.value = messageText || "";
+      autoresize();
+      input.focus();
+    });
+
+    var resendBtn = document.createElement("button");
+    resendBtn.type = "button";
+    resendBtn.className = "chatbot-action-btn";
+    resendBtn.textContent = "Resend";
+    resendBtn.addEventListener("click", function () {
+      sendMessage(messageText || "");
+    });
+
+    actions.appendChild(editBtn);
+    actions.appendChild(resendBtn);
     messageNode.appendChild(actions);
   }
 
@@ -309,6 +355,31 @@
     sendButton.disabled = sending;
     sendButton.textContent = sending ? "Sending..." : "Send";
     input.disabled = sending;
+    if (stopButton) {
+      stopButton.hidden = !sending;
+    }
+  }
+
+  function stopGeneration() {
+    if (!isSending) return;
+    if (activeAbortController) {
+      activeAbortController.abort();
+      activeAbortController = null;
+    }
+    if (typingRequestId) {
+      clearTimeout(typingRequestId);
+      typingRequestId = null;
+    }
+    if (activeAssistantNode) {
+      activeAssistantNode.classList.remove("typing");
+      if (!activeAssistantNode.textContent.trim()) {
+        activeAssistantNode.textContent = "Generation stopped.";
+      } else {
+        activeAssistantNode.textContent += "\n\n[Generation stopped]";
+      }
+    }
+    setSendingState(false);
+    input.disabled = false;
   }
 
   function starterWelcome() {
@@ -318,7 +389,7 @@
     );
   }
 
-  async function queryAssistant(userText, strictOnlySources) {
+  async function queryAssistant(userText, strictOnlySources, abortSignal) {
     var lastError = "Unable to reach the assistant service.";
 
     for (var i = 0; i < apiEndpoints.length; i += 1) {
@@ -334,9 +405,13 @@
             message: userText,
             history: history,
             strict_only_sources: strictOnlySources
-          })
+          }),
+          signal: abortSignal
         });
       } catch (networkError) {
+        if (networkError && networkError.name === "AbortError") {
+          throw new Error("Generation stopped.");
+        }
         lastError = "Could not connect to chat API.";
         continue;
       }
@@ -366,7 +441,7 @@
     throw new Error(lastError);
   }
 
-  async function queryAssistantStream(userText, onToken, strictOnlySources) {
+  async function queryAssistantStream(userText, onToken, strictOnlySources, abortSignal) {
     var lastError = "Unable to reach the assistant service.";
 
     for (var i = 0; i < apiEndpoints.length; i += 1) {
@@ -383,9 +458,13 @@
             history: history,
             stream: true,
             strict_only_sources: strictOnlySources
-          })
+          }),
+          signal: abortSignal
         });
       } catch (networkError) {
+        if (networkError && networkError.name === "AbortError") {
+          throw new Error("Generation stopped.");
+        }
         lastError = "Could not connect to chat API.";
         continue;
       }
@@ -481,14 +560,19 @@
     starters.hidden = true;
     var requestStartedAt = Date.now();
     var strictOnlySources = isStrictModeEnabled();
+    activeAbortController = new AbortController();
 
     try {
       var answerNode = addMessage("assistant", "");
+      activeAssistantNode = answerNode;
       var payload;
       try {
-        payload = await queryAssistantStream(text, null, strictOnlySources);
+        payload = await queryAssistantStream(text, null, strictOnlySources, activeAbortController.signal);
       } catch (streamError) {
-        payload = await queryAssistant(text, strictOnlySources);
+        if (streamError && streamError.message === "Generation stopped.") {
+          throw streamError;
+        }
+        payload = await queryAssistant(text, strictOnlySources, activeAbortController.signal);
       }
 
       await waitForThinkingWindow(requestStartedAt);
@@ -523,8 +607,12 @@
       if (typing) {
         typing.remove();
       }
-      addMessage("assistant", error.message || "Assistant request failed.");
+      if (!error || error.message !== "Generation stopped.") {
+        addMessage("assistant", error.message || "Assistant request failed.");
+      }
     } finally {
+      activeAbortController = null;
+      activeAssistantNode = null;
       setSendingState(false);
       input.value = "";
       autoresize();
@@ -582,6 +670,25 @@
     event.preventDefault();
     sendMessage(input.value);
   });
+
+  if (stopButton) {
+    stopButton.addEventListener("click", function () {
+      stopGeneration();
+    });
+  }
+
+  if (newChatButton) {
+    newChatButton.addEventListener("click", function () {
+      stopGeneration();
+      history = [];
+      messages.innerHTML = "";
+      starters.hidden = false;
+      starterWelcome();
+      input.value = "";
+      autoresize();
+      input.focus();
+    });
+  }
 
   if (starters) {
     starters.addEventListener("click", function (event) {

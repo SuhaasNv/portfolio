@@ -312,7 +312,10 @@
                 <h2>Portfolio Assistant</h2>
                 <p>Grounded answers from portfolio content</p>
             </div>
-            <button type="button" id="chatbot-close" class="chatbot-icon-btn" aria-label="Close chat" data-chat-close="true">&times;</button>
+            <div class="chatbot-header-actions">
+                <button type="button" id="chatbot-new-chat" class="chatbot-mini-btn" aria-label="Start a new chat">New chat</button>
+                <button type="button" id="chatbot-close" class="chatbot-icon-btn" aria-label="Close chat" data-chat-close="true">&times;</button>
+            </div>
         </div>
         <div id="chatbot-messages" class="chatbot-messages" role="log" aria-live="polite" aria-label="Chat messages"></div>
         <div class="chatbot-starters" id="chatbot-starters">
@@ -326,6 +329,9 @@
             <textarea id="chatbot-input" rows="1" maxlength="1200" placeholder="Ask about projects, skills, education..." required></textarea>
             <button type="submit" id="chatbot-send" class="chatbot-send-btn">Send</button>
         </form>
+        <div class="chatbot-controls">
+            <button type="button" id="chatbot-stop" class="chatbot-stop-btn" hidden>Stop generating</button>
+        </div>
         <label class="chatbot-strict-toggle">
             <input type="checkbox" id="chatbot-strict-mode" checked>
             <span>Strict source-only mode</span>
