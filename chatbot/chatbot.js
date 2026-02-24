@@ -16,6 +16,7 @@
   var panel = document.getElementById("chatbot-panel");
   var closeButton = document.getElementById("chatbot-close");
   var nudge = document.getElementById("chatbot-nudge");
+  var resizeHandle = document.getElementById("chatbot-resize-handle");
   var messages = document.getElementById("chatbot-messages");
   var starters = document.getElementById("chatbot-starters");
   var form = document.getElementById("chatbot-form");
@@ -32,6 +33,8 @@
   var nudgeTimer = null;
   var closeTimer = null;
   var PANEL_ANIMATION_MS = 220;
+  var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var typingRequestId = null;
 
   function setNudgeVisible(visible) {
     if (!nudge) return;
@@ -72,6 +75,42 @@
       panel.hidden = true;
       panel.classList.remove("is-closing");
     }, PANEL_ANIMATION_MS);
+  }
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function setupResizablePanel() {
+    if (!resizeHandle || window.matchMedia("(max-width: 600px)").matches) return;
+
+    resizeHandle.addEventListener("mousedown", function (event) {
+      event.preventDefault();
+      var startX = event.clientX;
+      var startY = event.clientY;
+      var panelRect = panel.getBoundingClientRect();
+      var startWidth = panelRect.width;
+      var startHeight = panelRect.height;
+      var maxWidth = window.innerWidth - 24;
+      var maxHeight = window.innerHeight - 80;
+
+      function onMove(moveEvent) {
+        var deltaX = startX - moveEvent.clientX;
+        var deltaY = startY - moveEvent.clientY;
+        var nextWidth = clamp(startWidth + deltaX, 360, maxWidth);
+        var nextHeight = clamp(startHeight + deltaY, 420, maxHeight);
+        panel.style.setProperty("--chatbot-panel-width", nextWidth + "px");
+        panel.style.setProperty("--chatbot-panel-height", nextHeight + "px");
+      }
+
+      function onUp() {
+        document.removeEventListener("mousemove", onMove);
+        document.removeEventListener("mouseup", onUp);
+      }
+
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener("mouseup", onUp);
+    });
   }
 
   function scrollToBottom() {
@@ -124,6 +163,34 @@
     messages.appendChild(node);
     scrollToBottom();
     return node;
+  }
+
+  function typeAssistantMessage(node, fullText) {
+    if (prefersReducedMotion) {
+      node.textContent = fullText;
+      return Promise.resolve();
+    }
+
+    node.classList.add("typing");
+    var index = 0;
+    var text = String(fullText || "");
+    var step = Math.max(1, Math.floor(text.length / 120));
+
+    return new Promise(function (resolve) {
+      function tick() {
+        index = Math.min(text.length, index + step);
+        node.textContent = text.slice(0, index);
+        scrollToBottom();
+        if (index >= text.length) {
+          node.classList.remove("typing");
+          typingRequestId = null;
+          resolve();
+          return;
+        }
+        typingRequestId = window.setTimeout(tick, 14);
+      }
+      tick();
+    });
   }
 
   function setSendingState(sending) {
@@ -204,7 +271,22 @@
       var answer =
         payload.answer ||
         "I could not generate an answer right now. Please try a different question.";
-      addMessage("assistant", answer, payload.citations || []);
+      var answerNode = addMessage("assistant", "");
+      await typeAssistantMessage(answerNode, answer);
+
+      if (Array.isArray(payload.citations) && payload.citations.length > 0) {
+        var citationsWrap = document.createElement("div");
+        citationsWrap.className = "chatbot-citations";
+        payload.citations.slice(0, 4).forEach(function (citation) {
+          var a = document.createElement("a");
+          a.textContent = citation.title || "Source";
+          a.href = citation.url || "#";
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          citationsWrap.appendChild(a);
+        });
+        answerNode.appendChild(citationsWrap);
+      }
 
       history.push({ role: "user", content: text });
       history.push({ role: "assistant", content: answer });
@@ -282,6 +364,7 @@
   }
 
   starterWelcome();
+  setupResizablePanel();
   setTimeout(function () {
     if (!isOpen) {
       setNudgeVisible(true);
