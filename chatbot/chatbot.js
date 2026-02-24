@@ -35,6 +35,8 @@
   var PANEL_ANIMATION_MS = 220;
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var typingRequestId = null;
+  var MIN_THINKING_MS = 900;
+  var TYPE_DELAY_MS = 24;
 
   function setNudgeVisible(visible) {
     if (!nudge) return;
@@ -269,7 +271,7 @@
     node.classList.add("typing");
     var index = 0;
     var text = String(fullText || "");
-    var step = Math.max(1, Math.floor(text.length / 120));
+    var step = 1;
 
     return new Promise(function (resolve) {
       function tick() {
@@ -282,9 +284,18 @@
           resolve();
           return;
         }
-        typingRequestId = window.setTimeout(tick, 14);
+        typingRequestId = window.setTimeout(tick, TYPE_DELAY_MS);
       }
       tick();
+    });
+  }
+
+  function waitForThinkingWindow(startTime) {
+    var elapsed = Date.now() - startTime;
+    var remaining = Math.max(0, MIN_THINKING_MS - elapsed);
+    if (!remaining) return Promise.resolve();
+    return new Promise(function (resolve) {
+      setTimeout(resolve, remaining);
     });
   }
 
@@ -461,22 +472,18 @@
 
     var typing = addThinkingSkeleton();
     starters.hidden = true;
+    var requestStartedAt = Date.now();
 
     try {
       var answerNode = addMessage("assistant", "");
       var payload;
       try {
-        payload = await queryAssistantStream(text, function (fullText) {
-          if (typing) {
-            typing.remove();
-            typing = null;
-          }
-          answerNode.textContent = fullText;
-          scrollToBottom();
-        });
+        payload = await queryAssistantStream(text);
       } catch (streamError) {
         payload = await queryAssistant(text);
       }
+
+      await waitForThinkingWindow(requestStartedAt);
 
       if (typing) {
         typing.remove();
@@ -484,9 +491,7 @@
       }
 
       var answer = payload.answer || "I could not generate an answer right now. Please try a different question.";
-      if (!payload._streamed) {
-        await typeAssistantMessage(answerNode, answer);
-      }
+      await typeAssistantMessage(answerNode, answer);
 
       renderAssistantActions(answerNode, answer, text);
 
