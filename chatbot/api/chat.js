@@ -116,6 +116,98 @@ async function callGroq({ apiKey, model, prompt, history }) {
   return answer || "I could not generate a response at the moment.";
 }
 
+function buildGroqBody({ model, prompt, history, stream }) {
+  const safeHistory = Array.isArray(history)
+    ? history
+        .filter((item) => item && (item.role === "user" || item.role === "assistant"))
+        .slice(-6)
+        .map((item) => ({
+          role: item.role,
+          content: String(item.content || "").slice(0, 800)
+        }))
+    : [];
+
+  return {
+    model,
+    temperature: 0.2,
+    max_tokens: 450,
+    stream: Boolean(stream),
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are Suhaas' portfolio assistant. Answer only from the provided context. If the answer is not in context, clearly say so. Keep answers concise, professional, and recruiter-friendly. Use short bullet points for multi-part answers. Do not fabricate facts."
+      },
+      ...safeHistory,
+      {
+        role: "user",
+        content: prompt
+      }
+    ]
+  };
+}
+
+function writeStreamEvent(res, payload) {
+  res.write(JSON.stringify(payload) + "\n");
+}
+
+async function callGroqStream({ apiKey, model, prompt, history, onToken }) {
+  const body = buildGroqBody({ model, prompt, history, stream: true });
+
+  const response = await fetch(GROQ_API_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Groq stream error (${response.status}): ${errorText}`);
+  }
+
+  if (!response.body) {
+    throw new Error("No response body from Groq stream.");
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let fullAnswer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    buffer = lines.pop() || "";
+
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (!line.startsWith("data:")) continue;
+      const dataPart = line.slice(5).trim();
+      if (!dataPart || dataPart === "[DONE]") continue;
+
+      let parsed;
+      try {
+        parsed = JSON.parse(dataPart);
+      } catch (error) {
+        continue;
+      }
+
+      const delta = parsed?.choices?.[0]?.delta?.content || "";
+      if (!delta) continue;
+      fullAnswer += delta;
+      onToken(delta);
+    }
+  }
+
+  return fullAnswer.trim() || "I could not generate a response at the moment.";
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -135,7 +227,7 @@ module.exports = async function handler(req, res) {
     return json(res, 429, { error: "Too many requests. Please try again in a minute." });
   }
 
-  const { message, history } = parseBody(req);
+  const { message, history, stream } = parseBody(req);
   const question = String(message || "").trim();
 
   if (!question) {
@@ -165,19 +257,41 @@ module.exports = async function handler(req, res) {
 
   try {
     const prompt = buildPrompt(question, retrievedChunks);
-    const answer = await callGroq({
-      apiKey: groqKey,
-      model,
-      prompt,
-      history
-    });
-
     const citations = retrievedChunks.map((chunk) => ({
       title: chunk.source_title,
       url: chunk.source_url,
       section: chunk.section,
       snippet: summarizeSnippet(chunk.text)
     }));
+
+    if (stream) {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/x-ndjson; charset=utf-8");
+      res.setHeader("Cache-Control", "no-cache, no-transform");
+
+      writeStreamEvent(res, { type: "start", citations, retrieved_count: retrievedChunks.length });
+      const streamedAnswer = await callGroqStream({
+        apiKey: groqKey,
+        model,
+        prompt,
+        history,
+        onToken: (delta) => writeStreamEvent(res, { type: "token", delta })
+      });
+      writeStreamEvent(res, {
+        type: "done",
+        answer: streamedAnswer,
+        citations,
+        retrieved_count: retrievedChunks.length
+      });
+      return res.end();
+    }
+
+    const answer = await callGroq({
+      apiKey: groqKey,
+      model,
+      prompt,
+      history
+    });
 
     return json(res, 200, {
       answer,

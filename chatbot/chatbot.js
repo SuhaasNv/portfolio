@@ -349,6 +349,106 @@
     throw new Error(lastError);
   }
 
+  async function queryAssistantStream(userText, onToken) {
+    var lastError = "Unable to reach the assistant service.";
+
+    for (var i = 0; i < apiEndpoints.length; i += 1) {
+      var endpoint = apiEndpoints[i];
+      var response;
+      try {
+        response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: userText,
+            history: history,
+            stream: true
+          })
+        });
+      } catch (networkError) {
+        lastError = "Could not connect to chat API.";
+        continue;
+      }
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          lastError = "Chat API endpoint not found on current deployment.";
+          continue;
+        }
+
+        var errorPayload = {};
+        try {
+          errorPayload = await response.json();
+        } catch (error) {
+          errorPayload = {};
+        }
+        if (response.status === 500 && errorPayload.error === "Server is missing GROQ_API_KEY.") {
+          throw new Error("Backend is live, but GROQ_API_KEY is missing in server environment variables.");
+        }
+        throw new Error(errorPayload.error || "Unable to reach the assistant service.");
+      }
+
+      if (!response.body || typeof response.body.getReader !== "function") {
+        continue;
+      }
+
+      var reader = response.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = "";
+      var streamedAnyToken = false;
+      var finalPayload = { answer: "", citations: [], retrieved_count: 0, _streamed: false };
+
+      while (true) {
+        var chunk = await reader.read();
+        if (chunk.done) break;
+
+        buffer += decoder.decode(chunk.value, { stream: true });
+        var lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        for (var lineIndex = 0; lineIndex < lines.length; lineIndex += 1) {
+          var line = lines[lineIndex].trim();
+          if (!line) continue;
+
+          var eventData = null;
+          try {
+            eventData = JSON.parse(line);
+          } catch (error) {
+            continue;
+          }
+
+          if (eventData.type === "start") {
+            finalPayload.citations = eventData.citations || [];
+            finalPayload.retrieved_count = eventData.retrieved_count || 0;
+          } else if (eventData.type === "token") {
+            var delta = eventData.delta || "";
+            if (!delta) continue;
+            streamedAnyToken = true;
+            finalPayload._streamed = true;
+            finalPayload.answer += delta;
+            if (typeof onToken === "function") {
+              onToken(finalPayload.answer, delta);
+            }
+          } else if (eventData.type === "done") {
+            finalPayload.answer = eventData.answer || finalPayload.answer;
+            finalPayload.citations = eventData.citations || finalPayload.citations;
+            finalPayload.retrieved_count = eventData.retrieved_count || finalPayload.retrieved_count;
+          } else if (eventData.type === "error") {
+            throw new Error(eventData.error || "Stream request failed.");
+          }
+        }
+      }
+
+      if (streamedAnyToken || finalPayload.answer) {
+        return finalPayload;
+      }
+    }
+
+    throw new Error(lastError);
+  }
+
   async function sendMessage(rawText, options) {
     var text = String(rawText || "").trim();
     var config = options || {};
@@ -363,14 +463,31 @@
     starters.hidden = true;
 
     try {
-      var payload = await queryAssistant(text);
-      typing.remove();
-
-      var answer =
-        payload.answer ||
-        "I could not generate an answer right now. Please try a different question.";
       var answerNode = addMessage("assistant", "");
-      await typeAssistantMessage(answerNode, answer);
+      var payload;
+      try {
+        payload = await queryAssistantStream(text, function (fullText) {
+          if (typing) {
+            typing.remove();
+            typing = null;
+          }
+          answerNode.textContent = fullText;
+          scrollToBottom();
+        });
+      } catch (streamError) {
+        payload = await queryAssistant(text);
+      }
+
+      if (typing) {
+        typing.remove();
+        typing = null;
+      }
+
+      var answer = payload.answer || "I could not generate an answer right now. Please try a different question.";
+      if (!payload._streamed) {
+        await typeAssistantMessage(answerNode, answer);
+      }
+
       renderAssistantActions(answerNode, answer, text);
 
       if (Array.isArray(payload.citations) && payload.citations.length > 0) {
@@ -390,7 +507,9 @@
       }
       history = history.slice(-8);
     } catch (error) {
-      typing.remove();
+      if (typing) {
+        typing.remove();
+      }
       addMessage("assistant", error.message || "Assistant request failed.");
     } finally {
       setSendingState(false);
