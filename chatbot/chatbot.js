@@ -24,6 +24,7 @@
   var sendButton = document.getElementById("chatbot-send");
   var stopButton = document.getElementById("chatbot-stop");
   var newChatButton = document.getElementById("chatbot-new-chat");
+  var exportPdfButton = document.getElementById("chatbot-export-pdf");
   var strictModeToggle = document.getElementById("chatbot-strict-mode");
 
   if (!toggleButton || !panel || !messages || !form || !input || !sendButton) {
@@ -264,6 +265,16 @@
     actions.appendChild(copyBtn);
     actions.appendChild(regenBtn);
     actions.appendChild(pinBtn);
+
+    var shareBtn = document.createElement("button");
+    shareBtn.type = "button";
+    shareBtn.className = "chatbot-action-btn";
+    shareBtn.textContent = "Share";
+    shareBtn.addEventListener("click", function () {
+      shareAnswerDeepLink(answerText, sourcePrompt, shareBtn);
+    });
+    actions.appendChild(shareBtn);
+
     messageNode.appendChild(actions);
   }
 
@@ -348,6 +359,113 @@
     return new Promise(function (resolve) {
       setTimeout(resolve, remaining);
     });
+  }
+
+  function toBase64Url(value) {
+    var utf8 = encodeURIComponent(value).replace(/%([0-9A-F]{2})/g, function (_, p1) {
+      return String.fromCharCode(parseInt(p1, 16));
+    });
+    return btoa(utf8).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+
+  function fromBase64Url(value) {
+    var base64 = value.replace(/-/g, "+").replace(/_/g, "/");
+    while (base64.length % 4) base64 += "=";
+    var binary = atob(base64);
+    var percentEncoded = binary
+      .split("")
+      .map(function (char) {
+        return "%" + char.charCodeAt(0).toString(16).padStart(2, "0");
+      })
+      .join("");
+    return decodeURIComponent(percentEncoded);
+  }
+
+  function buildShareUrl(answerText, sourcePrompt) {
+    var payload = JSON.stringify({
+      q: String(sourcePrompt || "").slice(0, 220),
+      a: String(answerText || "").slice(0, 900)
+    });
+    var encoded = toBase64Url(payload);
+    return window.location.origin + window.location.pathname + "#chat=" + encoded;
+  }
+
+  function shareAnswerDeepLink(answerText, sourcePrompt, buttonRef) {
+    var url = buildShareUrl(answerText, sourcePrompt);
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Suhaas Portfolio Assistant",
+          text: "Shared answer from Suhaas' portfolio assistant",
+          url: url
+        })
+        .catch(function () {});
+      return;
+    }
+    copyTextToClipboard(url)
+      .then(function () {
+        if (!buttonRef) return;
+        buttonRef.textContent = "Link copied";
+        setTimeout(function () {
+          buttonRef.textContent = "Share";
+        }, 1200);
+      })
+      .catch(function () {});
+  }
+
+  function maybeLoadSharedAnswerFromHash() {
+    var hash = window.location.hash || "";
+    if (!hash.startsWith("#chat=")) return;
+
+    try {
+      var encoded = hash.slice("#chat=".length);
+      var decoded = fromBase64Url(encoded);
+      var parsed = JSON.parse(decoded);
+      var sharedPrompt = String(parsed.q || "").trim();
+      var sharedAnswer = String(parsed.a || "").trim();
+      if (!sharedAnswer) return;
+
+      setPanelOpen(true);
+      starters.hidden = true;
+      if (sharedPrompt) {
+        addMessage("user", sharedPrompt);
+        history.push({ role: "user", content: sharedPrompt });
+      }
+      var sharedNode = addMessage("assistant", sharedAnswer);
+      renderAssistantActions(sharedNode, sharedAnswer, sharedPrompt);
+      history.push({ role: "assistant", content: sharedAnswer });
+      history = history.slice(-8);
+    } catch (error) {}
+  }
+
+  function exportSummaryToPdf() {
+    var lines = [];
+    lines.push("Suhaas Portfolio Assistant - Chat Summary");
+    lines.push("Generated: " + new Date().toLocaleString());
+    lines.push("");
+
+    if (!history.length) {
+      lines.push("No chat history available yet.");
+    } else {
+      for (var i = 0; i < history.length; i += 1) {
+        var item = history[i];
+        var prefix = item.role === "user" ? "User" : "Assistant";
+        lines.push(prefix + ": " + String(item.content || "").trim());
+        lines.push("");
+      }
+    }
+
+    var printWindow = window.open("", "_blank", "width=900,height=700");
+    if (!printWindow) return;
+    var escaped = lines.join("\n").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    printWindow.document.write(
+      "<!doctype html><html><head><title>Chat Summary</title>" +
+        "<style>body{font-family:Arial,sans-serif;padding:24px;line-height:1.5;color:#111;}pre{white-space:pre-wrap;font-family:inherit;font-size:14px;}</style>" +
+        "</head><body><pre>" +
+        escaped +
+        "</pre><script>window.onload=function(){window.print();};<\/script></body></html>"
+    );
+    printWindow.document.close();
   }
 
   function setSendingState(sending) {
@@ -690,6 +808,12 @@
     });
   }
 
+  if (exportPdfButton) {
+    exportPdfButton.addEventListener("click", function () {
+      exportSummaryToPdf();
+    });
+  }
+
   if (starters) {
     starters.addEventListener("click", function (event) {
       var target = event.target;
@@ -701,6 +825,7 @@
   }
 
   starterWelcome();
+  maybeLoadSharedAnswerFromHash();
   setupResizablePanel();
   setTimeout(function () {
     if (!isOpen) {
