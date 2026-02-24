@@ -1762,6 +1762,26 @@ nav .fas{
     text-decoration: underline;
 }
 
+.chatbot-message-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+}
+
+.chatbot-action-btn {
+    border: 1px solid #363636;
+    background: #121212;
+    color: #d4d4d8;
+    border-radius: 8px;
+    font-size: 11px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.chatbot-action-btn:hover {
+    border-color: #4f4f4f;
+}
+
 .chatbot-starters {
     padding: 10px 16px 0;
     display: flex;

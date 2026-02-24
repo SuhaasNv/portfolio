@@ -183,6 +183,64 @@
     messageNode.appendChild(citationsWrap);
   }
 
+  function copyTextToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    var textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "absolute";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand("copy");
+    } finally {
+      document.body.removeChild(textarea);
+    }
+    return Promise.resolve();
+  }
+
+  function renderAssistantActions(messageNode, answerText, sourcePrompt) {
+    if (!sourcePrompt) return;
+
+    var actions = document.createElement("div");
+    actions.className = "chatbot-message-actions";
+
+    var copyBtn = document.createElement("button");
+    copyBtn.type = "button";
+    copyBtn.className = "chatbot-action-btn";
+    copyBtn.textContent = "Copy";
+    copyBtn.addEventListener("click", function () {
+      copyTextToClipboard(answerText || "")
+        .then(function () {
+          copyBtn.textContent = "Copied";
+          setTimeout(function () {
+            copyBtn.textContent = "Copy";
+          }, 1000);
+        })
+        .catch(function () {
+          copyBtn.textContent = "Copy failed";
+          setTimeout(function () {
+            copyBtn.textContent = "Copy";
+          }, 1200);
+        });
+    });
+
+    var regenBtn = document.createElement("button");
+    regenBtn.type = "button";
+    regenBtn.className = "chatbot-action-btn";
+    regenBtn.textContent = "Regenerate";
+    regenBtn.addEventListener("click", function () {
+      sendMessage(sourcePrompt, { regenerate: true });
+    });
+
+    actions.appendChild(copyBtn);
+    actions.appendChild(regenBtn);
+    messageNode.appendChild(actions);
+  }
+
   function addThinkingSkeleton() {
     var wrapper = document.createElement("article");
     wrapper.className = "chatbot-message assistant chatbot-message-skeleton";
@@ -291,11 +349,14 @@
     throw new Error(lastError);
   }
 
-  async function sendMessage(rawText) {
+  async function sendMessage(rawText, options) {
     var text = String(rawText || "").trim();
+    var config = options || {};
     if (!text || isSending) return;
 
-    addMessage("user", text);
+    if (!config.regenerate) {
+      addMessage("user", text);
+    }
     setSendingState(true);
 
     var typing = addThinkingSkeleton();
@@ -310,13 +371,23 @@
         "I could not generate an answer right now. Please try a different question.";
       var answerNode = addMessage("assistant", "");
       await typeAssistantMessage(answerNode, answer);
+      renderAssistantActions(answerNode, answer, text);
 
       if (Array.isArray(payload.citations) && payload.citations.length > 0) {
         renderCitations(answerNode, payload.citations);
       }
 
-      history.push({ role: "user", content: text });
-      history.push({ role: "assistant", content: answer });
+      if (config.regenerate) {
+        for (var idx = history.length - 1; idx >= 0; idx -= 1) {
+          if (history[idx].role === "assistant") {
+            history[idx] = { role: "assistant", content: answer };
+            break;
+          }
+        }
+      } else {
+        history.push({ role: "user", content: text });
+        history.push({ role: "assistant", content: answer });
+      }
       history = history.slice(-8);
     } catch (error) {
       typing.remove();
