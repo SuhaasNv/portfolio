@@ -1,7 +1,16 @@
 (function () {
   "use strict";
 
-  var apiEndpoint = window.PORTFOLIO_CHAT_API_URL || (window.location.origin + "/api/chat");
+  var defaultApiEndpoints = [window.location.origin + "/api/chat", "https://portfolio-7f8t.vercel.app/api/chat"];
+  var apiEndpoints = [];
+  if (window.PORTFOLIO_CHAT_API_URL) {
+    apiEndpoints.push(window.PORTFOLIO_CHAT_API_URL);
+  }
+  defaultApiEndpoints.forEach(function (endpoint) {
+    if (apiEndpoints.indexOf(endpoint) === -1) {
+      apiEndpoints.push(endpoint);
+    }
+  });
 
   var toggleButton = document.getElementById("chatbot-toggle");
   var panel = document.getElementById("chatbot-panel");
@@ -132,44 +141,50 @@
   }
 
   async function queryAssistant(userText) {
-    var response;
-    try {
-      response = await fetch(apiEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: userText,
-          history: history
-        })
-      });
-    } catch (networkError) {
-      throw new Error(
-        "Could not connect to chat API. If this site is static-hosted, deploy the backend and set window.PORTFOLIO_CHAT_API_URL."
-      );
-    }
+    var lastError = "Unable to reach the assistant service.";
 
-    var payload = {};
-    try {
-      payload = await response.json();
-    } catch (error) {
-      payload = {};
-    }
-
-    if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error(
-          "Chat API endpoint not found (404). Deploy /api/chat and set window.PORTFOLIO_CHAT_API_URL to your backend URL."
-        );
+    for (var i = 0; i < apiEndpoints.length; i += 1) {
+      var endpoint = apiEndpoints[i];
+      var response;
+      try {
+        response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: userText,
+            history: history
+          })
+        });
+      } catch (networkError) {
+        lastError = "Could not connect to chat API.";
+        continue;
       }
+
+      var payload = {};
+      try {
+        payload = await response.json();
+      } catch (error) {
+        payload = {};
+      }
+
+      if (response.ok) {
+        return payload;
+      }
+
+      if (response.status === 404) {
+        lastError = "Chat API endpoint not found on current deployment.";
+        continue;
+      }
+
       if (response.status === 500 && payload.error === "Server is missing GROQ_API_KEY.") {
         throw new Error("Backend is live, but GROQ_API_KEY is missing in server environment variables.");
       }
+
       throw new Error(payload.error || "Unable to reach the assistant service.");
     }
-
-    return payload;
+    throw new Error(lastError);
   }
 
   async function sendMessage(rawText) {
