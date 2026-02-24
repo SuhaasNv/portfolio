@@ -52,12 +52,12 @@ let cache = null;
 function loadKnowledgeChunks() {
   if (cache) return cache;
 
-  const chunksPath = path.join(process.cwd(), "knowledge", "chunks.json");
+  const chunksPath = path.join(__dirname, "..", "..", "knowledge", "chunks.json");
   const raw = fs.readFileSync(chunksPath, "utf-8");
   const parsed = JSON.parse(raw);
 
   if (!Array.isArray(parsed)) {
-    throw new Error("knowledge/chunks.json must be an array");
+    throw new Error("chatbot/knowledge/chunks.json must be an array");
   }
 
   cache = parsed;
@@ -120,4 +120,3 @@ function retrieveRelevantChunks(query, limit = 4) {
 module.exports = {
   retrieveRelevantChunks
 };
-

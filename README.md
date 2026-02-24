@@ -158,13 +158,14 @@ To run this portfolio locally:
 
 This branch includes a portfolio assistant chatbot with a lightweight RAG backend:
 
-- API endpoint: `api/chat.js`
-- Retrieval data: `knowledge/chunks.json`
-- Frontend widget: `chatbot.js` + chatbot styles in `style.css`
+- API endpoint: `chatbot/api/chat.js`
+- Retrieval data: `chatbot/knowledge/chunks.json`
+- Frontend widget: `chatbot/chatbot.js` + chatbot styles in `style.css`
+- Vercel root (recommended for chatbot backend): `chatbot/`
 
 ### Environment variables
 
-Copy `.env.example` and set:
+Copy `chatbot/.env.example` and set:
 
 ```bash
 GROQ_API_KEY=your_key_here
@@ -175,7 +176,7 @@ GROQ_MODEL=llama-3.1-8b-instant
 
 - Keep API key on the server only (never in browser JS).
 - Deploy API on Vercel (recommended) or any Node-compatible serverless host.
-- If frontend and API are on different domains, set in browser before loading `chatbot.js`:
+- If frontend and API are on different domains, set in browser before loading `chatbot/chatbot.js`:
 
 ```html
 <script>

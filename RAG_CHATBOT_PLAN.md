@@ -22,7 +22,7 @@ Add a production-safe chatbot to the portfolio that answers questions about Suha
 - Returns structured response JSON.
 
 3. Knowledge base:
-- `knowledge/chunks.json` generated from:
+- `chatbot/knowledge/chunks.json` generated from:
   - `index.html`
   - `work/*.html`
   - Resume text (from PDF summary/manual text file for clean quality)
@@ -103,7 +103,7 @@ Add a production-safe chatbot to the portfolio that answers questions about Suha
 
 2. Milestone 2: Frontend Integration
 - Build chat widget UI in `index.html` + `style.css`.
-- Add `chatbot.js` for API interaction and rendering.
+- Add `chatbot/chatbot.js` for API interaction and rendering.
 - Add citations UI.
 
 3. Milestone 3: Quality Pass
