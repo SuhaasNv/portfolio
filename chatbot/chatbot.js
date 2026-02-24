@@ -278,6 +278,80 @@
     messageNode.appendChild(actions);
   }
 
+  function renderAssistantTransparency(messageNode, payload) {
+    if (!payload) return;
+    var wrap = document.createElement("div");
+    wrap.className = "chatbot-transparency";
+
+    var confidence = typeof payload.confidence === "number" ? payload.confidence : null;
+    var why = payload.why_this_answer || "";
+
+    var metaTop = document.createElement("div");
+    metaTop.className = "chatbot-transparency-top";
+
+    if (confidence !== null) {
+      var confidenceBadge = document.createElement("span");
+      confidenceBadge.className = "chatbot-confidence";
+      confidenceBadge.textContent = "Confidence " + Math.round(confidence * 100) + "%";
+      metaTop.appendChild(confidenceBadge);
+    }
+
+    var timestamp = document.createElement("time");
+    timestamp.className = "chatbot-time";
+    timestamp.textContent = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    metaTop.appendChild(timestamp);
+
+    wrap.appendChild(metaTop);
+
+    if (why) {
+      var whyNode = document.createElement("p");
+      whyNode.className = "chatbot-why-line";
+      whyNode.textContent = why;
+      wrap.appendChild(whyNode);
+    }
+
+    var chunks = Array.isArray(payload.top_retrieved_chunks) ? payload.top_retrieved_chunks : [];
+    if (chunks.length) {
+      var details = document.createElement("details");
+      details.className = "chatbot-chunks-details";
+
+      var summary = document.createElement("summary");
+      summary.textContent = "Top retrieved chunks";
+      details.appendChild(summary);
+
+      var list = document.createElement("div");
+      list.className = "chatbot-chunks-list";
+      chunks.slice(0, 4).forEach(function (chunk) {
+        var item = document.createElement("article");
+        item.className = "chatbot-chunk-item";
+
+        var heading = document.createElement("strong");
+        heading.textContent =
+          (chunk.title || "Source") +
+          (chunk.section ? " • " + chunk.section : "") +
+          (typeof chunk.score === "number" ? " • score " + chunk.score.toFixed(2) : "");
+        item.appendChild(heading);
+
+        var snippet = document.createElement("p");
+        snippet.textContent = chunk.snippet || "";
+        item.appendChild(snippet);
+
+        var link = document.createElement("a");
+        link.href = chunk.url || "#";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "Open source";
+        item.appendChild(link);
+
+        list.appendChild(item);
+      });
+      details.appendChild(list);
+      wrap.appendChild(details);
+    }
+
+    messageNode.appendChild(wrap);
+  }
+
   function renderUserActions(messageNode, messageText) {
     var actions = document.createElement("div");
     actions.className = "chatbot-message-actions";
@@ -704,6 +778,7 @@
       await typeAssistantMessage(answerNode, answer);
 
       renderAssistantActions(answerNode, answer, text);
+      renderAssistantTransparency(answerNode, payload);
 
       if (Array.isArray(payload.citations) && payload.citations.length > 0) {
         renderCitations(answerNode, payload.citations);

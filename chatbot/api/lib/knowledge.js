@@ -175,7 +175,7 @@ function keywordScore(queryText, queryTokens, chunk) {
   return overlapRatio + phraseBoost + tagBoost;
 }
 
-function retrieveRelevantChunks(query, limit = 4) {
+function retrieveRelevantChunksDetailed(query, limit = 4) {
   const chunks = loadKnowledgeChunks();
   const queryTokens = rewriteQuery(query);
   if (!queryTokens.length) return [];
@@ -183,19 +183,42 @@ function retrieveRelevantChunks(query, limit = 4) {
   const queryVector = vectorizeTokens(queryTokens);
 
   const ranked = chunks
-    .map((chunk) => ({
-      chunk,
-      score: 0.6 * keywordScore(queryText, queryTokens, chunk) + 0.4 * cosineSimilarity(queryVector, chunk._vector)
-    }))
+    .map((chunk) => {
+      const keyword = keywordScore(queryText, queryTokens, chunk);
+      const semantic = cosineSimilarity(queryVector, chunk._vector);
+      return {
+        chunk,
+        keywordScore: keyword,
+        semanticScore: semantic,
+        score: 0.6 * keyword + 0.4 * semantic
+      };
+    })
     .filter((item) => item.score > 0.05)
     .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map((item) => item.chunk);
+    .slice(0, limit);
 
   return ranked;
 }
 
+function retrieveRelevantChunks(query, limit = 4) {
+  return retrieveRelevantChunksDetailed(query, limit).map((item) => item.chunk);
+}
+
+function getQueryCoverage(tokens, chunksDetailed) {
+  const querySet = new Set(tokens);
+  if (!querySet.size) return 0;
+  const matched = new Set();
+  for (const item of chunksDetailed) {
+    for (const token of querySet) {
+      if (item.chunk._tokenSet.has(token)) matched.add(token);
+    }
+  }
+  return matched.size / querySet.size;
+}
+
 module.exports = {
   retrieveRelevantChunks,
-  rewriteQuery
+  retrieveRelevantChunksDetailed,
+  rewriteQuery,
+  getQueryCoverage
 };

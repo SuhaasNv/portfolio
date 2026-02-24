@@ -1816,6 +1816,86 @@ nav .fas{
     box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.3) inset;
 }
 
+.chatbot-transparency {
+    margin-top: 10px;
+    border-top: 1px solid #2a2a2a;
+    padding-top: 8px;
+}
+
+.chatbot-transparency-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.chatbot-confidence {
+    display: inline-block;
+    font-size: 11px;
+    color: #93c5fd;
+    border: 1px solid #1e3a8a;
+    border-radius: 999px;
+    padding: 2px 8px;
+    background: rgba(30, 58, 138, 0.2);
+}
+
+.chatbot-time {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.chatbot-why-line {
+    margin: 8px 0 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: #c4c4cb;
+}
+
+.chatbot-chunks-details {
+    margin-top: 8px;
+    border: 1px solid #2f2f2f;
+    border-radius: 8px;
+    padding: 6px 8px;
+    background: #131313;
+}
+
+.chatbot-chunks-details summary {
+    cursor: pointer;
+    font-size: 12px;
+    color: #d4d4d8;
+}
+
+.chatbot-chunks-list {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chatbot-chunk-item strong {
+    display: block;
+    font-size: 11px;
+    color: #e5e7eb;
+    margin-bottom: 4px;
+}
+
+.chatbot-chunk-item p {
+    margin: 0 0 6px;
+    font-size: 12px;
+    color: #c2c2ca;
+    line-height: 1.4;
+}
+
+.chatbot-chunk-item a {
+    font-size: 12px;
+    color: #60a5fa;
+    text-decoration: none;
+}
+
+.chatbot-chunk-item a:hover {
+    text-decoration: underline;
+}
+
 .chatbot-starters {
     padding: 10px 16px 0;
     display: flex;

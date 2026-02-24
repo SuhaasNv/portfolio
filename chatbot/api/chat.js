@@ -1,4 +1,4 @@
-const { retrieveRelevantChunks, rewriteQuery } = require("./lib/knowledge");
+const { retrieveRelevantChunksDetailed, rewriteQuery, getQueryCoverage } = require("./lib/knowledge");
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const REQUEST_LIMIT_PER_MINUTE = 20;
@@ -69,6 +69,27 @@ function summarizeSnippet(text, maxLen = 220) {
   const clean = String(text || "").replace(/\s+/g, " ").trim();
   if (clean.length <= maxLen) return clean;
   return clean.slice(0, maxLen).trimEnd() + "...";
+}
+
+function computeConfidence(chunksDetailed, coverage) {
+  if (!chunksDetailed.length) return 0;
+  const top = chunksDetailed[0].score || 0;
+  const avgTop = chunksDetailed.slice(0, 3).reduce((sum, item) => sum + item.score, 0) / Math.min(3, chunksDetailed.length);
+  const raw = 0.6 * Math.min(1, top / 1.4) + 0.3 * Math.min(1, avgTop / 1.2) + 0.1 * Math.min(1, coverage);
+  return Math.max(0.05, Math.min(0.99, raw));
+}
+
+function buildWhyAnswerLine({ strictOnlySources, coverage, chunks }) {
+  if (!chunks.length) {
+    return "No relevant profile chunks were matched for this question.";
+  }
+  const sources = chunks
+    .slice(0, 3)
+    .map((c) => c.chunk.source_title)
+    .filter(Boolean)
+    .join(", ");
+  const coveragePct = Math.round(coverage * 100);
+  return `Matched ${chunks.length} profile chunks (${coveragePct}% query token coverage) from: ${sources}. Strict mode: ${strictOnlySources ? "on" : "off"}.`;
 }
 
 async function callGroq({ apiKey, model, prompt, history, strictOnlySources }) {
@@ -228,14 +249,18 @@ module.exports = async function handler(req, res) {
 
   const model = process.env.GROQ_MODEL || "llama-3.1-8b-instant";
   const rewrittenTokens = rewriteQuery(question);
-  const retrievedChunks = retrieveRelevantChunks(question, 4);
+  const retrievedDetailed = retrieveRelevantChunksDetailed(question, 4);
+  const retrievedChunks = retrievedDetailed.map((item) => item.chunk);
 
   if (retrievedChunks.length === 0) {
     return json(res, 200, {
       answer:
         "I could not find that in Suhaas' portfolio knowledge base yet. Try asking about projects, tech stack, education, or certifications.",
       citations: [],
-      retrieved_count: 0
+      retrieved_count: 0,
+      confidence: 0,
+      why_this_answer: "No relevant profile chunks were found for this query.",
+      top_retrieved_chunks: []
     });
   }
 
@@ -247,6 +272,23 @@ module.exports = async function handler(req, res) {
       section: chunk.section,
       snippet: summarizeSnippet(chunk.text)
     }));
+    const coverage = getQueryCoverage(rewrittenTokens, retrievedDetailed);
+    const confidence = computeConfidence(retrievedDetailed, coverage);
+    const whyThisAnswer = buildWhyAnswerLine({
+      strictOnlySources,
+      coverage,
+      chunks: retrievedDetailed
+    });
+    const topRetrievedChunks = retrievedDetailed.map((item) => ({
+      id: item.chunk.id,
+      title: item.chunk.source_title,
+      section: item.chunk.section,
+      url: item.chunk.source_url,
+      snippet: summarizeSnippet(item.chunk.text, 260),
+      score: Number(item.score.toFixed(3)),
+      keyword_score: Number(item.keywordScore.toFixed(3)),
+      semantic_score: Number(item.semanticScore.toFixed(3))
+    }));
 
     if (stream) {
       res.statusCode = 200;
@@ -257,7 +299,10 @@ module.exports = async function handler(req, res) {
         type: "start",
         citations,
         retrieved_count: retrievedChunks.length,
-        strict_only_sources: strictOnlySources
+        strict_only_sources: strictOnlySources,
+        confidence,
+        why_this_answer: whyThisAnswer,
+        top_retrieved_chunks: topRetrievedChunks
       });
       const streamedAnswer = await callGroqStream({
         apiKey: groqKey,
@@ -273,7 +318,10 @@ module.exports = async function handler(req, res) {
         citations,
         retrieved_count: retrievedChunks.length,
         strict_only_sources: strictOnlySources,
-        query_rewrite: rewrittenTokens
+        query_rewrite: rewrittenTokens,
+        confidence,
+        why_this_answer: whyThisAnswer,
+        top_retrieved_chunks: topRetrievedChunks
       });
       return res.end();
     }
@@ -291,7 +339,10 @@ module.exports = async function handler(req, res) {
       citations,
       retrieved_count: retrievedChunks.length,
       strict_only_sources: strictOnlySources,
-      query_rewrite: rewrittenTokens
+      query_rewrite: rewrittenTokens,
+      confidence,
+      why_this_answer: whyThisAnswer,
+      top_retrieved_chunks: topRetrievedChunks
     });
   } catch (error) {
     return json(res, 502, {
