@@ -22,9 +22,14 @@
   var form = document.getElementById("chatbot-form");
   var input = document.getElementById("chatbot-input");
   var sendButton = document.getElementById("chatbot-send");
+  var strictModeToggle = document.getElementById("chatbot-strict-mode");
 
   if (!toggleButton || !panel || !messages || !form || !input || !sendButton) {
     return;
+  }
+
+  function isStrictModeEnabled() {
+    return !strictModeToggle || strictModeToggle.checked;
   }
 
   var history = [];
@@ -313,7 +318,7 @@
     );
   }
 
-  async function queryAssistant(userText) {
+  async function queryAssistant(userText, strictOnlySources) {
     var lastError = "Unable to reach the assistant service.";
 
     for (var i = 0; i < apiEndpoints.length; i += 1) {
@@ -327,7 +332,8 @@
           },
           body: JSON.stringify({
             message: userText,
-            history: history
+            history: history,
+            strict_only_sources: strictOnlySources
           })
         });
       } catch (networkError) {
@@ -360,7 +366,7 @@
     throw new Error(lastError);
   }
 
-  async function queryAssistantStream(userText, onToken) {
+  async function queryAssistantStream(userText, onToken, strictOnlySources) {
     var lastError = "Unable to reach the assistant service.";
 
     for (var i = 0; i < apiEndpoints.length; i += 1) {
@@ -375,7 +381,8 @@
           body: JSON.stringify({
             message: userText,
             history: history,
-            stream: true
+            stream: true,
+            strict_only_sources: strictOnlySources
           })
         });
       } catch (networkError) {
@@ -473,14 +480,15 @@
     var typing = addThinkingSkeleton();
     starters.hidden = true;
     var requestStartedAt = Date.now();
+    var strictOnlySources = isStrictModeEnabled();
 
     try {
       var answerNode = addMessage("assistant", "");
       var payload;
       try {
-        payload = await queryAssistantStream(text);
+        payload = await queryAssistantStream(text, null, strictOnlySources);
       } catch (streamError) {
-        payload = await queryAssistant(text);
+        payload = await queryAssistant(text, strictOnlySources);
       }
 
       await waitForThinkingWindow(requestStartedAt);

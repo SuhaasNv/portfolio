@@ -1,4 +1,4 @@
-const { retrieveRelevantChunks } = require("./lib/knowledge");
+const { retrieveRelevantChunks, rewriteQuery } = require("./lib/knowledge");
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const REQUEST_LIMIT_PER_MINUTE = 20;
@@ -41,7 +41,7 @@ function parseBody(req) {
   return {};
 }
 
-function buildPrompt(message, chunks) {
+function buildPrompt(message, chunks, rewrittenTokens) {
   const context = chunks
     .map((chunk, index) => {
       return [
@@ -56,10 +56,13 @@ function buildPrompt(message, chunks) {
   return [
     "User question:",
     message,
+    rewrittenTokens && rewrittenTokens.length ? `Rewritten query tokens: ${rewrittenTokens.join(", ")}` : "",
     "",
     "Retrieved profile context:",
     context
-  ].join("\n");
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
 function summarizeSnippet(text, maxLen = 220) {
@@ -68,34 +71,8 @@ function summarizeSnippet(text, maxLen = 220) {
   return clean.slice(0, maxLen).trimEnd() + "...";
 }
 
-async function callGroq({ apiKey, model, prompt, history }) {
-  const safeHistory = Array.isArray(history)
-    ? history
-        .filter((item) => item && (item.role === "user" || item.role === "assistant"))
-        .slice(-6)
-        .map((item) => ({
-          role: item.role,
-          content: String(item.content || "").slice(0, 800)
-        }))
-    : [];
-
-  const body = {
-    model,
-    temperature: 0.2,
-    max_tokens: 450,
-    messages: [
-      {
-        role: "system",
-        content:
-          "You are Suhaas' portfolio assistant. Answer only from the provided context. If the answer is not in context, clearly say so. Keep answers concise, professional, and recruiter-friendly. Use short bullet points for multi-part answers. Do not fabricate facts."
-      },
-      ...safeHistory,
-      {
-        role: "user",
-        content: prompt
-      }
-    ]
-  };
+async function callGroq({ apiKey, model, prompt, history, strictOnlySources }) {
+  const body = buildGroqBody({ model, prompt, history, stream: false, strictOnlySources });
 
   const response = await fetch(GROQ_API_URL, {
     method: "POST",
@@ -116,7 +93,7 @@ async function callGroq({ apiKey, model, prompt, history }) {
   return answer || "I could not generate a response at the moment.";
 }
 
-function buildGroqBody({ model, prompt, history, stream }) {
+function buildGroqBody({ model, prompt, history, stream, strictOnlySources }) {
   const safeHistory = Array.isArray(history)
     ? history
         .filter((item) => item && (item.role === "user" || item.role === "assistant"))
@@ -127,6 +104,10 @@ function buildGroqBody({ model, prompt, history, stream }) {
         }))
     : [];
 
+  const strictInstruction = strictOnlySources
+    ? "Strict mode is ON. Use only the retrieved profile context. If context is insufficient, say exactly that and ask for a narrower question. Do not infer beyond provided sources."
+    : "Strict mode is OFF. Prefer retrieved context first. You may provide light general framing, but label it as inference when context is incomplete.";
+
   return {
     model,
     temperature: 0.2,
@@ -136,7 +117,8 @@ function buildGroqBody({ model, prompt, history, stream }) {
       {
         role: "system",
         content:
-          "You are Suhaas' portfolio assistant. Answer only from the provided context. If the answer is not in context, clearly say so. Keep answers concise, professional, and recruiter-friendly. Use short bullet points for multi-part answers. Do not fabricate facts."
+          "You are Suhaas' portfolio assistant. Keep answers concise, professional, and recruiter-friendly. Use short bullet points for multi-part answers. Do not fabricate facts. " +
+          strictInstruction
       },
       ...safeHistory,
       {
@@ -151,8 +133,8 @@ function writeStreamEvent(res, payload) {
   res.write(JSON.stringify(payload) + "\n");
 }
 
-async function callGroqStream({ apiKey, model, prompt, history, onToken }) {
-  const body = buildGroqBody({ model, prompt, history, stream: true });
+async function callGroqStream({ apiKey, model, prompt, history, onToken, strictOnlySources }) {
+  const body = buildGroqBody({ model, prompt, history, stream: true, strictOnlySources });
 
   const response = await fetch(GROQ_API_URL, {
     method: "POST",
@@ -227,8 +209,9 @@ module.exports = async function handler(req, res) {
     return json(res, 429, { error: "Too many requests. Please try again in a minute." });
   }
 
-  const { message, history, stream } = parseBody(req);
+  const { message, history, stream, strict_only_sources } = parseBody(req);
   const question = String(message || "").trim();
+  const strictOnlySources = strict_only_sources !== false;
 
   if (!question) {
     return json(res, 400, { error: "Message is required." });
@@ -244,6 +227,7 @@ module.exports = async function handler(req, res) {
   }
 
   const model = process.env.GROQ_MODEL || "llama-3.1-8b-instant";
+  const rewrittenTokens = rewriteQuery(question);
   const retrievedChunks = retrieveRelevantChunks(question, 4);
 
   if (retrievedChunks.length === 0) {
@@ -256,7 +240,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const prompt = buildPrompt(question, retrievedChunks);
+    const prompt = buildPrompt(question, retrievedChunks, rewrittenTokens);
     const citations = retrievedChunks.map((chunk) => ({
       title: chunk.source_title,
       url: chunk.source_url,
@@ -269,19 +253,27 @@ module.exports = async function handler(req, res) {
       res.setHeader("Content-Type", "application/x-ndjson; charset=utf-8");
       res.setHeader("Cache-Control", "no-cache, no-transform");
 
-      writeStreamEvent(res, { type: "start", citations, retrieved_count: retrievedChunks.length });
+      writeStreamEvent(res, {
+        type: "start",
+        citations,
+        retrieved_count: retrievedChunks.length,
+        strict_only_sources: strictOnlySources
+      });
       const streamedAnswer = await callGroqStream({
         apiKey: groqKey,
         model,
         prompt,
         history,
-        onToken: (delta) => writeStreamEvent(res, { type: "token", delta })
+        onToken: (delta) => writeStreamEvent(res, { type: "token", delta }),
+        strictOnlySources
       });
       writeStreamEvent(res, {
         type: "done",
         answer: streamedAnswer,
         citations,
-        retrieved_count: retrievedChunks.length
+        retrieved_count: retrievedChunks.length,
+        strict_only_sources: strictOnlySources,
+        query_rewrite: rewrittenTokens
       });
       return res.end();
     }
@@ -290,13 +282,16 @@ module.exports = async function handler(req, res) {
       apiKey: groqKey,
       model,
       prompt,
-      history
+      history,
+      strictOnlySources
     });
 
     return json(res, 200, {
       answer,
       citations,
-      retrieved_count: retrievedChunks.length
+      retrieved_count: retrievedChunks.length,
+      strict_only_sources: strictOnlySources,
+      query_rewrite: rewrittenTokens
     });
   } catch (error) {
     return json(res, 502, {
