@@ -175,7 +175,8 @@ GROQ_MODEL=llama-3.1-8b-instant
 ### Deployment model
 
 - Keep API key on the server only (never in browser JS).
-- Deploy API on Vercel (recommended) or any Node-compatible serverless host.
+- Easiest option: deploy `portfolio (root)` on Vercel using root `vercel.json`, which rewrites `/api/chat` to `chatbot/api/chat.js`.
+- Alternative: deploy only `chatbot/` as a separate Vercel project.
 - If frontend and API are on different domains, set in browser before loading `chatbot/chatbot.js`:
 
 ```html

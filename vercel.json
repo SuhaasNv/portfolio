@@ -1,0 +1,15 @@
+{
+  "functions": {
+    "chatbot/api/chat.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/chat",
+      "destination": "/chatbot/api/chat"
+    }
+  ]
+}
+
