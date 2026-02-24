@@ -1716,18 +1716,50 @@ nav .fas{
     gap: 6px;
 }
 
-.chatbot-citations a {
-    text-decoration: none;
-    font-size: 11px;
-    color: #d4d4d8;
+.chatbot-citation-btn {
     border: 1px solid #353535;
     background: #151515;
+    cursor: pointer;
+    font-size: 11px;
+    color: #d4d4d8;
     padding: 4px 8px;
     border-radius: 999px;
 }
 
-.chatbot-citations a:hover {
+.chatbot-citation-btn:hover {
     border-color: #4b4b4b;
+}
+
+.chatbot-citation-preview {
+    margin-top: 10px;
+    border: 1px solid #303030;
+    background: #121212;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.chatbot-citation-preview strong {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 6px;
+    color: #f4f4f5;
+}
+
+.chatbot-citation-preview p {
+    margin: 0 0 8px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #c3c3c8;
+}
+
+.chatbot-citation-preview a {
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.chatbot-citation-preview a:hover {
+    text-decoration: underline;
 }
 
 .chatbot-starters {

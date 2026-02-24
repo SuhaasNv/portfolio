@@ -62,6 +62,12 @@ function buildPrompt(message, chunks) {
   ].join("\n");
 }
 
+function summarizeSnippet(text, maxLen = 220) {
+  const clean = String(text || "").replace(/\s+/g, " ").trim();
+  if (clean.length <= maxLen) return clean;
+  return clean.slice(0, maxLen).trimEnd() + "...";
+}
+
 async function callGroq({ apiKey, model, prompt, history }) {
   const safeHistory = Array.isArray(history)
     ? history
@@ -169,7 +175,8 @@ module.exports = async function handler(req, res) {
     const citations = retrievedChunks.map((chunk) => ({
       title: chunk.source_title,
       url: chunk.source_url,
-      section: chunk.section
+      section: chunk.section,
+      snippet: summarizeSnippet(chunk.text)
     }));
 
     return json(res, 200, {
@@ -184,4 +191,3 @@ module.exports = async function handler(req, res) {
     });
   }
 };
-

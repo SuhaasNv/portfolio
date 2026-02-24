@@ -128,22 +128,59 @@
     wrapper.textContent = text;
 
     if (role === "assistant" && Array.isArray(citations) && citations.length > 0) {
-      var citationsWrap = document.createElement("div");
-      citationsWrap.className = "chatbot-citations";
-
-      citations.slice(0, 4).forEach(function (citation) {
-        var a = document.createElement("a");
-        a.textContent = citation.title || "Source";
-        a.href = citation.url || "#";
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        citationsWrap.appendChild(a);
-      });
-
-      wrapper.appendChild(citationsWrap);
+      renderCitations(wrapper, citations);
     }
 
     return wrapper;
+  }
+
+  function renderCitations(messageNode, citations) {
+    var citationsWrap = document.createElement("div");
+    citationsWrap.className = "chatbot-citations";
+    var previewNode = null;
+
+    citations.slice(0, 4).forEach(function (citation) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "chatbot-citation-btn";
+      button.textContent = citation.title || "Source";
+      button.addEventListener("click", function () {
+        var isSame = previewNode && previewNode.getAttribute("data-cite-title") === (citation.title || "");
+        if (isSame) {
+          previewNode.remove();
+          previewNode = null;
+          return;
+        }
+        if (previewNode) {
+          previewNode.remove();
+          previewNode = null;
+        }
+        previewNode = document.createElement("div");
+        previewNode.className = "chatbot-citation-preview";
+        previewNode.setAttribute("data-cite-title", citation.title || "");
+
+        var title = document.createElement("strong");
+        title.textContent = citation.title || "Source";
+
+        var snippet = document.createElement("p");
+        snippet.textContent = citation.snippet || "No snippet available.";
+
+        var sourceLink = document.createElement("a");
+        sourceLink.href = citation.url || "#";
+        sourceLink.target = "_blank";
+        sourceLink.rel = "noopener noreferrer";
+        sourceLink.textContent = "Open source";
+
+        previewNode.appendChild(title);
+        previewNode.appendChild(snippet);
+        previewNode.appendChild(sourceLink);
+        messageNode.appendChild(previewNode);
+        scrollToBottom();
+      });
+      citationsWrap.appendChild(button);
+    });
+
+    messageNode.appendChild(citationsWrap);
   }
 
   function addThinkingSkeleton() {
@@ -275,17 +312,7 @@
       await typeAssistantMessage(answerNode, answer);
 
       if (Array.isArray(payload.citations) && payload.citations.length > 0) {
-        var citationsWrap = document.createElement("div");
-        citationsWrap.className = "chatbot-citations";
-        payload.citations.slice(0, 4).forEach(function (citation) {
-          var a = document.createElement("a");
-          a.textContent = citation.title || "Source";
-          a.href = citation.url || "#";
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          citationsWrap.appendChild(a);
-        });
-        answerNode.appendChild(citationsWrap);
+        renderCitations(answerNode, payload.citations);
       }
 
       history.push({ role: "user", content: text });
