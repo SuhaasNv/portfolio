@@ -1,0 +1,179 @@
+[
+  {
+    "id": "home-intro-1",
+    "text": "Suhaas Nadukooru is a systems engineer with product intent. He designs systems that connect architecture to user needs and focuses on technical decisions that solve real problems.",
+    "source_title": "Home Page",
+    "source_url": "/index.html#header",
+    "section": "Hero",
+    "tags": ["summary", "profile", "systems", "product"]
+  },
+  {
+    "id": "home-intro-2",
+    "text": "He is currently pursuing an M.Tech in Software Engineering at the National University of Singapore and focuses on systems architecture, data pipelines, and product reasoning.",
+    "source_title": "Home Page",
+    "source_url": "/index.html#header",
+    "section": "Hero Context",
+    "tags": ["education", "NUS", "M.Tech"]
+  },
+  {
+    "id": "about-1",
+    "text": "His approach combines systems architecture and product reasoning. He evaluates trade-offs, scalability, and maintainability as first-class concerns.",
+    "source_title": "About",
+    "source_url": "/index.html#about",
+    "section": "Approach",
+    "tags": ["approach", "trade-offs", "scalability", "maintainability"]
+  },
+  {
+    "id": "about-2",
+    "text": "He brings product management and design exposure into engineering work, focusing on why systems are built, not just how they are built.",
+    "source_title": "About",
+    "source_url": "/index.html#about",
+    "section": "Product Reasoning",
+    "tags": ["product", "design", "user needs"]
+  },
+  {
+    "id": "focus-ai",
+    "text": "He has foundations in AI systems and RAG architecture, including retrieval pipelines, vector search, and language models integrated into larger systems.",
+    "source_title": "About",
+    "source_url": "/index.html#about",
+    "section": "Focus and Strengths",
+    "tags": ["AI", "RAG", "vector search", "LLM"]
+  },
+  {
+    "id": "projects-spaceflow-1",
+    "text": "SpaceFlow is a smart workplace platform case study exploring space booking, occupancy analytics, and AI-assisted insights with a modular service-oriented architecture.",
+    "source_title": "SpaceFlow Case Study",
+    "source_url": "/work/spaceflow.html",
+    "section": "Overview",
+    "tags": ["SpaceFlow", "systems design", "microservices", "architecture"]
+  },
+  {
+    "id": "projects-spaceflow-2",
+    "text": "The SpaceFlow project emphasizes service boundaries, API-first design, and separation of concerns across booking, occupancy, analytics, and AI insight components.",
+    "source_title": "SpaceFlow Case Study",
+    "source_url": "/work/spaceflow.html",
+    "section": "Architecture Decisions",
+    "tags": ["APIs", "service boundaries", "trade-offs"]
+  },
+  {
+    "id": "projects-documind-1",
+    "text": "DocuMind (Insight Garden) is a full-stack document RAG SaaS where users upload PDFs and chat with documents through streaming answers with source attribution.",
+    "source_title": "DocuMind Case Study",
+    "source_url": "/work/ai-knowledge-assistant.html",
+    "section": "Overview",
+    "tags": ["DocuMind", "RAG", "SaaS", "PDF"]
+  },
+  {
+    "id": "projects-documind-2",
+    "text": "DocuMind stack includes React frontend, NestJS backend, pgvector retrieval, BullMQ for asynchronous jobs, and deployments across Vercel, Railway, Supabase, and Upstash.",
+    "source_title": "DocuMind Case Study",
+    "source_url": "/work/ai-knowledge-assistant.html",
+    "section": "Tech Stack",
+    "tags": ["React", "NestJS", "pgvector", "BullMQ", "Vercel", "Railway"]
+  },
+  {
+    "id": "projects-documind-3",
+    "text": "The system emphasizes end-to-end product design: authentication, async document processing with progress states, hybrid retrieval, and SSE streaming.",
+    "source_title": "DocuMind Case Study",
+    "source_url": "/work/ai-knowledge-assistant.html",
+    "section": "System Design",
+    "tags": ["auth", "async processing", "hybrid retrieval", "SSE"]
+  },
+  {
+    "id": "projects-plant-1",
+    "text": "Plant Disease Recognition System classifies plant leaf images into 38 disease or healthy classes with a CNN model and around 95 percent accuracy.",
+    "source_title": "Plant Disease Recognition Case Study",
+    "source_url": "/work/plant-disease-recognition.html",
+    "section": "Overview",
+    "tags": ["ML", "CNN", "classification", "TensorFlow", "Keras"]
+  },
+  {
+    "id": "projects-plant-2",
+    "text": "The project uses a single-source config and aligned data pipeline for both training and inference, with experiment tracking and a Streamlit app for usability.",
+    "source_title": "Plant Disease Recognition Case Study",
+    "source_url": "/work/plant-disease-recognition.html",
+    "section": "Engineering Decisions",
+    "tags": ["Streamlit", "MLOps", "pipeline", "config"]
+  },
+  {
+    "id": "projects-easymeals",
+    "text": "EasyMeals is a concept case study on subscription-based healthy meal delivery for busy professionals, focused on product strategy and design thinking.",
+    "source_title": "EasyMeals Case Study",
+    "source_url": "/work/easymeals.html",
+    "section": "Overview",
+    "tags": ["product strategy", "design thinking", "case study"]
+  },
+  {
+    "id": "education-mtech",
+    "text": "M.Tech in Software Engineering at the National University of Singapore with GPA 4 out of 5. Coursework emphasizes architectural reasoning and scalable system design.",
+    "source_title": "Education",
+    "source_url": "/index.html#about",
+    "section": "M.Tech",
+    "tags": ["education", "NUS", "GPA", "software engineering"]
+  },
+  {
+    "id": "education-btech",
+    "text": "B.Tech in Information Technology at Vellore Institute of Technology with CGPA 8.21 out of 10. Foundation includes programming, databases, web technologies, and software engineering.",
+    "source_title": "Education",
+    "source_url": "/index.html#about",
+    "section": "B.Tech",
+    "tags": ["education", "VIT", "computer science fundamentals"]
+  },
+  {
+    "id": "cert-nus-systems",
+    "text": "Graduate certificates from NUS-ISS include Designing Modern Software Systems and Architecting Scalable Systems, covering architecture, reliability, and performance trade-offs.",
+    "source_title": "Certifications",
+    "source_url": "/index.html#services",
+    "section": "NUS-ISS",
+    "tags": ["certification", "software systems", "distributed systems"]
+  },
+  {
+    "id": "cert-aws",
+    "text": "AWS Cloud Practitioner certification demonstrates understanding of core cloud services, security fundamentals, and cost-aware architecture decisions.",
+    "source_title": "Certifications",
+    "source_url": "/index.html#services",
+    "section": "AWS",
+    "tags": ["AWS", "cloud", "security", "cost optimization"]
+  },
+  {
+    "id": "cert-azure",
+    "text": "Microsoft Azure AZ-104 certification covers Azure administration, resource management, and designing cloud infrastructure.",
+    "source_title": "Certifications",
+    "source_url": "/index.html#services",
+    "section": "Azure",
+    "tags": ["Azure", "cloud", "infrastructure"]
+  },
+  {
+    "id": "cert-genai",
+    "text": "IBM Generative AI certification includes model fundamentals, prompt engineering, and practical integration of AI capabilities into applications.",
+    "source_title": "Certifications",
+    "source_url": "/index.html#services",
+    "section": "Generative AI",
+    "tags": ["GenAI", "prompt engineering", "AI applications"]
+  },
+  {
+    "id": "cert-agile",
+    "text": "Agile with Atlassian Jira certification covers agile methods, sprint planning, and team collaboration workflows.",
+    "source_title": "Certifications",
+    "source_url": "/index.html#services",
+    "section": "Agile",
+    "tags": ["Agile", "Jira", "project management"]
+  },
+  {
+    "id": "focus-systems",
+    "text": "Primary strengths include systems architecture and trade-off analysis, product reasoning aligned to user outcomes, and AI system integration with replaceable components.",
+    "source_title": "About",
+    "source_url": "/index.html#about",
+    "section": "Highlights",
+    "tags": ["strengths", "systems architecture", "AI integration"]
+  },
+  {
+    "id": "contact",
+    "text": "Contact methods include email at nvijayasuhaas@gmail.com, LinkedIn profile, GitHub profile, and downloadable resume from the portfolio.",
+    "source_title": "Contact",
+    "source_url": "/index.html#contact",
+    "section": "Contact Methods",
+    "tags": ["contact", "email", "linkedin", "github", "resume"]
+  }
+]
+

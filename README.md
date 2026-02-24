@@ -154,6 +154,43 @@ To run this portfolio locally:
 
 ---
 
+## RAG Chatbot (Groq) Setup
+
+This branch includes a portfolio assistant chatbot with a lightweight RAG backend:
+
+- API endpoint: `api/chat.js`
+- Retrieval data: `knowledge/chunks.json`
+- Frontend widget: `chatbot.js` + chatbot styles in `style.css`
+
+### Environment variables
+
+Copy `.env.example` and set:
+
+```bash
+GROQ_API_KEY=your_key_here
+GROQ_MODEL=llama-3.1-8b-instant
+```
+
+### Deployment model
+
+- Keep API key on the server only (never in browser JS).
+- Deploy API on Vercel (recommended) or any Node-compatible serverless host.
+- If frontend and API are on different domains, set in browser before loading `chatbot.js`:
+
+```html
+<script>
+  window.PORTFOLIO_CHAT_API_URL = "https://your-api-domain.com/api/chat";
+</script>
+```
+
+### Behavior
+
+- Answers are constrained to portfolio knowledge chunks.
+- Unknown questions return a safe fallback instead of hallucinated content.
+- Responses include source citations when retrieval finds matches.
+
+---
+
 ## Education & Credentials
 
 - **M.Tech (Software Engineering)** — National University of Singapore | GPA: 4/5
@@ -170,4 +207,3 @@ This portfolio is personal work. Code is available for reference, but please res
 ---
 
 **Last Updated:** 2025
-
